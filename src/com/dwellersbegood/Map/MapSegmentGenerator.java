@@ -1,7 +1,8 @@
 package com.dwellersbegood.Map;
 
-public class MapSegmentGenerator {
-
+public class MapSegmentGenerator
+{
+	// private
 	private MapSegmentGenerator m_instance = null;
 	
 	public MapSegmentGenerator getInstance()
@@ -13,7 +14,8 @@ public class MapSegmentGenerator {
 	
 	public MapSegment generate()
 	{
-		//@TODO
+		// @TODO
+		
 		return new MapSegment();
 	}
 }
