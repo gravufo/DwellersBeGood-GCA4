@@ -27,6 +27,15 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.dwellersbegood.IntroActivity"
+            android:label="@string/title_activity_intro"
+            android:parentActivityName="com.dwellersbegood.MainActivity"
+            android:screenOrientation="landscape" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.dwellersbegood.MainActivity" />
+        </activity>
+        <activity
             android:name="com.dwellersbegood.MultiplayerConnectionActivity"
             android:label="@string/title_activity_multiplayer_connection"
             android:screenOrientation="landscape"

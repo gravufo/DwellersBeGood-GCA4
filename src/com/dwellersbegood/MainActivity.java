@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
@@ -30,7 +29,19 @@ public class MainActivity extends Activity {
 		// Activate background music
 		this.m_Player = MediaPlayer.create(this, R.raw.radiomartini);
 		this.m_Player.setLooping(true);
-		//this.m_Player.start();
+		
+		Intent intent = new Intent(this, IntroActivity.class);
+        this.startActivityForResult(intent, 1);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == 1)
+		{
+			// Previous activity was the Intro
+			//this.m_Player.start();
+		}
+		
 	}
 	
 	/** Called when the user clicks the Singleplayer button */
