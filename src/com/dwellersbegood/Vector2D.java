@@ -36,6 +36,10 @@ public class Vector2D
 		return new Vector2D(x + vector.getX(), y + vector.getY());
 	}
 	
+	public Vector2D substract(Vector2D vector){
+		return new Vector2D(x - vector.getX(), y - vector.getY());
+	}
+	
 	public Vector2D multiply(float f){
 		return new Vector2D(x * f, y * f);
 	}
