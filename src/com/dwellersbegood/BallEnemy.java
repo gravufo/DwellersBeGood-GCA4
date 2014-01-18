@@ -40,7 +40,7 @@ public class BallEnemy extends GObject
 	public void draw(Canvas canvas)
 	{
 		// this.m_Anim.draw(canvas, m_position, m_paint);
-		canvas.drawBitmap(m_sprite, m_position.getX() - m_sprite.getWidth() / 2, m_position.getY() - m_sprite.getHeight() / 2, m_paint);
+		canvas.drawBitmap(m_sprite, m_position.getX(), m_position.getY(), m_paint);
 	}
 	
 	@Override

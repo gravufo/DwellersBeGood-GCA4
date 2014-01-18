@@ -31,7 +31,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	private Resources m_res;
 	private Player m_player;
 	private BallEnemy m_enemy;
-	private final ArrayList<Projectile> m_projectiles;
+	private ArrayList<Projectile> m_projectiles;
 	private Map m_map;
 	private GData m_Data;
 	private final int[] multiTouchX;
