@@ -32,7 +32,7 @@ public class BitmapManager
 	
 	public void loadBitmaps(Resources res)
 	{
-		m_bitmapCollection.add(BitmapFactory.decodeResource(res, R.drawable.bgtest1));
+		m_bitmapCollection.add(BitmapFactory.decodeResource(res, R.drawable.loop_bg_cut));
 	}
 	
 	public Bitmap scaleToSize(Bitmap sprite, int desiredWidth, int desiredHeight)
