@@ -19,6 +19,7 @@ public class GAnimation
 	private ArrayList<Bitmap> m_bitmapArray;
 	private boolean m_animateOnce;
 	private boolean m_done;
+	private boolean m_pause;
 	
 	public GAnimation(Bitmap bitmap, double fps, int frameCount)
 	{
@@ -36,17 +37,17 @@ public class GAnimation
 		this.m_bitmapArray = new ArrayList<Bitmap>();
 		this.m_animateOnce = animateOnce;
 		this.m_done = false;
-		
+		this.m_pause = false;
 		
 		for (int i = 0; i < frameCount; i++)
 		{
 			m_bitmapArray.add(Bitmap.createBitmap(bitmap, i * (bitmap.getWidth() / frameCount), 0, (bitmap.getWidth() / frameCount), bitmap.getHeight(), this.m_mtxEffect, true));
 		}
+		this.m_bmpToDraw = m_bitmapArray.get(0);
 	}
 	
 	public void update(long elapsedTime)
 	{
-		
 		m_frameTicker += elapsedTime;
 		
 		if (m_frameTicker > this.m_framePeriod && !m_done)
@@ -105,8 +106,18 @@ public class GAnimation
 		return this.m_framePeriod;
 	}
 	
+	public long getCurrentFrame()
+	{
+		return this.m_currentFrame;
+	}
+	
 	public boolean getDone()
 	{
 		return this.m_done;
+	}
+	public void reset(){
+		m_frameTicker = 0;
+		m_currentFrame = 0;
+		m_done = false;
 	}
 }

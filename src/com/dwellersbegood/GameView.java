@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
+import android.graphics.Rect;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -18,8 +19,9 @@ import com.dwellersbegood.Map.Map;
 public class GameView extends SurfaceView implements SurfaceHolder.Callback
 {
 	
-	public static final float GRAVITY = 300;
+	public static final float GRAVITY = 600;
 	public static final float PLAYER_MIN_Y = 500;
+	public static final boolean ENABLED_DEBUG = false;
 	private final int MAX_TOUCH_COUNT = 10;
 	
 	private final GameActivity m_Activity;
@@ -36,6 +38,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	private GData m_Data;
 	private final int[] multiTouchX;
 	private final int[] multiTouchY;
+	private Rect m_screenBoundingBox;
+	
+	private long m_jumpHoldTime;
+	private boolean m_jumpStarted;
 	
 	public GameView(GameActivity activity, Context context)
 	{
@@ -52,6 +58,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		this.m_collectibleScorePaint.setTextAlign(Align.LEFT);
 		
 		this.m_collectibleScore = 0;
+		
+		this.m_jumpHoldTime = 0;
+		this.m_jumpStarted = true;
 		
 		m_Data = m_Activity.getData();
 		if(m_Data != null)
@@ -72,6 +81,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	{
 		this.m_ScreenWidth = this.getWidth();
 		this.m_ScreenHeight = this.getHeight();
+		
+		m_screenBoundingBox = new Rect(0,0,this.m_ScreenWidth,this.m_ScreenHeight);
 		
 		// Create map
 		
@@ -143,6 +154,21 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			for (Projectile projectile : this.m_projectiles)
 			{
 				projectile.update(elapsedTime);
+				
+				if(!projectile.getBoundingBox().intersect(this.m_screenBoundingBox)){
+					this.m_projectiles.remove(this);
+				}
+			}
+		}
+		
+		if(this.m_jumpStarted){
+			this.m_jumpHoldTime += elapsedTime;
+			if(this.m_jumpHoldTime >= 2 * GameThread.nano){
+				this.m_jumpHoldTime = (long) Math.min(2 * GameThread.nano, this.m_jumpHoldTime);
+				float ratio = (float)(this.m_jumpHoldTime / (2 * GameThread.nano));
+				this.m_player.jumpReleased(ratio);
+				this.m_jumpHoldTime = 0;
+				this.m_jumpStarted = false;
 			}
 		}
 	}
@@ -165,14 +191,38 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				multiTouchY[a] = (int) event.getY(a);
 				
 				// If the touch is on first half of screen, jump
-				if (multiTouchX[a] < m_ScreenWidth / 2)
-					m_player.jump();
+				if (multiTouchX[a] < m_ScreenWidth / 2){
+					this.m_jumpHoldTime = System.currentTimeMillis();
+					this.m_player.jumpStarted();
+				}
 				
 				// If its on other side of screen, throw something
-				else
+				else{
 					throwSomething(multiTouchX[a], multiTouchY[a]);
+				}
 			}
 			break;
+		case MotionEvent.ACTION_UP:
+		case MotionEvent.ACTION_POINTER_UP:
+			for (int a = 0; a < event.getPointerCount(); a++)
+			{
+				
+				Log.d("GameView", "OnTouchEvent at " + (int) event.getX() + ", " + (int) event.getY());
+				
+				Log.d("GameView", "Number of pointers " + event.getPointerCount());
+				
+				multiTouchX[a] = (int) event.getX(a);
+				multiTouchY[a] = (int) event.getY(a);
+				
+				// If the touch is on first half of screen, jump
+				if (multiTouchX[a] < m_ScreenWidth / 2 && this.m_jumpHoldTime > 0){
+					float ratio = (float)(this.m_jumpHoldTime / (2 * GameThread.nano));
+					this.m_player.jumpReleased(ratio);
+					this.m_jumpHoldTime = 0;
+					this.m_jumpStarted = false;
+				}
+			}
+				
 		default:
 		}
 		return true;
@@ -186,11 +236,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		m_Activity.setData(m_Data);
 		
 		synchronized(this.m_projectiles){
+			Rect playerBox = this.m_player.getBoundingBox();
 			Vector2D target = new Vector2D(posX, posY);
 			Vector2D direction = target.substract(m_player.getM_position());
 			direction.normalize();
 			direction = direction.multiply(1000);
-			m_projectiles.add(new Projectile(m_player.getM_position().getX(), m_player.getM_position().getY(), direction.getX(), direction.getY(), m_ScreenWidth, m_ScreenHeight, m_res));
+			m_projectiles.add(new Projectile(m_player.getM_position().getX() + playerBox.width()/2, m_player.getM_position().getY() + playerBox.height()/2, direction.getX(), direction.getY(), m_ScreenWidth, m_ScreenHeight, m_res));
 		}
 	}
 	
