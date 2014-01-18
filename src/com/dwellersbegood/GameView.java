@@ -57,7 +57,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 	    //Create map
 	    
 	    m_map = new Map(this.m_ScreenWidth, this.m_ScreenHeight);
-	    
 	    m_player = new Player(200, PLAYER_MIN_Y, 0, 50, m_ScreenWidth, m_ScreenHeight, m_Activity.getResources());
 	    m_ennemy = new BallEnnemy(800, 500, 0, 0, m_ScreenWidth, m_ScreenHeight, m_Activity.getResources());
 	    
@@ -128,7 +127,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 	
 	public void throwSomething(int posX, int posY){
 		Vector2D target = new Vector2D(posX, posY);
-		Vector2D direction = target.substract(m_player.getPosition());
+		Vector2D direction = target.substract(m_player.getM_position());
 		m_projectiles.add(new Projectile());
 	}
 	

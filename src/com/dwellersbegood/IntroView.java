@@ -11,6 +11,7 @@ import android.graphics.Paint;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+
 public class IntroView extends SurfaceView implements SurfaceHolder.Callback
 {
 	private Bitmap m_IntroBitmap;
