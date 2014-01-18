@@ -27,7 +27,7 @@ public class BallEnnemy extends GObject{
 		m_paint = new Paint();
 		m_paint.setColor(Color.BLACK);
 		
-		this.m_Anim = new GAnimation(BitmapFactory.decodeResource(this.m_res, R.drawable.soccer_animation), 15, 10);
+		this.m_Anim = new GAnimation(BitmapFactory.decodeResource(this.m_res, R.drawable.player), 1, 10);
 	}
 
 	@Override
