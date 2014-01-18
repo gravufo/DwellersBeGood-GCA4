@@ -21,7 +21,7 @@ public class CoinSegment extends MapSegment {
 
 	@Override
 	public void update(long elapsedTime) {
-		m_position.setY(m_position.getY() + (float)(elapsedTime/GameThread.nano));
+		m_position.setY(m_position.getY() - (float)(elapsedTime/GameThread.nano));
 	}
 	
 	

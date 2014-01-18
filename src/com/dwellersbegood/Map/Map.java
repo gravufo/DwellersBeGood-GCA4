@@ -74,17 +74,21 @@ public class Map extends GObject {
 	
 	private boolean isOutofScreen(int index)
 	{
-		if(m_mapSegments.get(index).getBottomRightCorner().getX() < -10)
+		if(m_mapSegments.get(index).getTopRightCorner().getX() < -10)
 			return true;
 		return false;
 	}
 	
 	private void addMappSegments()
 	{
-		while(m_mapSegments.get(m_mapSegments.size() - 1).getBottomRightCorner().getX() < GameView.getScreenSize().getX() * 1.5)
+		float bla = m_mapSegments.get(m_mapSegments.size() - 1).getTopRightCorner().getX();
+		float screenSize = (float) (GameView.getScreenSize().getX() * 1.5);
+		while( bla < screenSize)
 		{
 			MapSegment segment = MapSegmentGenerator.Instance().generate(m_difficulty);
 			m_mapSegments.add(segment);
+			bla = m_mapSegments.get(m_mapSegments.size() - 1).getTopRightCorner().getX();
 		}
+		System.out.println("");
 	}
 }

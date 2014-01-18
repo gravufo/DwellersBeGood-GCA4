@@ -54,7 +54,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		this.m_collectibleScore = 0;
 		
 		m_Data = m_Activity.getData();
-		if(m_Data != null)
+		if (m_Data != null)
 			m_collectibleScore = m_Data.getDolla();
 		
 		multiTouchX = new int[MAX_TOUCH_COUNT];
@@ -117,7 +117,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			m_map.draw(canvas);
 			
 			m_player.draw(canvas);
-			//m_enemy.draw(canvas);
+			// m_enemy.draw(canvas);
 			
 			synchronized (this.m_projectiles)
 			{
@@ -127,7 +127,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				}
 			}
 			
-			canvas.drawText(this.m_collectibleScore+"", 100, 40, this.m_collectibleScorePaint);
+			canvas.drawText(this.m_collectibleScore + "", 100, 40, this.m_collectibleScorePaint);
 		}
 	}
 	
@@ -178,14 +178,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		return true;
 	}
 	
-	public void throwSomething(int posX, int posY){
+	public void throwSomething(int posX, int posY)
+	{
 		
 		// should this statement be in a synchronized too ? (it is drawn in diff thread)
 		m_collectibleScore++;
 		m_Data.setDolla(m_collectibleScore);
 		m_Activity.setData(m_Data);
 		
-		synchronized(this.m_projectiles){
+		synchronized (this.m_projectiles)
+		{
 			Vector2D target = new Vector2D(posX, posY);
 			Vector2D direction = target.substract(m_player.getM_position());
 			direction.normalize();

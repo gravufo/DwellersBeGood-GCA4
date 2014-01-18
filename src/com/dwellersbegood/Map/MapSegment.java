@@ -10,10 +10,9 @@ public abstract class MapSegment extends GObject{
 	
 	protected Bitmap m_image;
 	
-	public void moveBottomLeftTo(Vector2D position)
+	public void moveTopLeftTo(Vector2D position)
 	{
-		Vector2D offset = new Vector2D((float) 0.0,this.getHeight());
-		this.setM_position(position.substract(offset));
+		this.setM_position(position);
 	}
 	
 	public int getHeight()
@@ -26,11 +25,11 @@ public abstract class MapSegment extends GObject{
 		return m_image.getWidth();
 	}
 	
-	public Vector2D getBottomRightCorner()
+	public Vector2D getTopRightCorner()
 	{
-		Vector2D bottomRightCorner = new Vector2D(this.getWidth(),this.getHeight());
-		bottomRightCorner = bottomRightCorner.add(this.m_position);
-		return bottomRightCorner;
+		Vector2D topRightCorner = new Vector2D(this.getWidth(),0);
+		topRightCorner = topRightCorner.add(this.m_position);
+		return topRightCorner;
 	}
 	
 	public abstract void draw(Canvas canvas);

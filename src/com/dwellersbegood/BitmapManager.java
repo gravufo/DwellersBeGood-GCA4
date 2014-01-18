@@ -26,14 +26,28 @@ public class BitmapManager
 	private final Vector<Bitmap> m_bitmapCollection = new Vector<Bitmap>();
 	
 	public static final int Background = 0;
-	public static final int Floor = 1;
-	public static final int Coin = 2;
+	public static final int Floor0 = 1;
+	public static final int Floor1 = 2;
+	public static final int Floor2 = 3;
+	public static final int Coin = 4;
+	public static final int HoleBeginning = 5;
+	public static final int HoleEnding = 6;
+	public static final int HoleMiddle = 7;
+	public static final int Platform0 = 8;
+	public static final int Platform1 = 9;
 	
 	public void loadBitmaps(Resources res)
 	{
 		m_bitmapCollection.add(BitmapFactory.decodeResource(res, R.drawable.loop_bg_cut));
 		m_bitmapCollection.add(BitmapFactory.decodeResource(res, R.drawable.floorexample));
+		m_bitmapCollection.add(BitmapFactory.decodeResource(res, R.drawable.floorexample2));
+		m_bitmapCollection.add(BitmapFactory.decodeResource(res, R.drawable.floorexample3));
 		m_bitmapCollection.add(BitmapFactory.decodeResource(res, R.drawable.coinexample));
+		m_bitmapCollection.add(BitmapFactory.decodeResource(res, R.drawable.holebeginning));
+		m_bitmapCollection.add(BitmapFactory.decodeResource(res, R.drawable.holeending));
+		m_bitmapCollection.add(BitmapFactory.decodeResource(res, R.drawable.holemiddle));
+		m_bitmapCollection.add(BitmapFactory.decodeResource(res, R.drawable.platform1));
+		m_bitmapCollection.add(BitmapFactory.decodeResource(res, R.drawable.platform2));
 	}
 	
 	public Bitmap scaleToSize(Bitmap sprite, int desiredWidth, int desiredHeight)
