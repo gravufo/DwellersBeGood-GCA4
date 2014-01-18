@@ -14,7 +14,7 @@ public class FloorSegment extends MapSegment {
 
 	FloorSegment()
 	{
-		m_image = BitmapManager.Instance().getBitmap(BitmapManager.Floor);
+		m_image = BitmapManager.getInstance().getBitmap(BitmapManager.Floor);
 		m_position = new Vector2D(GameView.getScreenSize().getX()- getWidth(), GameView.getScreenSize().getY() - getHeight());
 		
 		paint = new Paint();
