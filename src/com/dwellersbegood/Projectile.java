@@ -1,6 +1,7 @@
 package com.dwellersbegood;
 
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -29,6 +30,8 @@ public class Projectile extends GObject
 		
 		this.m_shootAnim = new GAnimation(BitmapFactory.decodeResource(this.m_res, R.drawable.laser_shoot), 6, 3, true);
 		this.m_floatAnim = new GAnimation(BitmapFactory.decodeResource(this.m_res, R.drawable.laser_float), 30, 4);
+		
+		boundingBox.set(0 + leftWidthOffset, 0 + topHeightOffset, 30 - rightWidthOffset, 30 - botHeightOffset);
 	}
 	
 	@Override

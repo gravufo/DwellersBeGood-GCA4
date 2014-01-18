@@ -40,7 +40,6 @@ public class GAnimation
 		
 		for (int i = 0; i < frameCount; i++)
 		{
-			
 			m_bitmapArray.add(Bitmap.createBitmap(bitmap, i * (bitmap.getWidth() / frameCount), 0, (bitmap.getWidth() / frameCount), bitmap.getHeight(), this.m_mtxEffect, true));
 		}
 	}

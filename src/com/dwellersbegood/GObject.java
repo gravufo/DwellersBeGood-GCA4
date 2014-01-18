@@ -1,6 +1,7 @@
 package com.dwellersbegood;
 
 import android.graphics.Canvas;
+import android.graphics.Rect;
 
 public abstract class GObject
 {
@@ -8,6 +9,12 @@ public abstract class GObject
 	protected Vector2D m_speed;
 	protected int m_screenWidth;
 	protected int m_screenHeight;
+	
+	protected Rect boundingBox = new Rect();
+	protected int rightWidthOffset = 0;
+	protected int leftWidthOffset = 0;
+	protected int topHeightOffset = 0;
+	protected int botHeightOffset = 0;
 	
 	public GObject()
 	{
