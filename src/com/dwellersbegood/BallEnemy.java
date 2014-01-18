@@ -33,19 +33,21 @@ public class BallEnemy extends GObject
 		m_sprite = BitmapManager.getInstance().scaleToSize(BitmapFactory.decodeResource(res, R.drawable.badstatue), 300, 300);
 		// this.m_Anim = new GAnimation(BitmapFactory.decodeResource(this.m_res, R.drawable.player), 60, 10);
 		
-		boundingBox.set(0 + leftWidthOffset, 0 + topHeightOffset, m_sprite.getWidth() - rightWidthOffset, m_sprite.getHeight() - botHeightOffset);
+		boundingBox.set((int) m_position.getX() + leftWidthOffset, (int) m_position.getY() + topHeightOffset, (int) m_position.getX() + m_sprite.getWidth() - rightWidthOffset, (int) m_position.getY() + m_sprite.getHeight() - botHeightOffset);
 	}
 	
 	@Override
 	public void draw(Canvas canvas)
 	{
 		// this.m_Anim.draw(canvas, m_position, m_paint);
-		canvas.drawBitmap(m_sprite, m_position.getX() - m_sprite.getWidth() / 2, m_position.getY() - m_sprite.getHeight() / 2, m_paint);
+		canvas.drawBitmap(m_sprite, m_position.getX(), m_position.getY(), m_paint);
 	}
 	
 	@Override
 	public void update(long ellapsedTime)
 	{
+		
+		boundingBox.set((int) m_position.getX() + leftWidthOffset, (int) m_position.getY() + topHeightOffset, (int) m_position.getX() + m_sprite.getWidth() - rightWidthOffset, (int) m_position.getY() + m_sprite.getHeight() - botHeightOffset);
 		// this.m_Anim.update(ellapsedTime);
 	}
 }
