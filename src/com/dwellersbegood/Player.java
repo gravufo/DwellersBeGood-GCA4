@@ -59,5 +59,6 @@ public class Player extends GObject{
 			m_jumping = true;
 		}
 	}
-
+	
+	
 }

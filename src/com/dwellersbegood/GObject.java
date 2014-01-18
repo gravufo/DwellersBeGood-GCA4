@@ -24,4 +24,12 @@ public abstract class GObject {
 	
 	public abstract void draw(Canvas canvas);
 	public abstract void update(long ellapsedTime);
+	
+	public Vector2D getPosition(){
+		return m_position;
+	}
+	
+	public Vector2D getSpeed(){
+		return m_speed;
+	}
 }

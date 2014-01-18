@@ -1,6 +1,6 @@
 package com.dwellersbegood;
 
-import com.dwellersbegood.Map.Map;
+import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import com.dwellersbegood.Map.Map;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 	
@@ -26,6 +28,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 	private Resources m_res;
 	private Player m_player;
 	private BallEnnemy m_ennemy;
+	private ArrayList<Projectile> m_projectiles;
 	private Map m_map;
 	private double m_gameTime;
 
@@ -112,9 +115,21 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 			posX = (int)event.getX();
 			posY = (int)event.getY();
 			
-			m_player.jump();
+			// If the touch is on first half of screen, jump
+			if(posX < m_ScreenWidth/2)
+				m_player.jump();
+			
+			// If its on other side of screen, throw something
+			else
+				throwSomething(posX, posY);
 		}
 		return super.onTouchEvent(event);
+	}
+	
+	public void throwSomething(int posX, int posY){
+		Vector2D target = new Vector2D(posX, posY);
+		Vector2D direction = target.substract(m_player.getPosition());
+		m_projectiles.add(new Projectile());
 	}
 	
 }

@@ -36,8 +36,25 @@ public class Vector2D
 		return new Vector2D(x + vector.getX(), y + vector.getY());
 	}
 	
+	public Vector2D substract(Vector2D vector){
+		return new Vector2D(x - vector.getX(), y - vector.getY());
+	}
+	
 	public Vector2D multiply(float f){
 		return new Vector2D(x * f, y * f);
+	}
+	
+	public Vector2D divide(float f){
+		return new Vector2D(x / f, y / f);
+	}
+	
+	public float norm(){
+		return (float) Math.sqrt(x*x + y*y);
+	}
+	
+	public void normalize(){
+		x = x / norm();
+		y = y / norm();
 	}
 
 }
