@@ -1,10 +1,11 @@
 package com.dwellersbegood;
 
+import java.util.ArrayList;
+
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.PointF;
 
 public class GAnimation {
 	
@@ -15,6 +16,7 @@ public class GAnimation {
     private long m_framePeriod;    // milliseconds entre chaque frame (1000/fps)
     private Matrix m_mtxEffect;
     private Bitmap m_bmpToDraw;
+    private ArrayList<Bitmap> m_bitmapArray;
 
 	public GAnimation(Bitmap bitmap, double fps, int frameCount)
 	{
@@ -23,7 +25,13 @@ public class GAnimation {
 		this.m_frameCount = frameCount;
 		this.m_currentFrame = 0;
 		this.m_frameTicker = 0;
-		this.m_framePeriod = (long) (1000 / fps);
+		this.m_framePeriod = (long) (GameThread.nano / fps);
+		this.m_bitmapArray = new ArrayList<Bitmap>();
+		
+		for(int i = 0; i < frameCount; i++){
+			
+			m_bitmapArray.add(Bitmap.createBitmap(bitmap, i*(bitmap.getWidth()/frameCount), 0, (bitmap.getWidth()/frameCount), bitmap.getHeight(), this.m_mtxEffect, true));
+		}
 	}
 	
 	public void update(long ellapsedTime) 
@@ -39,7 +47,7 @@ public class GAnimation {
 			 {
 				 this.m_currentFrame = 0;
 			 }
-			 this.m_bmpToDraw = Bitmap.createBitmap(this.m_sourceBitmap, this.m_currentFrame*(this.m_sourceBitmap.getWidth()/this.m_frameCount), 0, (this.m_sourceBitmap.getWidth()/this.m_frameCount), this.m_sourceBitmap.getHeight(), this.m_mtxEffect, true);
+			 this.m_bmpToDraw = m_bitmapArray.get(m_currentFrame);
 		}
 		
 	}
@@ -67,6 +75,6 @@ public class GAnimation {
 	
 	public void setFramePeriod(double fps)
 	{
-		this.m_framePeriod = (long) (1000 / fps);
+		this.m_framePeriod = (long) (GameThread.nano / fps);
 	}
 }

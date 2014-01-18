@@ -1,5 +1,6 @@
 package com.dwellersbegood.Map;
 
+import java.util.LinkedList;
 import java.util.Queue;
 
 import com.dwellersbegood.BitmapManager;
@@ -13,7 +14,7 @@ import android.graphics.Matrix;
 
 public class Map extends GObject {
 
-	private Queue<MapSegment> m_mapSegments;
+	private LinkedList<MapSegment> m_mapSegments = new LinkedList<MapSegment>();
 	private Bitmap m_background;
 	private float bgPos;
 	private float bgSpeed;
@@ -30,13 +31,25 @@ public class Map extends GObject {
 			canvas.drawBitmap(m_background,bgPos,0,null);
 			canvas.drawBitmap(m_background,bgPos+m_background.getWidth(),0,null);
 		}
+		
+		for(MapSegment segment:m_mapSegments)
+		{
+			segment.draw(canvas);
+		}
 	}
 
 	@Override
-	public void update(long ellapsedTime) {
+	public void update(long elapsedTime) {
 		// TODO Auto-generated method stub
 		if(bgPos * -1 >= m_background.getWidth())
 			bgPos = 0;
-		bgPos += bgSpeed * (double)(ellapsedTime)/GameThread.nano;
+		
+		bgPos += bgSpeed * (double)(elapsedTime)/GameThread.nano;
+		
+		for(MapSegment segment:m_mapSegments)
+		{
+			segment.setM_position(segment.getM_position().add(this.getM_speed()));
+			segment.update(elapsedTime);
+		}
 	}
 }
