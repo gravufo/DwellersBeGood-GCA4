@@ -10,7 +10,7 @@ public class Player extends GObject
 {
 	
 	private Resources m_res;
-	private Paint m_paint;
+	private final Paint m_paint;
 	private GAnimation m_runningAnim;
 	private boolean m_jumping;
 	
@@ -32,6 +32,8 @@ public class Player extends GObject
 		m_paint.setColor(Color.BLACK);
 		
 		this.m_runningAnim = new GAnimation(BitmapFactory.decodeResource(this.m_res, R.drawable.player), 60, 10);
+		
+		boundingBox.set(0 + leftWidthOffset, 0 + topHeightOffset, m_runningAnim.getWidth() - rightWidthOffset, m_runningAnim.getHeight() - botHeightOffset);
 	}
 	
 	@Override

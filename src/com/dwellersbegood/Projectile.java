@@ -23,6 +23,8 @@ public class Projectile extends GObject
 		
 		m_paint = new Paint();
 		m_paint.setColor(Color.BLACK);
+		
+		boundingBox.set(0 + leftWidthOffset, 0 + topHeightOffset, 30 - rightWidthOffset, 30 - botHeightOffset);
 	}
 	
 	@Override

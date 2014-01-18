@@ -13,7 +13,7 @@ public class PlatformSegment extends MapSegment
 	}
 	
 	@Override
-	public void update(long ellapsedTime)
+	public void update(long elapsedTime)
 	{
 		// TODO Auto-generated method stub
 		
