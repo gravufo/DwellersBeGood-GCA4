@@ -43,5 +43,18 @@ public class Vector2D
 	public Vector2D multiply(float f){
 		return new Vector2D(x * f, y * f);
 	}
+	
+	public Vector2D divide(float f){
+		return new Vector2D(x / f, y / f);
+	}
+	
+	public float norm(){
+		return (float) Math.sqrt(x*x + y*y);
+	}
+	
+	public void normalize(){
+		x = x / norm();
+		y = y / norm();
+	}
 
 }
