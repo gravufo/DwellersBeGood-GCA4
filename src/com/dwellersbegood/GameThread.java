@@ -8,7 +8,7 @@ public class GameThread extends Thread
 {
 	public static final double nano = 1000000000.0;
 	private boolean m_run = false;
-	private long m_ElaspedThreadTime;
+	private long m_ElapsedThreadTime;
 	private long m_NewTime;
 	private long m_OldTime;
 	private final GameView m_gameView;
@@ -34,18 +34,18 @@ public class GameThread extends Thread
 			try
 			{
 				this.m_NewTime = System.nanoTime();
-        		this.m_ElaspedThreadTime = this.m_NewTime - this.m_OldTime;
+				this.m_ElapsedThreadTime = this.m_NewTime - this.m_OldTime;
 				
 				c = this.m_surfaceHolder.lockCanvas(null);
 				// if ((this.m_ElaspedThreadTime/1000000000.0) >= 1/60)
-				if ((this.m_ElaspedThreadTime/nano) >= 1 / 60)
+				if ((this.m_ElapsedThreadTime / nano) >= 1 / 60)
 				{
 					
 					synchronized (this.m_surfaceHolder)
 					{
 						
 						// On dessine et on update notre panel
-						this.m_gameView.update(m_ElaspedThreadTime);
+						this.m_gameView.update(m_ElapsedThreadTime);
 						this.m_gameView.onDraw(c);
 					}
 				}

@@ -1,21 +1,31 @@
 package com.dwellersbegood;
+
 import android.graphics.Canvas;
+import android.graphics.Rect;
 
-
-public abstract class GObject {
+public abstract class GObject
+{
 	protected Vector2D m_position;
 	protected Vector2D m_speed;
 	protected int m_screenWidth;
 	protected int m_screenHeight;
 	
-	public GObject(){
+	protected Rect boundingBox = new Rect();
+	protected int rightWidthOffset = 0;
+	protected int leftWidthOffset = 0;
+	protected int topHeightOffset = 0;
+	protected int botHeightOffset = 0;
+	
+	public GObject()
+	{
 		this.m_position = null;
 		this.m_speed = null;
 		this.m_screenWidth = 0;
 		this.m_screenHeight = 0;
 	}
 	
-	public GObject(float posX, float posY, float speedX, float speedY, int screenWidth, int screenHeight){
+	public GObject(float posX, float posY, float speedX, float speedY, int screenWidth, int screenHeight)
+	{
 		this.m_position = new Vector2D(posX, posY);
 		this.m_speed = new Vector2D(speedX, speedY);
 		this.m_screenWidth = 0;
@@ -23,21 +33,26 @@ public abstract class GObject {
 	}
 	
 	public abstract void draw(Canvas canvas);
-	public abstract void update(long ellapsedTime);
-
-	public Vector2D getM_position() {
+	
+	public abstract void update(long elapsedTime);
+	
+	public Vector2D getM_position()
+	{
 		return m_position;
 	}
-
-	public void setM_position(Vector2D m_position) {
+	
+	public void setM_position(Vector2D m_position)
+	{
 		this.m_position = m_position;
 	}
-
-	public Vector2D getM_speed() {
+	
+	public Vector2D getM_speed()
+	{
 		return m_speed;
 	}
-
-	public void setM_speed(Vector2D m_speed) {
+	
+	public void setM_speed(Vector2D m_speed)
+	{
 		this.m_speed = m_speed;
 	}
 }
