@@ -1,28 +1,31 @@
 package com.dwellersbegood.Map;
 
 import java.util.LinkedList;
-import java.util.Queue;
+
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.util.Log;
 
 import com.dwellersbegood.BitmapManager;
 import com.dwellersbegood.GObject;
 import com.dwellersbegood.GameThread;
-
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
+import com.dwellersbegood.GameView;
+import com.dwellersbegood.Vector2D;
 
 public class Map extends GObject {
 
-	private LinkedList<MapSegment> m_mapSegments = new LinkedList<MapSegment>();
+	private LinkedList<MapSegment> m_mapSegments;
 	private Bitmap m_background;
 	private float bgPos;
 	private float bgSpeed;
+	private int m_difficulty = 0;
 	
 	public Map(int screenWidth, int screenHeight){
 		bgPos = 0;
 		bgSpeed = -400;
 		m_background = BitmapManager.Instance().scaleToSize(BitmapManager.Instance().getBitmap(BitmapManager.Background), screenWidth, screenHeight);
+		m_mapSegments = new LinkedList<MapSegment>();
+		m_mapSegments.add(MapSegmentGenerator.Instance().getLastSegment());
 	}
 	
 	public void draw(Canvas canvas)
@@ -46,10 +49,42 @@ public class Map extends GObject {
 		
 		bgPos += bgSpeed * (double)(elapsedTime)/GameThread.nano;
 		
+		removeDepricatedSegments();
+		
+		addMappSegments();
+		
 		for(MapSegment segment:m_mapSegments)
 		{
-			segment.setM_position(segment.getM_position().add(this.getM_speed()));
+			segment.setM_position(segment.getM_position().substract(new Vector2D((float)(elapsedTime/GameThread.nano)*100,0)));
 			segment.update(elapsedTime);
+		}
+	}
+	
+	private void removeDepricatedSegments()
+	{
+		for(int i = 0; i < m_mapSegments.size(); i++)
+		{
+			if(isOutofScreen(i))
+			{
+				m_mapSegments.remove(i);
+				i--;
+			}
+		}
+	}
+	
+	private boolean isOutofScreen(int index)
+	{
+		if(m_mapSegments.get(index).getBottomRightCorner().getX() < -10)
+			return true;
+		return false;
+	}
+	
+	private void addMappSegments()
+	{
+		while(m_mapSegments.get(m_mapSegments.size() - 1).getBottomRightCorner().getX() < GameView.getScreenSize().getX() * 1.5)
+		{
+			MapSegment segment = MapSegmentGenerator.Instance().generate(m_difficulty);
+			m_mapSegments.add(segment);
 		}
 	}
 }

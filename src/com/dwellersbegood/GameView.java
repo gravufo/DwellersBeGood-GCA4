@@ -21,8 +21,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 	
 	private GameActivity m_Activity;
 	private GameThread m_Thread;
-	private int m_ScreenWidth;
-	private int m_ScreenHeight;
+	private static int m_ScreenWidth;
+	private static int m_ScreenHeight;
 	private int posX, posY;
 	private Paint paint;
 	private Resources m_res;
@@ -147,6 +147,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 			direction = direction.multiply(2000);
 			m_projectiles.add(new Projectile(m_player.getM_position().getX(), m_player.getM_position().getY(), direction.getX(), direction.getY(), m_ScreenWidth, m_ScreenHeight, m_res));
 		}
+	}
+	
+	public static Vector2D getScreenSize()
+	{
+		return new Vector2D(m_ScreenWidth, m_ScreenHeight);
 	}
 	
 }

@@ -16,4 +16,5 @@ public class HoleBeginingSegment extends MapSegment {
 		
 	}
 
+
 }

@@ -24,14 +24,15 @@ public class BitmapManager {
 	private Vector<Bitmap> m_bitmapCollection = new Vector<Bitmap>();
 	
 	public static final int Background = 0;
-	public static final int PlayerSprite = 1;
-	public static final int EnemySprite = 2;
-	public static final int Grass = 3;
+	public static final int Floor = 1;
+	public static final int Coin = 2;
 	
 	
 	public void loadBitmaps(Resources res)
 	{
 		m_bitmapCollection.add(BitmapFactory.decodeResource(res, R.drawable.bgtest1));
+		m_bitmapCollection.add(BitmapFactory.decodeResource(res, R.drawable.floorexample));
+		m_bitmapCollection.add(BitmapFactory.decodeResource(res, R.drawable.coinexample));
 	}
 	
 	public Bitmap scaleToSize(Bitmap sprite, int desiredWidth, int desiredHeight){

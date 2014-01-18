@@ -16,4 +16,5 @@ public class HoleEndingSegment extends MapSegment {
 		
 	}
 
+
 }
