@@ -2,18 +2,20 @@ package com.dwellersbegood.Map;
 
 import android.graphics.Canvas;
 
-public class PlatformSegment extends MapSegment {
-
+public class PlatformSegment extends MapSegment
+{
+	
 	@Override
-	public void draw(Canvas canvas) {
+	public void draw(Canvas canvas)
+	{
 		// TODO Auto-generated method stub
-
+		
 	}
-
+	
 	@Override
-	public void update(long ellapsedTime) {
+	public void update(long ellapsedTime)
+	{
 		// TODO Auto-generated method stub
-
+		
 	}
-
 }

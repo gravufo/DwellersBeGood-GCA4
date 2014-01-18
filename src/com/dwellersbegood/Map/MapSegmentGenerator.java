@@ -1,6 +1,7 @@
 package com.dwellersbegood.Map;
 
-public class MapSegmentGenerator {
+public class MapSegmentGenerator
+{
 	
 	private MapSegment last;
 	private static MapSegmentGenerator m_instance = null;
@@ -12,11 +13,13 @@ public class MapSegmentGenerator {
 		return m_instance;
 	}
 	
-	private MapSegmentGenerator(){};
+	private MapSegmentGenerator()
+	{
+	};
 	
 	public MapSegment generate()
 	{
-		//@TODO
+		// @TODO
 		
 		return new HoleBeginingSegment();
 	}
