@@ -2,21 +2,19 @@ package com.dwellersbegood.Map;
 
 import android.graphics.Canvas;
 
-public class HoleEndingSegment extends MapSegment
-{
-	
+public class HoleEndingSegment extends MapSegment {
+
 	@Override
-	public void draw(Canvas canvas)
-	{
+	public void draw(Canvas canvas) {
 		// TODO Auto-generated method stub
 		
 	}
-	
+
 	@Override
-	public void update(long elapsedTime)
-	{
+	public void update(long ellapsedTime) {
 		// TODO Auto-generated method stub
 		
 	}
-	
+
+
 }
