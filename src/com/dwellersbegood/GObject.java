@@ -1,7 +1,10 @@
 package com.dwellersbegood;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Paint.Style;
 
 public abstract class GObject
 {
@@ -16,12 +19,19 @@ public abstract class GObject
 	protected int topHeightOffset = 0;
 	protected int botHeightOffset = 0;
 	
+	protected Paint m_debugPaint;
+	
 	public GObject()
 	{
 		this.m_position = null;
 		this.m_speed = null;
 		this.m_screenWidth = 0;
 		this.m_screenHeight = 0;
+		
+		m_debugPaint = new Paint();
+		m_debugPaint.setColor(Color.RED);
+		m_debugPaint.setStyle(Paint.Style.STROKE);
+		m_debugPaint.setStrokeWidth(10);
 	}
 	
 	public GObject(float posX, float posY, float speedX, float speedY, int screenWidth, int screenHeight)
@@ -30,12 +40,22 @@ public abstract class GObject
 		this.m_speed = new Vector2D(speedX, speedY);
 		this.m_screenWidth = 0;
 		this.m_screenHeight = 0;
+		
+		m_debugPaint = new Paint();
+		m_debugPaint.setColor(Color.RED);
+		m_debugPaint.setStyle(Paint.Style.STROKE);
+		m_debugPaint.setStrokeWidth(10);
 	}
 	
 	public abstract void draw(Canvas canvas);
 	
 	public abstract void update(long elapsedTime);
 	
+	public Rect getBoundingBox()
+	{
+		return boundingBox;
+	}
+
 	public Vector2D getM_position()
 	{
 		return m_position;

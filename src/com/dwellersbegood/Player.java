@@ -12,7 +12,9 @@ public class Player extends GObject
 	private Resources m_res;
 	private final Paint m_paint;
 	private GAnimation m_runningAnim;
-	private boolean m_jumping;
+	private GAnimation m_jumpingAnim;
+	private boolean m_jumping, m_jumpStarted;
+	private float m_jumpSpeed;
 	
 	public Player()
 	{
@@ -27,11 +29,14 @@ public class Player extends GObject
 		m_res = res;
 		
 		m_jumping = false;
+		m_jumpStarted = false;
+		m_jumpSpeed = -500;
 		
 		m_paint = new Paint();
 		m_paint.setColor(Color.BLACK);
 		
 		this.m_runningAnim = new GAnimation(BitmapFactory.decodeResource(this.m_res, R.drawable.player), 60, 10);
+		this.m_jumpingAnim = new GAnimation(BitmapFactory.decodeResource(this.m_res, R.drawable.player_jump), 10, 5, true);
 		
 		boundingBox.set((int) m_position.getX() + leftWidthOffset, (int) m_position.getY() + topHeightOffset, (int) m_position.getX() + m_runningAnim.getWidth() - rightWidthOffset, (int) m_position.getY() + m_runningAnim.getHeight() - botHeightOffset);
 	}
@@ -39,36 +44,54 @@ public class Player extends GObject
 	@Override
 	public void draw(Canvas canvas)
 	{
-		this.m_runningAnim.draw(canvas, m_position, m_paint);
+		if(!m_jumping)
+			this.m_runningAnim.draw(canvas, m_position, m_paint);
+		else
+			this.m_jumpingAnim.draw(canvas, m_position, m_paint);
+		
+		if(GameView.ENABLED_DEBUG){
+			canvas.drawRect(boundingBox, m_debugPaint);
+		}
 	}
 	
 	@Override
 	public void update(long elapsedTime)
 	{
 		m_position = m_position.add(m_speed.multiply((float) (elapsedTime / GameThread.nano)));
-		this.m_runningAnim.update(elapsedTime);
+		if(m_position.getY() < GameView.PLAYER_MIN_Y)
+			m_speed.setY(m_speed.getY() + GameView.GRAVITY * ((float) (elapsedTime / GameThread.nano)));
 		boundingBox.set((int) m_position.getX() + leftWidthOffset, (int) m_position.getY() + topHeightOffset, (int) m_position.getX() + m_runningAnim.getWidth() - rightWidthOffset, (int) m_position.getY() + m_runningAnim.getHeight() - botHeightOffset);
 		
-		if (this.m_runningAnim.getBmpToDraw() != null)
-		{
-			if (m_position.getY() > GameView.PLAYER_MIN_Y)
-			{
-				m_position.setY(GameView.PLAYER_MIN_Y);
-				m_speed.setY(0);
-				m_jumping = false;
-			}
+		if(m_jumping && !m_jumpingAnim.getDone())
+			this.m_jumpingAnim.update(elapsedTime);
+		else
+			this.m_runningAnim.update(elapsedTime);
+		
+		if(m_jumping && m_jumpingAnim.getCurrentFrame()== 4 && !m_jumpStarted){
+			m_speed.setY(m_jumpSpeed);
+			m_jumpStarted = true;
 		}
 		
-		m_speed.setY(m_speed.getY() + GameView.GRAVITY * ((float) (elapsedTime / GameThread.nano)));
+		if (m_position.getY() > GameView.PLAYER_MIN_Y)
+		{
+			m_position.setY(GameView.PLAYER_MIN_Y);
+			m_speed.setY(0);
+			m_jumping = false;
+			m_jumpStarted = false;
+		}
 	}
 	
-	public void jump()
+	public void jumpStarted()
 	{
 		if (!m_jumping)
 		{
-			m_speed.setY(-300);
 			m_jumping = true;
+			m_jumpingAnim.reset();
 		}
+	}
+	
+	public void jumpReleased(float ratio){
+		//m_jumpSpeed = -600 * ratio;
 	}
 	
 }
