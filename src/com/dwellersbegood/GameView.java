@@ -14,6 +14,9 @@ import android.view.SurfaceView;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 	
+	public static final float GRAVITY = 300;
+	public static final float PLAYER_MIN_Y = 500;
+	
 	private GameActivity m_Activity;
 	private GameThread m_Thread;
 	private int m_ScreenWidth;
@@ -52,8 +55,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 	    
 	    m_map = new Map(this.m_ScreenWidth, this.m_ScreenHeight);
 	    
-	    m_player = new Player(200, 200, 10, 0, m_ScreenWidth, m_ScreenHeight, m_Activity.getResources());
-	    m_ennemy = new BallEnnemy(300, 500, 0, 0, m_ScreenWidth, m_ScreenHeight, m_Activity.getResources());
+	    m_player = new Player(200, PLAYER_MIN_Y, 0, 50, m_ScreenWidth, m_ScreenHeight, m_Activity.getResources());
+	    m_ennemy = new BallEnnemy(800, 500, 0, 0, m_ScreenWidth, m_ScreenHeight, m_Activity.getResources());
 	    
 	    Log.d("GameView", "Starting thread");
 	    this.m_Thread = new GameThread(this, holder);
@@ -108,6 +111,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 		{
 			posX = (int)event.getX();
 			posY = (int)event.getY();
+			
+			m_player.jump();
 		}
 		return super.onTouchEvent(event);
 	}
