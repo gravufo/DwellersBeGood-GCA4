@@ -1,4 +1,4 @@
-package com.example.dwellersbegood;
+package com.dwellersbegood;
 
 import android.content.res.Resources;
 import android.graphics.Canvas;

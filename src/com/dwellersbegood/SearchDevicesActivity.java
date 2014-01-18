@@ -1,6 +1,8 @@
-package com.example.dwellersbegood;
+package com.dwellersbegood;
 
 import java.util.Set;
+
+import com.example.dwellersbegood.R;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -10,8 +12,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;

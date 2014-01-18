@@ -1,4 +1,6 @@
-package com.example.dwellersbegood;
+package com.dwellersbegood;
+
+import com.example.dwellersbegood.R;
 
 import android.app.Activity;
 import android.content.Intent;

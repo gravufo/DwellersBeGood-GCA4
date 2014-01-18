@@ -1,8 +1,8 @@
-package com.example.dwellersbegood.Map;
+package com.dwellersbegood.Map;
 
 import java.util.Vector;
 
-import com.example.dwellersbegood.GObject;
+import com.dwellersbegood.GObject;
 
 import android.graphics.Canvas;
 

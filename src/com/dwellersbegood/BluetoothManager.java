@@ -1,4 +1,4 @@
-package com.example.dwellersbegood;
+package com.dwellersbegood;
 
 import java.io.IOException;
 import java.io.InputStream;

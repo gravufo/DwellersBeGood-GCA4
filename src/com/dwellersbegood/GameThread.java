@@ -1,4 +1,4 @@
-package com.example.dwellersbegood;
+package com.dwellersbegood;
 
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;

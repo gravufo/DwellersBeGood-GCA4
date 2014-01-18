@@ -1,4 +1,4 @@
-package com.example.dwellersbegood;
+package com.dwellersbegood;
 
 import android.content.Context;
 import android.content.res.Resources;

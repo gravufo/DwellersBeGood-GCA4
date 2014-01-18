@@ -1,4 +1,4 @@
-package com.example.dwellersbegood.Map;
+package com.dwellersbegood.Map;
 
 public class MapSegmentGenerator {
 
