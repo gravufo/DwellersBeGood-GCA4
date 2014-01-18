@@ -2,21 +2,23 @@ package com.dwellersbegood;
 
 import java.util.Vector;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 
 public class BitmapManager {
 	
-	private BitmapManager m_instance;
-	public BitmapManager Instance()
+	private static BitmapManager m_instance;
+	public static BitmapManager Instance()
 	{
 		if(m_instance == null)
 			m_instance = new BitmapManager();
 		return m_instance;
 	}
 
-	public BitmapManager()
+	private BitmapManager()
 	{
-		loadBitmaps();
 	}
 	
 	private Vector<Bitmap> m_bitmapCollection = new Vector<Bitmap>();
@@ -27,9 +29,18 @@ public class BitmapManager {
 	public static final int Grass = 3;
 	
 	
-	private boolean loadBitmaps()
+	public void loadBitmaps(Resources res)
 	{
-		return true;
+		m_bitmapCollection.add(BitmapFactory.decodeResource(res, R.drawable.bgtest1));
+	}
+	
+	public Bitmap scaleToSize(Bitmap sprite, int desiredWidth, int desiredHeight){
+		Matrix scale = new Matrix();
+		float scaleWidth = ((float) desiredWidth) / (float)sprite.getWidth();
+		float scaleHeight = ((float) desiredHeight) / (float)sprite.getHeight();
+		
+		scale.postScale(scaleWidth, scaleHeight);
+		return Bitmap.createBitmap(sprite, 0, 0, sprite.getWidth(), sprite.getHeight(), scale, true);
 	}
 	
 	public Bitmap getBitmap(int index)
