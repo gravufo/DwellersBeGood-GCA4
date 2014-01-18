@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Paint.Align;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -24,14 +25,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 	private int m_ScreenWidth;
 	private int m_ScreenHeight;
 	private int posX, posY;
-	private Paint paint;
+	private Paint m_collectibleScorePaint;
+	private int m_collectibleScore;
 	private Resources m_res;
 	private Player m_player;
 	private BallEnnemy m_ennemy;
-	private ArrayList<Projectile> m_projectilesToCreate;
 	private ArrayList<Projectile> m_projectiles;
 	private Map m_map;
-	private double m_gameTime;
+	private GData m_Data;
 
 	public GameView(GameActivity activity, Context context) {
 		super(context);
@@ -41,8 +42,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 		posX = posY = 0;
 		this.m_projectiles = new ArrayList<Projectile>();
 		
-		paint = new Paint();
-		paint.setColor(Color.BLACK);
+		this.m_collectibleScorePaint = new Paint();
+		this.m_collectibleScorePaint.setColor(Color.RED);
+		this.m_collectibleScorePaint.setTextSize(28);
+		this.m_collectibleScorePaint.setTextAlign(Align.LEFT);
+		
+		this.m_collectibleScore = 0;
+		
+		m_Data = m_Activity.getData();
+		if(m_Data != null)
+			m_collectibleScore = m_Data.getDolla();
 		
 	}
 
@@ -101,6 +110,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 					projectile.draw(canvas);
 				}
 			}
+			
+			canvas.drawText(this.m_collectibleScore+"", 100, 40, this.m_collectibleScorePaint);
 		}
 	}
 	 
@@ -129,8 +140,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 			posY = (int)event.getY();
 			
 			// If the touch is on first half of screen, jump
-			if(posX < m_ScreenWidth/2)
+			if(posX < m_ScreenWidth/2){
 				m_player.jump();
+			}
 			
 			// If its on other side of screen, throw something
 			else
@@ -140,6 +152,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 	}
 	
 	public void throwSomething(int posX, int posY){
+		
+		// should this statement be in a synchronized too ? (it is drawn in diff thread)
+		m_collectibleScore++;
+		m_Data.setDolla(m_collectibleScore);
+		m_Activity.setData(m_Data);
+		
 		synchronized(this.m_projectiles){
 			Vector2D target = new Vector2D(posX, posY);
 			Vector2D direction = target.substract(m_player.getM_position());
