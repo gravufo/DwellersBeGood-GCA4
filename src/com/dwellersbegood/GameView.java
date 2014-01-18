@@ -28,6 +28,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 	private Resources m_res;
 	private Player m_player;
 	private BallEnnemy m_ennemy;
+	private ArrayList<Projectile> m_projectilesToCreate;
 	private ArrayList<Projectile> m_projectiles;
 	private Map m_map;
 	private double m_gameTime;
@@ -38,6 +39,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 		getHolder().addCallback(this);
 		setFocusable(true);
 		posX = posY = 0;
+		this.m_projectiles = new ArrayList<Projectile>();
 		
 		paint = new Paint();
 		paint.setColor(Color.BLACK);
@@ -94,6 +96,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 			
 			m_player.draw(canvas);
 			m_ennemy.draw(canvas);
+			
+			synchronized(this.m_projectiles){
+				for(Projectile projectile : this.m_projectiles){
+					projectile.draw(canvas);
+				}
+			}
 		}
 	}
 	 
@@ -103,6 +111,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 		m_map.update(ellapsedTime);
 		m_player.update(ellapsedTime);
 		m_ennemy.update(ellapsedTime);
+		
+		synchronized(this.m_projectiles){
+			for(Projectile projectile : this.m_projectiles){
+				projectile.update(ellapsedTime);
+			}
+		}
 	}
 	 
 	
@@ -127,9 +141,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 	}
 	
 	public void throwSomething(int posX, int posY){
-		Vector2D target = new Vector2D(posX, posY);
-		Vector2D direction = target.substract(m_player.getPosition());
-		m_projectiles.add(new Projectile());
+		synchronized(this.m_projectiles){
+			Vector2D target = new Vector2D(posX, posY);
+			Vector2D direction = target.substract(m_player.getPosition());
+			direction.normalize();
+			direction = direction.multiply(2000);
+			m_projectiles.add(new Projectile(m_player.getPosition().getX(), m_player.getPosition().getY(), direction.getX(), direction.getY(), m_ScreenWidth, m_ScreenHeight, m_res));
+		}
 	}
 	
 }

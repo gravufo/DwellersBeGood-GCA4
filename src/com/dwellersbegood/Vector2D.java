@@ -53,8 +53,9 @@ public class Vector2D
 	}
 	
 	public void normalize(){
-		x = x / norm();
-		y = y / norm();
+		float normValue = norm();
+		x = x / normValue;
+		y = y / normValue;
 	}
 
 }

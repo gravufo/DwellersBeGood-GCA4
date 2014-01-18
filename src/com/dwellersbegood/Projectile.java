@@ -31,8 +31,9 @@ public class Projectile extends GObject{
 
 	@Override
 	public void update(long ellapsedTime) {
-		// TODO Auto-generated method stub
+		m_position = m_position.add(m_speed.multiply((float)(ellapsedTime/GameThread.nano)));
 		
+		m_speed.setY(m_speed.getY() + GameView.GRAVITY * ((float)(ellapsedTime/GameThread.nano)));
 	}
 
 }
