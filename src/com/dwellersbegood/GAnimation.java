@@ -39,7 +39,7 @@ public class GAnimation {
 		
 		m_frameTicker += ellapsedTime;
 		
-		if (m_frameTicker > this.m_framePeriod) {
+		if (m_frameTicker >= this.m_framePeriod) {
 			this.m_frameTicker = 0;
 			 // increment the frame
 			this.m_currentFrame++;
@@ -59,6 +59,10 @@ public class GAnimation {
 			canvas.drawBitmap(this.m_bmpToDraw, _Position.getX(), _Position.getY(), _paint);
 		}
 	}
+	
+	public Bitmap getBmpToDraw(){
+		return m_bmpToDraw;
+	}
 
 	public int getWidth() {
 		return this.m_sourceBitmap.getWidth()/this.m_frameCount;
@@ -76,5 +80,9 @@ public class GAnimation {
 	public void setFramePeriod(double fps)
 	{
 		this.m_framePeriod = (long) (GameThread.nano / fps);
+	}
+	
+	public long getFramePeriod(){
+		return this.m_framePeriod;
 	}
 }

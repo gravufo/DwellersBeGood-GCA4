@@ -1,6 +1,6 @@
 package com.dwellersbegood;
 
-import com.dwellersbegood.Map.Map;
+import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -12,7 +12,12 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.dwellersbegood.Map.Map;
+
 public class GameView extends SurfaceView implements SurfaceHolder.Callback{
+	
+	public static final float GRAVITY = 300;
+	public static final float PLAYER_MIN_Y = 500;
 	
 	private GameActivity m_Activity;
 	private GameThread m_Thread;
@@ -23,6 +28,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 	private Resources m_res;
 	private Player m_player;
 	private BallEnnemy m_ennemy;
+	private ArrayList<Projectile> m_projectiles;
 	private Map m_map;
 	private double m_gameTime;
 
@@ -51,9 +57,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 	    //Create map
 	    
 	    m_map = new Map(this.m_ScreenWidth, this.m_ScreenHeight);
-	    
-	    m_player = new Player(200, 200, 0, 0, m_ScreenWidth, m_ScreenHeight, m_Activity.getResources());
-	    m_ennemy = new BallEnnemy(600, 200, 0, 0, m_ScreenWidth, m_ScreenHeight, m_Activity.getResources());
+	    m_player = new Player(200, PLAYER_MIN_Y, 0, 50, m_ScreenWidth, m_ScreenHeight, m_Activity.getResources());
+	    m_ennemy = new BallEnnemy(800, 500, 0, 0, m_ScreenWidth, m_ScreenHeight, m_Activity.getResources());
 	    
 	    Log.d("GameView", "Starting thread");
 	    this.m_Thread = new GameThread(this, holder);
@@ -84,7 +89,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 			// Dessinage de la scene
 			
 			canvas.drawColor(Color.WHITE);
-			
 			m_map.draw(canvas);
 			
 			m_player.draw(canvas);
@@ -109,8 +113,22 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 		{
 			posX = (int)event.getX();
 			posY = (int)event.getY();
+			
+			// If the touch is on first half of screen, jump
+			if(posX < m_ScreenWidth/2)
+				m_player.jump();
+			
+			// If its on other side of screen, throw something
+			else
+				throwSomething(posX, posY);
 		}
 		return super.onTouchEvent(event);
+	}
+	
+	public void throwSomething(int posX, int posY){
+		Vector2D target = new Vector2D(posX, posY);
+		Vector2D direction = target.substract(m_player.getPosition());
+		m_projectiles.add(new Projectile());
 	}
 	
 }

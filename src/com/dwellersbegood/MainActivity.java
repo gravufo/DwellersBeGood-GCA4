@@ -30,8 +30,9 @@ public class MainActivity extends Activity {
 		this.m_Player = MediaPlayer.create(this, R.raw.radiomartini);
 		this.m_Player.setLooping(true);
 		
-		Intent intent = new Intent(this, IntroActivity.class);
-        this.startActivityForResult(intent, 1);
+		/*Intent intent = new Intent(this, IntroActivity.class);
+        this.startActivityForResult(intent, 1);*/
+		BitmapManager.Instance().loadBitmaps(this.getResources());
 	}
 	
 	@Override

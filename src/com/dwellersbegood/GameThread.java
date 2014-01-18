@@ -6,7 +6,7 @@ import android.view.SurfaceHolder;
 
 public class GameThread extends Thread
 {
-	public static final int nano = 1000000000;
+	public static final double nano = 1000000000.0;
 	private boolean m_run = false;
 	private long m_ElaspedThreadTime;
 	private long m_NewTime;
@@ -34,11 +34,11 @@ public class GameThread extends Thread
 			try
 			{
 				this.m_NewTime = System.nanoTime();
-				this.m_ElaspedThreadTime = this.m_NewTime - this.m_OldTime;
+        		this.m_ElaspedThreadTime = this.m_NewTime - this.m_OldTime;
 				
 				c = this.m_surfaceHolder.lockCanvas(null);
 				// if ((this.m_ElaspedThreadTime/1000000000.0) >= 1/60)
-				if ((this.m_ElaspedThreadTime) >= nano / 60)
+				if ((this.m_ElaspedThreadTime/nano) >= 1 / 60)
 				{
 					
 					synchronized (this.m_surfaceHolder)
