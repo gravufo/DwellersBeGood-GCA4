@@ -19,6 +19,7 @@ public class IntroActivity extends Activity{
 		this.m_Res = this.getResources();
 	
 		this.m_IntroView = new IntroView(this, this, this.m_Res);
+		BitmapManager.Instance().loadBitmaps(this.m_Res);
 	}
 	
 	
