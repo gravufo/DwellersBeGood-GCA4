@@ -18,7 +18,8 @@
         android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
         <activity
             android:name="com.example.dwellersbegood.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,6 +29,7 @@
         <activity
             android:name="com.example.dwellersbegood.MultiplayerConnectionActivity"
             android:label="@string/title_activity_multiplayer_connection"
+            android:screenOrientation="landscape"
             android:parentActivityName="com.example.dwellersbegood.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -37,7 +39,7 @@
             android:name="com.example.dwellersbegood.SearchDevicesActivity"
             android:label="@string/title_activity_search_devices"
             android:parentActivityName="com.example.dwellersbegood.MainActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Dialog" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -46,6 +48,7 @@
         <activity
             android:name="com.example.dwellersbegood.SettingsActivity"
             android:label="@string/title_activity_settings"
+            android:screenOrientation="landscape"
             android:parentActivityName="com.example.dwellersbegood.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -54,6 +57,7 @@
         <activity
             android:name="com.example.dwellersbegood.GameActivity"
             android:label="@string/title_activity_game"
+            android:screenOrientation="landscape"
             android:parentActivityName="com.example.dwellersbegood.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

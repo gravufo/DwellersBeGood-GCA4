@@ -4,11 +4,11 @@ import android.graphics.Canvas;
 import android.graphics.PointF;
 
 
-public class GObject {
-	private PointF m_position;
-	private PointF m_speed;
-	private int m_screenWidth;
-	private int m_screenHeight;
+public abstract class GObject {
+	protected PointF m_position;
+	protected PointF m_speed;
+	protected int m_screenWidth;
+	protected int m_screenHeight;
 	
 	public GObject(){
 		this.m_position = null;
@@ -18,12 +18,12 @@ public class GObject {
 	}
 	
 	public GObject(float posX, float posY, float speedX, float speedY, int screenWidth, int screenHeight){
-		this.m_position = null;
-		this.m_speed = null;
+		this.m_position = new PointF(posX, posY);
+		this.m_speed = new PointF(speedX, speedY);
 		this.m_screenWidth = 0;
 		this.m_screenHeight = 0;
 	}
 	
-	public void draw(Canvas canvas){}
-	public void update(long ellapsedTime){}
+	public abstract void draw(Canvas canvas);
+	public abstract void update(long ellapsedTime);
 }

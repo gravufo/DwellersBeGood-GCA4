@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
@@ -19,11 +20,13 @@ public class MultiplayerConnectionActivity extends Activity {
 	private static final int REQUEST_JOIN = 2;
 	
 	private BluetoothAdapter m_bluetoothAdapter = null;
+	private MediaPlayer m_Player;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_multiplayer_connection);
+		
 		TextView myTextView=(TextView)findViewById(R.id.textMultiplayerTitle);
 		Typeface typeFace=Typeface.createFromAsset(getAssets(),"fonts/Typo Oxin free promo.ttf");
 		myTextView.setTypeface(typeFace);

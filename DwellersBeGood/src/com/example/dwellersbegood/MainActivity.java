@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
 		// Activate background music
 		this.m_Player = MediaPlayer.create(this, R.raw.radiomartini);
 		this.m_Player.setLooping(true);
-		this.m_Player.start();
+		//this.m_Player.start();
 	}
 	
 	/** Called when the user clicks the Singleplayer button */
@@ -58,14 +58,14 @@ public class MainActivity extends Activity {
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		this.m_Player.pause();
+		//this.m_Player.pause();
 	}
 
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		this.m_Player.start();
+		//this.m_Player.start();
 	}
 
 
