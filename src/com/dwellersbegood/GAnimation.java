@@ -17,8 +17,15 @@ public class GAnimation
 	private Matrix m_mtxEffect;
 	private Bitmap m_bmpToDraw;
 	private ArrayList<Bitmap> m_bitmapArray;
+	private boolean m_animateOnce;
+	private boolean m_done;
 	
 	public GAnimation(Bitmap bitmap, double fps, int frameCount)
+	{
+		this(bitmap, fps, frameCount, false);
+	}
+	
+	public GAnimation(Bitmap bitmap, double fps, int frameCount, boolean animateOnce)
 	{
 		this.m_sourceBitmap = bitmap;
 		this.m_mtxEffect = new Matrix();
@@ -27,6 +34,9 @@ public class GAnimation
 		this.m_frameTicker = 0;
 		this.m_framePeriod = (long) (GameThread.nano / fps);
 		this.m_bitmapArray = new ArrayList<Bitmap>();
+		this.m_animateOnce = animateOnce;
+		this.m_done = false;
+		
 		
 		for (int i = 0; i < frameCount; i++)
 		{
@@ -40,14 +50,19 @@ public class GAnimation
 		
 		m_frameTicker += elapsedTime;
 		
-		if (m_frameTicker > this.m_framePeriod)
+		if (m_frameTicker > this.m_framePeriod && !m_done)
 		{
 			this.m_frameTicker = 0;
 			// increment the frame
 			this.m_currentFrame++;
 			if (this.m_currentFrame >= this.m_frameCount)
 			{
-				this.m_currentFrame = 0;
+				if(this.m_animateOnce){
+					this.m_done = true;
+					this.m_currentFrame = this.m_frameCount - 1;
+				}
+				else
+					this.m_currentFrame = 0;
 			}
 			this.m_bmpToDraw = m_bitmapArray.get(m_currentFrame);
 		}
@@ -89,5 +104,10 @@ public class GAnimation
 	public long getFramePeriod()
 	{
 		return this.m_framePeriod;
+	}
+	
+	public boolean getDone()
+	{
+		return this.m_done;
 	}
 }

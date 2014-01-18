@@ -41,6 +41,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	{
 		super(context);
 		m_Activity = activity;
+		m_res = m_Activity.getResources();
 		getHolder().addCallback(this);
 		setFocusable(true);
 		this.m_projectiles = new ArrayList<Projectile>();
@@ -75,8 +76,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		// Create map
 		
 		m_map = new Map(this.m_ScreenWidth, this.m_ScreenHeight);
-		m_player = new Player(200, PLAYER_MIN_Y, 0, 50, m_ScreenWidth, m_ScreenHeight, m_Activity.getResources());
-		m_enemy = new BallEnemy(800, 500, 0, 0, m_ScreenWidth, m_ScreenHeight, m_Activity.getResources());
+		m_player = new Player(200, PLAYER_MIN_Y, 0, 50, m_ScreenWidth, m_ScreenHeight, m_res);
+		m_enemy = new BallEnemy(800, 500, 0, 0, m_ScreenWidth, m_ScreenHeight, m_res);
 		
 		Log.d("GameView", "Starting thread");
 		this.m_Thread = new GameThread(this, holder);
@@ -116,7 +117,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			m_map.draw(canvas);
 			
 			m_player.draw(canvas);
-			m_enemy.draw(canvas);
+			//m_enemy.draw(canvas);
 			
 			synchronized (this.m_projectiles)
 			{
@@ -188,7 +189,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			Vector2D target = new Vector2D(posX, posY);
 			Vector2D direction = target.substract(m_player.getM_position());
 			direction.normalize();
-			direction = direction.multiply(2000);
+			direction = direction.multiply(1000);
 			m_projectiles.add(new Projectile(m_player.getM_position().getX(), m_player.getM_position().getY(), direction.getX(), direction.getY(), m_ScreenWidth, m_ScreenHeight, m_res));
 		}
 	}
