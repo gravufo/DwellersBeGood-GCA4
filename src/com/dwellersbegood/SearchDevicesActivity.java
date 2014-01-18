@@ -2,7 +2,7 @@ package com.dwellersbegood;
 
 import java.util.Set;
 
-import com.example.dwellersbegood.R;
+import com.dwellersbegood.R;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;

@@ -1,12 +1,10 @@
 package com.dwellersbegood;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.PointF;
 
 
 public abstract class GObject {
-	protected PointF m_position;
-	protected PointF m_speed;
+	protected Vector2D m_position;
+	protected Vector2D m_speed;
 	protected int m_screenWidth;
 	protected int m_screenHeight;
 	
@@ -18,8 +16,8 @@ public abstract class GObject {
 	}
 	
 	public GObject(float posX, float posY, float speedX, float speedY, int screenWidth, int screenHeight){
-		this.m_position = new PointF(posX, posY);
-		this.m_speed = new PointF(speedX, speedY);
+		this.m_position = new Vector2D(posX, posY);
+		this.m_speed = new Vector2D(speedX, speedY);
 		this.m_screenWidth = 0;
 		this.m_screenHeight = 0;
 	}

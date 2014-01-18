@@ -1,5 +1,6 @@
 package com.dwellersbegood;
 
+import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
@@ -20,24 +21,26 @@ public class GameThread extends Thread{
     	this.m_surfaceHolder = surfaceHolder;
     }
     
-    @Override
+    @SuppressLint("WrongCall")
+	@Override
     public void run() {
         Canvas c;
         while (this.m_run) {
             c = null;
             try 
             {
-	           	this.m_NewTime = System.nanoTime();
-	           	this.m_ElaspedThreadTime += this.m_NewTime - this.m_OldTime;
+	           	this.m_NewTime = System.currentTimeMillis();
+	           	this.m_ElaspedThreadTime = this.m_NewTime - this.m_OldTime;
 
 	            c = this.m_surfaceHolder.lockCanvas(null);
-	            if ((this.m_ElaspedThreadTime/1000000000.0) >= 1/60)
+	            //if ((this.m_ElaspedThreadTime/1000000000.0) >= 1/60)
+	            if ((this.m_ElaspedThreadTime) >= 1000/60)
 	            {
 	                	
 	            	synchronized (this.m_surfaceHolder) {
 	                		
 	                	// On dessine et on update notre panel
-	                	this.m_gameView.Update();
+	                	this.m_gameView.update(m_ElaspedThreadTime);
 	                	this.m_gameView.onDraw(c);
 	                }
 	            }

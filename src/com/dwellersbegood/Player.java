@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.graphics.RectF;
 
 public class Player extends GObject{
@@ -27,13 +28,12 @@ public class Player extends GObject{
 	
 	@Override
 	public void draw(Canvas canvas){
-		canvas.drawRect(new RectF(m_position.x - 25,m_position.y - 50, m_position.x + 25, m_position.x + 50), m_paint);
+		canvas.drawRect(new RectF(m_position.x - 25,m_position.y - 50, m_position.x + 25, m_position.y + 50), m_paint);
 	}
 
 	@Override
 	public void update(long ellapsedTime) {
-		// TODO Auto-generated method stub
-		
+		m_position = m_position.add(m_speed.multiply(((float)ellapsedTime)/1000));
 	}
 
 }

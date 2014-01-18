@@ -20,6 +20,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 	private Paint paint;
 	private Resources m_res;
 	private Player m_player;
+	private BallEnnemy m_ennemy;
 
 	public GameView(GameActivity activity, Context context) {
 		super(context);
@@ -31,7 +32,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 		paint = new Paint();
 		paint.setColor(Color.BLACK);
 		
-		m_player = new Player(200, 200, 0, 0, m_ScreenWidth, m_ScreenHeight, m_Activity.getResources());
 	}
 
 	@Override
@@ -44,7 +44,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 		this.m_ScreenWidth = this.getWidth();
 	    this.m_ScreenHeight = this.getHeight();
 	    
-	    m_player = new Player(200, 200, 0, 0, m_ScreenWidth, m_ScreenHeight, m_Activity.getResources());
+	    m_player = new Player(200, 200, 10, 0, m_ScreenWidth, m_ScreenHeight, m_Activity.getResources());
+	    m_ennemy = new BallEnnemy(200, 200, 0, 0, m_ScreenWidth, m_ScreenHeight, m_Activity.getResources());
 	    
 	    Log.d("GameView", "Starting thread");
 	    this.m_Thread = new GameThread(this, holder);
@@ -71,26 +72,28 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 	public void onDraw(Canvas canvas) {
 		if (canvas != null)
 		{
-			Log.d("GameView", "Drawing");
+			//Log.d("GameView", "Drawing");
 			// Dessinage de la scene
 			
 			canvas.drawColor(Color.WHITE);
 			
 			m_player.draw(canvas);
+			m_ennemy.draw(canvas);
 		}
 	}
 	 
-	public void Update()
+	public void update(long ellapsedTime)
 	{
 		// On update la partie si celle-ci n'est pas terminé
-
+		m_player.update(ellapsedTime);
+		m_ennemy.update(ellapsedTime);
 	}
 	 
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) 
 	{
-		Log.d("GameView", "OnTouchEvent at " + (int)event.getX() + ", " + (int)event.getY());
+		//Log.d("GameView", "OnTouchEvent at " + (int)event.getX() + ", " + (int)event.getY());
 		if (event.getAction() == MotionEvent.ACTION_DOWN) 
 		{
 			posX = (int)event.getX();

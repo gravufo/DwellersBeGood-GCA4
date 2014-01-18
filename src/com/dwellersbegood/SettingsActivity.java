@@ -1,6 +1,6 @@
 package com.dwellersbegood;
 
-import com.example.dwellersbegood.R;
+import com.dwellersbegood.R;
 
 import android.app.Activity;
 import android.os.Bundle;
