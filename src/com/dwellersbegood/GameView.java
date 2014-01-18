@@ -1,5 +1,7 @@
 package com.dwellersbegood;
 
+import com.dwellersbegood.Map.Map;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -21,6 +23,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 	private Resources m_res;
 	private Player m_player;
 	private BallEnnemy m_ennemy;
+	private Map m_map;
+	private double m_gameTime;
 
 	public GameView(GameActivity activity, Context context) {
 		super(context);
@@ -43,6 +47,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 	public void surfaceCreated(SurfaceHolder holder) {
 		this.m_ScreenWidth = this.getWidth();
 	    this.m_ScreenHeight = this.getHeight();
+	    
+	    //Create map
+	    
+	    m_map = new Map(this.m_ScreenWidth, this.m_ScreenHeight);
 	    
 	    m_player = new Player(200, 200, 10, 0, m_ScreenWidth, m_ScreenHeight, m_Activity.getResources());
 	    m_ennemy = new BallEnnemy(200, 200, 0, 0, m_ScreenWidth, m_ScreenHeight, m_Activity.getResources());
@@ -77,6 +85,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 			
 			canvas.drawColor(Color.WHITE);
 			
+			m_map.draw(canvas);
+			
 			m_player.draw(canvas);
 			m_ennemy.draw(canvas);
 		}
@@ -85,6 +95,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 	public void update(long ellapsedTime)
 	{
 		// On update la partie si celle-ci n'est pas terminé
+		m_map.update(ellapsedTime);
 		m_player.update(ellapsedTime);
 		m_ennemy.update(ellapsedTime);
 	}
@@ -101,5 +112,5 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 		}
 		return super.onTouchEvent(event);
 	}
-
+	
 }
