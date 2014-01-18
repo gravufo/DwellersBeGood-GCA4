@@ -1,7 +1,6 @@
 package com.dwellersbegood;
 
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -31,7 +30,7 @@ public class Projectile extends GObject
 		this.m_shootAnim = new GAnimation(BitmapFactory.decodeResource(this.m_res, R.drawable.laser_shoot), 6, 3, true);
 		this.m_floatAnim = new GAnimation(BitmapFactory.decodeResource(this.m_res, R.drawable.laser_float), 30, 4);
 		
-		boundingBox.set(0 + leftWidthOffset, 0 + topHeightOffset, 30 - rightWidthOffset, 30 - botHeightOffset);
+		boundingBox.set((int) m_position.getX() + leftWidthOffset, (int) m_position.getY() + topHeightOffset, (int) m_position.getX() + m_shootAnim.getWidth() - rightWidthOffset, (int) m_position.getY() + m_shootAnim.getHeight() - botHeightOffset);
 	}
 	
 	@Override
@@ -39,9 +38,9 @@ public class Projectile extends GObject
 	{
 		if (canvas != null)
 		{
-			//canvas.drawCircle(m_position.getX(), m_position.getY(), 30, m_paint);
+			// canvas.drawCircle(m_position.getX(), m_position.getY(), 30, m_paint);
 			
-			if(!this.m_shootAnim.getDone())
+			if (!this.m_shootAnim.getDone())
 				this.m_shootAnim.draw(canvas, m_position, m_paint);
 			else
 				this.m_floatAnim.draw(canvas, m_position, m_paint);
@@ -53,7 +52,9 @@ public class Projectile extends GObject
 	{
 		m_position = m_position.add(m_speed.multiply((float) (elapsedTime / GameThread.nano)));
 		
-		if(!this.m_shootAnim.getDone())
+		boundingBox.set((int) m_position.getX() + leftWidthOffset, (int) m_position.getY() + topHeightOffset, (int) m_position.getX() + m_shootAnim.getWidth() - rightWidthOffset, (int) m_position.getY() + m_shootAnim.getHeight() - botHeightOffset);
+		
+		if (!this.m_shootAnim.getDone())
 			this.m_shootAnim.update(elapsedTime);
 		else
 			this.m_floatAnim.update(elapsedTime);

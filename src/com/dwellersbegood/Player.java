@@ -33,7 +33,7 @@ public class Player extends GObject
 		
 		this.m_runningAnim = new GAnimation(BitmapFactory.decodeResource(this.m_res, R.drawable.player), 60, 10);
 		
-		boundingBox.set(0 + leftWidthOffset, 0 + topHeightOffset, m_runningAnim.getWidth() - rightWidthOffset, m_runningAnim.getHeight() - botHeightOffset);
+		boundingBox.set((int) m_position.getX() + leftWidthOffset, (int) m_position.getY() + topHeightOffset, (int) m_position.getX() + m_runningAnim.getWidth() - rightWidthOffset, (int) m_position.getY() + m_runningAnim.getHeight() - botHeightOffset);
 	}
 	
 	@Override
@@ -43,10 +43,12 @@ public class Player extends GObject
 	}
 	
 	@Override
-	public void update(long ellapsedTime)
+	public void update(long elapsedTime)
 	{
-		m_position = m_position.add(m_speed.multiply((float) (ellapsedTime / GameThread.nano)));
-		this.m_runningAnim.update(ellapsedTime);
+		m_position = m_position.add(m_speed.multiply((float) (elapsedTime / GameThread.nano)));
+		this.m_runningAnim.update(elapsedTime);
+		boundingBox.set((int) m_position.getX() + leftWidthOffset, (int) m_position.getY() + topHeightOffset, (int) m_position.getX() + m_runningAnim.getWidth() - rightWidthOffset, (int) m_position.getY() + m_runningAnim.getHeight() - botHeightOffset);
+		
 		if (this.m_runningAnim.getBmpToDraw() != null)
 		{
 			if (m_position.getY() > GameView.PLAYER_MIN_Y)
@@ -57,7 +59,7 @@ public class Player extends GObject
 			}
 		}
 		
-		m_speed.setY(m_speed.getY() + GameView.GRAVITY * ((float) (ellapsedTime / GameThread.nano)));
+		m_speed.setY(m_speed.getY() + GameView.GRAVITY * ((float) (elapsedTime / GameThread.nano)));
 	}
 	
 	public void jump()
