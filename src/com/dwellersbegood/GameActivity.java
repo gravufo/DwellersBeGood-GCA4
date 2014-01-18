@@ -4,21 +4,22 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-import android.media.MediaPlayer;
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 
-public class GameActivity extends Activity {
+
+
+public class GameActivity extends Activity
+{
 	
 	private GameView m_gameView;
 	private GData m_Data;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		
 		Bundle extras = getIntent().getExtras(); 
@@ -41,6 +42,22 @@ public class GameActivity extends Activity {
 	@Override
 	// Save data in the device
 	protected void onStop() {
+		try{
+			FileOutputStream fos = this.openFileOutput("Data", Context.MODE_PRIVATE);
+			ObjectOutputStream os = new ObjectOutputStream(fos);
+			os.writeObject(this.m_Data);
+			os.close();
+		}
+		catch(IOException ioe) 
+		{ 
+		      Log.e("serializeObject", "error", ioe); 
+		}
+		super.onStop();
+	}
+	
+	@Override
+	// Save data in the device
+	protected void onPause() {
 		try{
 			FileOutputStream fos = this.openFileOutput("Data", Context.MODE_PRIVATE);
 			ObjectOutputStream os = new ObjectOutputStream(fos);

@@ -2,8 +2,6 @@ package com.dwellersbegood;
 
 import java.util.Set;
 
-import com.dwellersbegood.R;
-
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -22,16 +20,18 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class SearchDevicesActivity extends Activity {
+public class SearchDevicesActivity extends Activity
+{
 	
 	public static final String EXTRA_DEVICE_ADDRESS = "device_address";
 	
 	private BluetoothAdapter m_bluetoothAdapter;
 	private ArrayAdapter<String> m_pairedDevicesArray;
 	private ArrayAdapter<String> m_availableDevicesArray;
-
+	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -41,12 +41,14 @@ public class SearchDevicesActivity extends Activity {
 		setResult(Activity.RESULT_CANCELED);
 		
 		Button searchButton = (Button) findViewById(R.id.search_devices_search_button);
-		searchButton.setOnClickListener(new OnClickListener(){
-
+		searchButton.setOnClickListener(new OnClickListener()
+		{
+			
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View arg0)
+			{
 				// TODO Auto-generated method stub
-				//We should now start a discovery
+				// We should now start a discovery
 				arg0.setVisibility(View.GONE);
 				doDiscovery();
 			}
@@ -76,54 +78,63 @@ public class SearchDevicesActivity extends Activity {
 		
 		Set<BluetoothDevice> pairedDevices = m_bluetoothAdapter.getBondedDevices();
 		
-		if(pairedDevices.size() > 0){
+		if (pairedDevices.size() > 0)
+		{
 			findViewById(R.id.search_devices_title).setVisibility(View.VISIBLE);
-			for(BluetoothDevice device : pairedDevices){
+			for (BluetoothDevice device : pairedDevices)
+			{
 				m_pairedDevicesArray.add(device.getName() + "\n" + device.getAddress());
 			}
 		}
-		else{
+		else
+		{
 			String noDevices = "No paired devices found";
 			m_pairedDevicesArray.add(noDevices);
 		}
 	}
 	
 	@Override
-	protected void onDestroy(){
+	protected void onDestroy()
+	{
 		super.onDestroy();
 		
 		// Stop discovery
-		if(m_bluetoothAdapter != null){
+		if (m_bluetoothAdapter != null)
+		{
 			m_bluetoothAdapter.cancelDiscovery();
 		}
 		
 		this.unregisterReceiver(m_broadcastReceiver);
 	}
 	
-	private void doDiscovery(){
+	private void doDiscovery()
+	{
 		setProgressBarIndeterminateVisibility(true);
 		setTitle("Searching for devices...");
 		
 		findViewById(R.id.search_devices_available_text).setVisibility(View.VISIBLE);
 		
 		// if already discovering, clear it to restart
-		if(m_bluetoothAdapter.isDiscovering()){
+		if (m_bluetoothAdapter.isDiscovering())
+		{
 			m_bluetoothAdapter.cancelDiscovery();
 		}
 		
 		m_bluetoothAdapter.startDiscovery();
 	}
 	
-	private OnItemClickListener m_deviceClickListener = new OnItemClickListener(){
-		public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3){
-			//Cancel discovery because an item has already been click (discovery is costly)
+	private OnItemClickListener m_deviceClickListener = new OnItemClickListener()
+	{
+		public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3)
+		{
+			// Cancel discovery because an item has already been click (discovery is costly)
 			m_bluetoothAdapter.cancelDiscovery();
 			
-			//Get the device MAC address which is the last 17 chars in the view
+			// Get the device MAC address which is the last 17 chars in the view
 			String info = ((TextView) v).getText().toString();
 			String address = info.substring(info.length() - 17);
 			
-			//Create the result intent and include the MAC address
+			// Create the result intent and include the MAC address
 			Intent intent = new Intent();
 			intent.putExtra(EXTRA_DEVICE_ADDRESS, address);
 			
@@ -132,23 +143,29 @@ public class SearchDevicesActivity extends Activity {
 		}
 	};
 	
-	private final BroadcastReceiver m_broadcastReceiver = new BroadcastReceiver(){
+	private final BroadcastReceiver m_broadcastReceiver = new BroadcastReceiver()
+	{
 		@Override
-		public void onReceive(Context context, Intent intent){
+		public void onReceive(Context context, Intent intent)
+		{
 			String action = intent.getAction();
 			
 			// if device is found
-			if(BluetoothDevice.ACTION_FOUND.equals(action)){
+			if (BluetoothDevice.ACTION_FOUND.equals(action))
+			{
 				BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-				if(device.getBondState() != BluetoothDevice.BOND_BONDED){
+				if (device.getBondState() != BluetoothDevice.BOND_BONDED)
+				{
 					m_availableDevicesArray.add(device.getName() + "\n" + device.getAddress());
 				}
 			}
 			// if discovery finished
-			else if(BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)){
+			else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action))
+			{
 				setProgressBarIndeterminateVisibility(false);
 				setTitle("Select a device");
-				if(m_availableDevicesArray.getCount() == 0){
+				if (m_availableDevicesArray.getCount() == 0)
+				{
 					String noDevices = "No devices found";
 					m_availableDevicesArray.add(noDevices);
 				}
@@ -156,6 +173,4 @@ public class SearchDevicesActivity extends Activity {
 		}
 	};
 	
-	
-
 }
