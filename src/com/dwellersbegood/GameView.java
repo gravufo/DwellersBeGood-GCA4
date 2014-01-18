@@ -53,7 +53,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 	    m_map = new Map(this.m_ScreenWidth, this.m_ScreenHeight);
 	    
 	    m_player = new Player(200, 200, 10, 0, m_ScreenWidth, m_ScreenHeight, m_Activity.getResources());
-	    m_ennemy = new BallEnnemy(200, 200, 0, 0, m_ScreenWidth, m_ScreenHeight, m_Activity.getResources());
+	    m_ennemy = new BallEnnemy(300, 500, 0, 0, m_ScreenWidth, m_ScreenHeight, m_Activity.getResources());
 	    
 	    Log.d("GameView", "Starting thread");
 	    this.m_Thread = new GameThread(this, holder);
@@ -84,7 +84,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 			// Dessinage de la scene
 			
 			canvas.drawColor(Color.WHITE);
-			
 			m_map.draw(canvas);
 			
 			m_player.draw(canvas);

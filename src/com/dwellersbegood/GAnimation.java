@@ -23,7 +23,7 @@ public class GAnimation {
 		this.m_frameCount = frameCount;
 		this.m_currentFrame = 0;
 		this.m_frameTicker = 0;
-		this.m_framePeriod = (long) (1000 / fps);
+		this.m_framePeriod = (long) (GameThread.nano / fps);
 	}
 	
 	public void update(long ellapsedTime) 
@@ -31,7 +31,7 @@ public class GAnimation {
 		
 		m_frameTicker += ellapsedTime;
 		
-		if (m_frameTicker > this.m_framePeriod) {
+		if (m_frameTicker >= this.m_framePeriod) {
 			this.m_frameTicker = 0;
 			 // increment the frame
 			this.m_currentFrame++;
@@ -67,6 +67,6 @@ public class GAnimation {
 	
 	public void setFramePeriod(double fps)
 	{
-		this.m_framePeriod = (long) (1000 / fps);
+		this.m_framePeriod = (long) (GameThread.nano / fps);
 	}
 }

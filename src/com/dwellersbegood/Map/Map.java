@@ -20,7 +20,7 @@ public class Map extends GObject {
 	
 	public Map(int screenWidth, int screenHeight){
 		bgPos = 0;
-		bgSpeed = -200;
+		bgSpeed = -400;
 		m_background = BitmapManager.Instance().scaleToSize(BitmapManager.Instance().getBitmap(BitmapManager.Background), screenWidth, screenHeight);
 	}
 	

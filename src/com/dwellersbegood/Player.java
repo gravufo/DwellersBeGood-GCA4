@@ -1,6 +1,7 @@
 package com.dwellersbegood;
 
 import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -11,6 +12,7 @@ public class Player extends GObject{
 	
 	private Resources m_res;
 	private Paint m_paint;
+	private GAnimation m_runningAnim;
 	
 	public Player(){
 		super();
@@ -24,16 +26,19 @@ public class Player extends GObject{
 		
 		m_paint = new Paint();
 		m_paint.setColor(Color.BLACK);
+		
+		this.m_runningAnim = new GAnimation(BitmapFactory.decodeResource(this.m_res, R.drawable.player), 60, 10);
 	}
 	
 	@Override
 	public void draw(Canvas canvas){
-		canvas.drawRect(new RectF(m_position.x - 25,m_position.y - 50, m_position.x + 25, m_position.y + 50), m_paint);
+		this.m_runningAnim.draw(canvas, m_position, m_paint);
 	}
 
 	@Override
 	public void update(long ellapsedTime) {
-		m_position = m_position.add(m_speed.multiply(((float)ellapsedTime)/1000));
+		m_position = m_position.add(m_speed.multiply((float)(ellapsedTime/GameThread.nano)));
+		this.m_runningAnim.update(ellapsedTime);
 	}
 
 }

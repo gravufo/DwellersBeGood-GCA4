@@ -10,7 +10,6 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import com.example.dwellersbegood.R;
 
 public class IntroView extends SurfaceView implements SurfaceHolder.Callback{
 
