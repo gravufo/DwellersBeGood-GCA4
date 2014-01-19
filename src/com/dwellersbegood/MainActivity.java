@@ -9,7 +9,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> a52f9931ed6a1ad5fff68cab5737899c9ebc5cd5
 import android.graphics.Typeface;
 >>>>>>> a52f9931ed6a1ad5fff68cab5737899c9ebc5cd5
 import android.media.MediaPlayer;
