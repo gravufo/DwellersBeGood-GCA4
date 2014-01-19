@@ -8,12 +8,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
 public class MainActivity extends Activity
 {
@@ -32,20 +30,9 @@ public class MainActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		this.m_Res = getResources();
-		//setContentView(R.layout.activity_main);
+		// setContentView(R.layout.activity_main);
 		
 		context = getApplicationContext();
-		
-<<<<<<< HEAD
-		// Set the right font for title
-		TextView myTextView = (TextView) findViewById(R.id.textGameTitle);
-		Typeface typeFace = Typeface.createFromAsset(getAssets(), "fonts/Typo Oxin free promo.ttf");
-		myTextView.setTypeface(typeFace);
-=======
-		// Activate background music
-		this.m_Player = MediaPlayer.create(this, R.raw.menu_loop);
-		this.m_Player.setLooping(true);
->>>>>>> a52f9931ed6a1ad5fff68cab5737899c9ebc5cd5
 		
 		try
 		{
