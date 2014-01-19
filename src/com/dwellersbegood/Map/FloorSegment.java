@@ -9,22 +9,32 @@ import com.dwellersbegood.GameView;
 import com.dwellersbegood.Vector2D;
 
 public class FloorSegment extends MapSegment {
-	
-	private Paint paint;
+
+	private static int loopIndex = 0;
 
 	FloorSegment()
 	{
-		m_image = BitmapManager.getInstance().getBitmap(BitmapManager.Floor);
-		m_position = new Vector2D(GameView.getScreenSize().getX()- getWidth(), GameView.getScreenSize().getY() - getHeight());
+		switch(loopIndex)
+		{
+			case 0:
+				m_image = BitmapManager.getInstance().getBitmap(BitmapManager.Floor0);
+				break;
+			case 1:
+				m_image = BitmapManager.getInstance().getBitmap(BitmapManager.Floor1);
+				break;
+			case 2:
+				m_image = BitmapManager.getInstance().getBitmap(BitmapManager.Floor2);
+				break;
+		}
 		
-		paint = new Paint();
-		paint.setColor(Color.BLACK);
+		m_position = new Vector2D(GameView.getScreenSize().getX()- getWidth(), GameView.getScreenSize().getY()*(float)0.75);
+		
+		loopIndex = (loopIndex + 1)%3;
 	}
 	
 	@Override
 	public void draw(Canvas canvas) {
-		canvas.drawBitmap(m_image, this.getM_position().getX(), this.getM_position().getY(), paint);
-		canvas.drawLine(this.getM_position().getX(),GameView.getScreenSize().getY(), GameView.getScreenSize().getX(), 0, paint);
+		canvas.drawBitmap(m_image, this.getM_position().getX(), this.getM_position().getY(), null);
 	}
 
 	@Override

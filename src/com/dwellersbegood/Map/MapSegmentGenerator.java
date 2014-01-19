@@ -42,7 +42,9 @@ public class MapSegmentGenerator {
 		// A hole middle implies a platform to jump on
 		else if(lastSegmentType == HoleMiddle)
 		{
-			generateFloatingSegment(Platform);
+			generatePathSegment(HoleEnding);
+			//if(!m_lastPlatform)
+				//generateFloatingSegment(floor);
 		}
 		// What to do with holes half of the time close the hole, the other half continue it
 		else if(lastSegmentType == HoleBegining || lastSegmentType == HoleMiddle)
@@ -54,21 +56,23 @@ public class MapSegmentGenerator {
 		}
 		else
 		{
-			int danger = randomSeed.nextInt(400) + difficulty;
+			int danger = randomSeed.nextInt(100) + difficulty;
 			
-			if(danger > 400)
+			if(danger > 20)
 			{
-				switch(randomSeed.nextInt(2))
+				switch(randomSeed.nextInt(3))
 				{
 					case 0:
 						generatePathSegment(HoleBegining);
 						break;
 					case 1:
-						generatePathSegment(Rock);
+						generatePathSegment(HoleBegining);
 						break;
 					case 2:
-						generatePathSegment(Fire);
+						generatePathSegment(HoleBegining);
 						break;
+					default:
+						generatePathSegment(HoleBegining);
 				}
 			}else{
 				generatePathSegment(Floor);
@@ -86,9 +90,9 @@ public class MapSegmentGenerator {
 	private void generatePathSegment(int type)
 	{
 		newSegment = makeSegment(type);
-		Vector2D lastBottomRight = lastSegment.getBottomRightCorner();
-		lastBottomRight.add(new Vector2D(0,1));
-		newSegment.moveBottomLeftTo(lastBottomRight);
+		Vector2D lastTopRight = lastSegment.getTopRightCorner();
+		lastTopRight.add(new Vector2D(1,0));
+		newSegment.moveTopLeftTo(lastTopRight);
 		lastSegment = newSegment;
 		lastSegmentType = type;
 	}
@@ -96,9 +100,9 @@ public class MapSegmentGenerator {
 	private void generateFloatingSegment(int type)
 	{
 		newSegment = makeSegment(type);
-		Vector2D lastBottomRight = lastSegment.getBottomRightCorner();
-		lastBottomRight.add(new Vector2D(0,1));
-		newSegment.moveBottomLeftTo(lastBottomRight);
+		Vector2D lastTopRight = lastSegment.getTopRightCorner();
+		lastTopRight.add(new Vector2D(1,0));
+		newSegment.moveTopLeftTo(lastTopRight);
 	}
 	
 	private MapSegment makeSegment(int type)
