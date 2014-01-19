@@ -119,7 +119,7 @@ public class BitmapManager
 		Log.d("BitmapManager", "Loaded all bitmap");
 	}
 	
-	private Bitmap scaleToSizeByWidth(Bitmap sprite, float widthPercentage, int screenWidth)
+	public Bitmap scaleToSizeByWidth(Bitmap sprite, float widthPercentage, int screenWidth)
 	{
 		Matrix matrix = new Matrix();
 		float scale = (screenWidth * widthPercentage / sprite.getWidth());
@@ -128,7 +128,7 @@ public class BitmapManager
 		return Bitmap.createBitmap(sprite, 0, 0, sprite.getWidth(), sprite.getHeight(), matrix, true);
 	}
 	
-	private Bitmap scaleToSizeByHeight(Bitmap sprite, float heightPercentage, int screenHeight)
+	public Bitmap scaleToSizeByHeight(Bitmap sprite, float heightPercentage, int screenHeight)
 	{
 		Matrix matrix = new Matrix();
 		float scale = (screenHeight * heightPercentage / sprite.getHeight());

@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -16,7 +17,9 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity
 {
+	private Resources m_Res;
 	private static Context context;
+	private HomeMenuView m_HomeMenuView;
 	
 	// For background music management, see :
 	// http://www.rbgrn.net/content/307-light-racer-20-days-61-64-completion
@@ -28,14 +31,21 @@ public class MainActivity extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		this.m_Res = getResources();
+		//setContentView(R.layout.activity_main);
 		
 		context = getApplicationContext();
 		
+<<<<<<< HEAD
 		// Set the right font for title
 		TextView myTextView = (TextView) findViewById(R.id.textGameTitle);
 		Typeface typeFace = Typeface.createFromAsset(getAssets(), "fonts/Typo Oxin free promo.ttf");
 		myTextView.setTypeface(typeFace);
+=======
+		// Activate background music
+		this.m_Player = MediaPlayer.create(this, R.raw.menu_loop);
+		this.m_Player.setLooping(true);
+>>>>>>> a52f9931ed6a1ad5fff68cab5737899c9ebc5cd5
 		
 		try
 		{
@@ -69,6 +79,8 @@ public class MainActivity extends Activity
 			
 			if (!muteMedia && !m_Player.isPlaying())
 				this.m_Player.start();
+			
+			this.m_HomeMenuView = new HomeMenuView(this, this, this.m_Res);
 		}
 		
 		// Previous activity was the GameActivity
@@ -85,7 +97,7 @@ public class MainActivity extends Activity
 	}
 	
 	/** Called when the user clicks the Singleplayer button */
-	public void SingleplayerMode(View view)
+	public void SingleplayerMode()
 	{
 		Intent intent = new Intent(this, GameActivity.class);
 		intent.putExtra("Dolla", this.m_Data);
@@ -102,7 +114,7 @@ public class MainActivity extends Activity
 	/**
 	 * Called when the mute button is pressed
 	 */
-	public void muteMedia(View view)
+	public void muteMedia()
 	{
 		muteMedia = !muteMedia;
 		

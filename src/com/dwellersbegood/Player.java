@@ -114,7 +114,7 @@ public class Player extends GObject
 	
 	public void jumpStarted()
 	{
-		if (!m_jumping)
+		if (!m_jumping &&  m_isOnFloor)
 		{
 			m_jumping = true;
 			m_jumpingAnim.reset();
