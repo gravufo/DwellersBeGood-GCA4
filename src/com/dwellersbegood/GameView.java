@@ -226,9 +226,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			{
 				projectile.update(elapsedTime);
 				
-				if (!projectile.getBoundingBox().intersect(this.m_screenBoundingBox))
+				if (projectile.getM_position().getX() > this.m_ScreenWidth)
 				{
-					this.m_projectiles.remove(this);
+					this.m_projectiles.remove(projectile);
 				}
 			}
 		}
@@ -237,9 +237,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		{
 			projectile.update(elapsedTime);
 			
-			if (!projectile.getBoundingBox().intersect(this.m_screenBoundingBox))
+			if (projectile.getM_position().getX() > this.m_ScreenWidth)
 			{
-				this.m_projectiles.remove(this);
+				this.m_enemyProjectiles.remove(projectile);
 			}
 		}
 		

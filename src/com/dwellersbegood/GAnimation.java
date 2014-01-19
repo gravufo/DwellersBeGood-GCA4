@@ -9,17 +9,17 @@ import android.graphics.Paint;
 
 public class GAnimation
 {
-	private Bitmap m_sourceBitmap;
-	private int m_frameCount; // Nombre de frames
-	private int m_currentFrame; // La frame displayé
-	private long m_frameTicker; // Le temps de la dernière update
-	private long m_framePeriod; // milliseconds entre chaque frame (1000/fps)
-	private Matrix m_mtxEffect;
-	private Bitmap m_bmpToDraw;
-	private ArrayList<Bitmap> m_bitmapArray;
-	private boolean m_animateOnce;
-	private boolean m_done;
-	private boolean m_pause;
+	protected Bitmap m_sourceBitmap;
+	protected int m_frameCount; // Nombre de frames
+	protected int m_currentFrame; // La frame displayé
+	protected long m_frameTicker; // Le temps de la dernière update
+	protected long m_framePeriod; // milliseconds entre chaque frame (1000/fps)
+	protected Matrix m_mtxEffect;
+	protected Bitmap m_bmpToDraw;
+	protected ArrayList<Bitmap> m_bitmapArray;
+	protected boolean m_animateOnce;
+	protected boolean m_done;
+	protected boolean m_pause;
 	
 	public GAnimation(Bitmap bitmap, double fps, int frameCount)
 	{
