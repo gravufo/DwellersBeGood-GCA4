@@ -130,8 +130,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		
 		m_screenBoundingBox = new Rect(0, 0, GameView.m_ScreenWidth, GameView.m_ScreenHeight);
 		
-		/*this.m_xButtonRect = new Rect(m_ScreenWidth - m_xButtonBitmap.getWidth() - 10,10,m_ScreenWidth - 10,10+m_xButtonBitmap.getHeight());
-		this.m_ResumeButtonRect = new Rect(m_ScreenWidth/2 - m_ResumeButton.getWidth()/2, m_ScreenHeight/4 - m_ResumeButton.getHeight()/2,m_ScreenWidth/2 + m_ResumeButton.getWidth()/2,m_ScreenHeight/4 + m_ResumeButton.getHeight()/2);
+		this.m_xButtonRect = new Rect(m_ScreenWidth - m_xButtonBitmap.getWidth() - 10,10,m_ScreenWidth - 10,10+m_xButtonBitmap.getHeight());
+		/*this.m_ResumeButtonRect = new Rect(m_ScreenWidth/2 - m_ResumeButton.getWidth()/2, m_ScreenHeight/4 - m_ResumeButton.getHeight()/2,m_ScreenWidth/2 + m_ResumeButton.getWidth()/2,m_ScreenHeight/4 + m_ResumeButton.getHeight()/2);
 		this.m_RestartButtonRect = new Rect(m_ScreenWidth/2 - m_RestartButton.getWidth()/2, m_ScreenHeight/2 - m_RestartButton.getHeight()/2,m_ScreenWidth/2 + m_RestartButton.getWidth()/2,m_ScreenHeight/2 + m_RestartButton.getHeight()/2);
 		this.m_BackButtonRect = new Rect(m_ScreenWidth/2 - m_BackButton.getWidth()/2, 3*m_ScreenHeight/4 - m_BackButton.getHeight()/2,m_ScreenWidth/2 + m_BackButton.getWidth()/2,3*m_ScreenHeight/4 + m_BackButton.getHeight()/2);
 		*/
@@ -202,7 +202,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				canvas.drawColor(Color.argb(150,150,150,150));
 			}
 			if(m_gamestate == GAMEOVER){
-				canvas.drawColor(Color.argb(150,150,150,150));
+				canvas.drawColor(Color.argb(200,40,60,40));
 			}
 		}
 	}
