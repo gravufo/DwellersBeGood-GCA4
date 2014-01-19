@@ -44,6 +44,8 @@ public class GameActivity extends Activity
 	// Save data in the device
 	protected void onStop()
 	{
+		// Player.stopMedia();
+		
 		try
 		{
 			FileOutputStream fos = this.openFileOutput("Data", Context.MODE_PRIVATE);
@@ -62,6 +64,8 @@ public class GameActivity extends Activity
 	// Save data in the device
 	protected void onPause()
 	{
+		// Player.stopMedia();
+		
 		try
 		{
 			FileOutputStream fos = this.openFileOutput("Data", Context.MODE_PRIVATE);
@@ -73,7 +77,6 @@ public class GameActivity extends Activity
 		{
 			Log.e("serializeObject", "error", ioe);
 		}
-		super.onStop();
+		super.onPause();
 	}
-	
 }

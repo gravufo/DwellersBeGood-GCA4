@@ -59,7 +59,7 @@ public class Projectile extends GObject
 		else
 			this.m_floatAnim.update(elapsedTime);
 		
-		m_speed.setY(m_speed.getY() + GameView.GRAVITY * ((float) (elapsedTime / GameThread.nano)));
+		//m_speed.setY(m_speed.getY() + GameView.GRAVITY * ((float) (elapsedTime / GameThread.nano)));
 	}
 	
 }

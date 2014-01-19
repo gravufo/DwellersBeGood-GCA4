@@ -19,9 +19,9 @@ public class IntroThread extends Thread
 	{
 		this.m_surfaceHolder = surfaceHolder;
 		this.m_panel = panel;
-		this.m_IntroTime = -System.currentTimeMillis();
-		this.m_ElapsedThreadTime = -System.currentTimeMillis();
-		this.m_ShadingTime = -System.currentTimeMillis();
+		this.m_IntroTime = -System.nanoTime();
+		this.m_ElapsedThreadTime = -System.nanoTime();
+		this.m_ShadingTime = -System.nanoTime();
 	}
 	
 	@Override
@@ -38,7 +38,7 @@ public class IntroThread extends Thread
 				this.m_IntroTime += this.m_NewTime - this.m_OldTime;
 				this.m_ShadingTime += this.m_NewTime - this.m_OldTime;
 				c = this.m_surfaceHolder.lockCanvas(null);
-				if ((this.m_ElapsedThreadTime / 1000.0) >= 1 / 60)
+				if ((this.m_ElapsedThreadTime / GameThread.nano) >= 1 / 60)
 				{
 					this.m_ElapsedThreadTime = 0;
 					synchronized (this.m_surfaceHolder)
@@ -46,12 +46,12 @@ public class IntroThread extends Thread
 						this.m_panel.draw(c);
 					}
 				}
-				if (this.m_ShadingTime / 1000.0 >= 0.01f)
+				if (this.m_ShadingTime / GameThread.nano >= 0.01f)
 				{
 					this.m_panel.Update();
 					this.m_ShadingTime = 0;
 				}
-				if (this.m_IntroTime / 1000.0 >= 3.0f)
+				if (this.m_IntroTime / GameThread.nano >= 3.0f)
 				{
 					this.m_panel.FinishIntro();
 				}
