@@ -102,7 +102,7 @@ public class CoinSegment extends MapSegment
 		{
 			int index;
 			
-			switch (m_Type)
+			switch (m_coinType)
 			{
 			case Bag:
 				index = SoundManager.GOLD_BAG;
@@ -119,10 +119,6 @@ public class CoinSegment extends MapSegment
 			
 			SoundManager.getInstance().getPlayer(index).start();
 			m_soundPlayed = true;
-		}
-		else if (!m_touchedPlayer)
-		{
-			m_soundPlayed = false;
 		}
 	}
 }

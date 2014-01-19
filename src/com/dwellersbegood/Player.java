@@ -4,7 +4,6 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.media.MediaPlayer;
 
 public class Player extends GObject
 {
@@ -18,9 +17,6 @@ public class Player extends GObject
 	private boolean m_isOnFloor;
 	private boolean m_isOnPlatform;
 	private float m_platformLevel;
-	
-	private static MediaPlayer mediaRunning = MediaPlayer.create(MainActivity.getContext(), R.raw.running);
-	private static MediaPlayer mediaJumpFall = MediaPlayer.create(MainActivity.getContext(), R.raw.jump_fall);
 	
 	public Player()
 	{
@@ -114,7 +110,7 @@ public class Player extends GObject
 	
 	public void jumpStarted()
 	{
-		if (!m_jumping &&  m_isOnFloor)
+		if (!m_jumping && m_isOnFloor)
 		{
 			m_jumping = true;
 			m_jumpingAnim.reset();
@@ -158,11 +154,5 @@ public class Player extends GObject
 	public void hitEnemy()
 	{
 		
-	}
-	
-	public static void stopMedia()
-	{
-		mediaJumpFall.stop();
-		mediaRunning.stop();
 	}
 }

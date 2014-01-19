@@ -72,7 +72,7 @@ public class BitmapManager
 	
 	public void loadBitmaps(Resources res, int width, int height)
 	{
-		m_bitmapCollection.add(scaleToSizeByHeight(BitmapFactory.decodeResource(res, R.drawable.loop_bg_color), 1, height));
+		m_bitmapCollection.add(scaleToSizeByHeight(BitmapFactory.decodeResource(res, R.drawable.loop_bg), 1, height));
 		
 		Bitmap plate = BitmapFactory.decodeResource(res, R.drawable.plateforme1_2);
 		float ratio = getFloorScaling(plate, FirstFloorWidth, width);

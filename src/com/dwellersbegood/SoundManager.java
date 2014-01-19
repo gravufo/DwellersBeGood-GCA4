@@ -36,40 +36,49 @@ public class SoundManager
 	public void loadSfx(Resources res)
 	{
 		MediaPlayer media = MediaPlayer.create(MainActivity.getContext(), R.raw.menu_music);
+		media.setLooping(true);
 		m_sfxCollection.put(MENU_LOOP, media);
 		
 		MediaPlayer media1 = MediaPlayer.create(MainActivity.getContext(), R.raw.background_music);
+		media1.setLooping(true);
 		m_sfxCollection.put(BACKGROUND_MUSIC, media1);
 		
 		MediaPlayer media2 = MediaPlayer.create(MainActivity.getContext(), R.raw.fire_death);
+		media2.setLooping(false);
 		m_sfxCollection.put(FIRE_DEATH, media2);
 		
 		MediaPlayer media3 = MediaPlayer.create(MainActivity.getContext(), R.raw.gem);
+		media3.setLooping(false);
 		m_sfxCollection.put(GEM, media3);
 		
 		MediaPlayer media4 = MediaPlayer.create(MainActivity.getContext(), R.raw.gold_bag);
+		media4.setLooping(false);
 		m_sfxCollection.put(GOLD_BAG, media4);
 		
 		MediaPlayer media5 = MediaPlayer.create(MainActivity.getContext(), R.raw.gold_coin);
+		media5.setLooping(false);
 		m_sfxCollection.put(GOLD_COIN, media5);
 		
 		MediaPlayer media6 = MediaPlayer.create(MainActivity.getContext(), R.raw.jump_fall);
+		media6.setLooping(false);
+		media6.setVolume((float) 0.2, (float) 0.2);
 		m_sfxCollection.put(JUMP_FALL, media6);
 		
 		MediaPlayer media7 = MediaPlayer.create(MainActivity.getContext(), R.raw.laser_evil);
+		media7.setLooping(false);
 		m_sfxCollection.put(LASER_EVIL, media7);
 		
 		MediaPlayer media8 = MediaPlayer.create(MainActivity.getContext(), R.raw.laser_good);
+		media8.setLooping(false);
 		m_sfxCollection.put(LASER_GOOD, media8);
 		
 		MediaPlayer media9 = MediaPlayer.create(MainActivity.getContext(), R.raw.running);
+		media9.setLooping(false);
 		m_sfxCollection.put(PLAYER_RUNNING, media9);
 		
 		MediaPlayer media10 = MediaPlayer.create(MainActivity.getContext(), R.raw.statue_explosion);
+		media10.setLooping(false);
 		m_sfxCollection.put(STATUE_EXPLOSION, media10);
-		
-		m_sfxCollection.get(MENU_LOOP).setLooping(true);
-		m_sfxCollection.get(BACKGROUND_MUSIC).setLooping(true);
 		
 		Log.d("BitmapManager", "Loaded all sound effects");
 	}
