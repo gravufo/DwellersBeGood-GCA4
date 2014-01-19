@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -29,6 +31,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	public static final boolean ENABLED_DEBUG = false;
 	private final int MAX_TOUCH_COUNT = 10;
 	
+	private final int MENU = 0;
+	private final int GAME = 1;
+	
 	private static MediaPlayer mediaShooting = MediaPlayer.create(MainActivity.getContext(), R.raw.laser_good);
 	
 	public static Player m_player;
@@ -42,15 +47,24 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	private final Resources m_res;
 	private BallEnemy m_enemy;
 	private final ArrayList<Projectile> m_projectiles;
+	private final ArrayList<Projectile> m_projectilesToRemove;
 	private final ArrayList<EnemyProjectile> m_enemyProjectiles;
 	private Map m_map;
 	private final GData m_Data;
-	private final int[] multiTouchX;
-	private final int[] multiTouchY;
+	private int[] multiTouchX;
+	private int[] multiTouchY;
 	private Rect m_screenBoundingBox;
 	
 	private long m_jumpHoldTime;
 	private boolean m_jumpStarted;
+	
+	private long m_rechargeTime;
+	private boolean m_canShoot;
+	
+	private Rect m_xButtonRect;
+	private Bitmap m_xButtonBitmap;
+	private Paint m_xButtonPaint;
+	private int m_gamestate;
 	
 	public GameView(GameActivity activity, Context context)
 	{
@@ -60,6 +74,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		getHolder().addCallback(this);
 		setFocusable(true);
 		this.m_projectiles = new ArrayList<Projectile>();
+		this.m_projectilesToRemove = new ArrayList<Projectile>();
 		this.m_enemyProjectiles = new ArrayList<EnemyProjectile>();
 		
 		this.m_collectibleScorePaint = new Paint();
@@ -68,6 +83,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		this.m_collectibleScorePaint.setTextAlign(Align.LEFT);
 		
 		this.m_collectibleScore = 0;
+		
+		this.m_xButtonPaint = new Paint();
+		this.m_xButtonPaint.setColor(Color.BLACK);
+		this.m_xButtonBitmap = BitmapFactory.decodeResource(m_res, R.drawable.xbutton);
+		this.m_gamestate = GAME;
 		
 		this.m_jumpHoldTime = 0;
 		this.m_jumpStarted = true;
@@ -100,8 +120,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		
 		m_screenBoundingBox = new Rect(0, 0, GameView.m_ScreenWidth, GameView.m_ScreenHeight);
 		
-		m_screenBoundingBox = new Rect(0, 0, GameView.m_ScreenWidth, GameView.m_ScreenHeight);
-		
+		this.m_xButtonRect = new Rect(m_ScreenWidth - m_xButtonBitmap.getWidth() - 10,10,m_ScreenWidth - 10,10+m_xButtonBitmap.getHeight());
 		// Create map
 		
 		m_map = new Map(GameView.m_ScreenWidth, GameView.m_ScreenHeight);
@@ -162,105 +181,133 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			}
 			
 			canvas.drawText(this.m_collectibleScore + "", 100, 40, this.m_collectibleScorePaint);
+			
+			canvas.drawBitmap(m_xButtonBitmap, null, m_xButtonRect, m_xButtonPaint);
+			
+			if(m_gamestate == MENU){
+				canvas.drawColor(Color.argb(150,150,150,150));
+			}
 		}
 	}
 	
 	public void update(long elapsedTime)
 	{
 		// On update la partie si celle-ci n'est pas terminé
-		m_player.setIsOnFloor(false);
-		m_player.setIsOnPlatform(false);
-		m_map.update(elapsedTime);
-		Vector2D playerPos = new Vector2D(m_player.getM_position().getX() + m_player.getBoundingBox().width() / 2, m_player.getM_position().getY() + m_player.getBoundingBox().height());
-		for (MapSegment segment : m_map.getMapSegments())
-		{
-			if (segment.getM_Type() == MapSegmentGenerator.Enemy)
+		if(m_gamestate == GAME){
+			m_player.setIsOnFloor(false);
+			m_player.setIsOnPlatform(false);
+			m_map.update(elapsedTime);
+			Vector2D playerPos = new Vector2D(m_player.getM_position().getX() + m_player.getBoundingBox().width() / 2, m_player.getM_position().getY() + m_player.getBoundingBox().height());
+			for (MapSegment segment : m_map.getMapSegments())
 			{
-				EnemySegment enemy = (EnemySegment) segment;
-				if (enemy.ShouldDrawShot())
+				if (segment.getM_Type() == MapSegmentGenerator.Enemy)
 				{
-					Vector2D target = GameView.m_player.getM_position();
-					Vector2D direction = target.substract(enemy.getM_position());
-					direction.normalize();
-					direction = direction.multiply(1000);
-					m_enemyProjectiles.add(new EnemyProjectile(enemy.getM_position().getX(), enemy.getM_position().getY() + enemy.getBoundingBox().height() / 2, direction.getX(), direction.getY(), m_ScreenWidth, m_ScreenHeight, m_res));
-					enemy.resetShotTimer();
+					EnemySegment enemy = (EnemySegment) segment;
+					if (enemy.ShouldDrawShot())
+					{
+						Vector2D target = GameView.m_player.getM_position();
+						Vector2D direction = target.substract(enemy.getM_position());
+						direction.normalize();
+						direction = direction.multiply(1000);
+						m_enemyProjectiles.add(new EnemyProjectile(enemy.getM_position().getX(), enemy.getM_position().getY() + enemy.getBoundingBox().height() / 2, direction.getX(), direction.getY(), m_ScreenWidth, m_ScreenHeight, m_res));
+						enemy.resetShotTimer();
+					}
+				}
+				
+				switch (segment.getM_Type())
+				{
+				case MapSegmentGenerator.Floor:
+					if (segment.getBoundingBox().contains((int) playerPos.getX(), (int) playerPos.getY()))
+					{
+						m_player.setIsOnFloor(true);
+					}
+					break;
+				case MapSegmentGenerator.Platform:
+					if (segment.getBoundingBox().contains((int) playerPos.getX(), (int) playerPos.getY()))
+					{
+						m_player.setIsOnPlatform(true, segment.getBoundingBox().top);
+					}
+					break;
+				case MapSegmentGenerator.Fire:
+					break;
+				case MapSegmentGenerator.Rock:
+					break;
+				case MapSegmentGenerator.Coin:
+					break;
+				case MapSegmentGenerator.Enemy:
+					break;
+				case MapSegmentGenerator.HoleBegining:
+					// GameView.m_player.setIsOnFloor(true);
+					break;
+				case MapSegmentGenerator.HoleMiddle:
+					break;
+				case MapSegmentGenerator.HoleEnding:
+					// GameView.m_player.setIsOnFloor(true);
+					break;
+				}
+			}
+			m_player.update(elapsedTime);
+			m_enemy.update(elapsedTime);
+			
+			synchronized (this.m_projectiles)
+			{
+				for (Projectile projectile : this.m_projectiles)
+				{
+					projectile.update(elapsedTime);
+					
+					if (projectile.getM_position().getX() > this.m_ScreenWidth)
+					{
+						synchronized (this.m_projectiles)
+						{
+							this.m_projectilesToRemove.add(projectile);
+						}
+					}
 				}
 			}
 			
-			switch (segment.getM_Type())
+			synchronized (this.m_projectiles)
 			{
-			case MapSegmentGenerator.Floor:
-				if (segment.getBoundingBox().contains((int) playerPos.getX(), (int) playerPos.getY()))
-				{
-					m_player.setIsOnFloor(true);
+				for(Projectile projectile : this.m_projectilesToRemove){
+					this.m_projectiles.remove(projectile);
 				}
-				break;
-			case MapSegmentGenerator.Platform:
-				if (segment.getBoundingBox().contains((int) playerPos.getX(), (int) playerPos.getY()))
-				{
-					m_player.setIsOnPlatform(true, segment.getBoundingBox().top);
-				}
-				break;
-			case MapSegmentGenerator.Fire:
-				break;
-			case MapSegmentGenerator.Rock:
-				break;
-			case MapSegmentGenerator.Coin:
-				break;
-			case MapSegmentGenerator.Enemy:
-				break;
-			case MapSegmentGenerator.HoleBegining:
-				// GameView.m_player.setIsOnFloor(true);
-				break;
-			case MapSegmentGenerator.HoleMiddle:
-				break;
-			case MapSegmentGenerator.HoleEnding:
-				// GameView.m_player.setIsOnFloor(true);
-				break;
+				this.m_projectilesToRemove.clear();
 			}
-		}
-		m_player.update(elapsedTime);
-		m_enemy.update(elapsedTime);
-		
-		synchronized (this.m_projectiles)
-		{
-			for (Projectile projectile : this.m_projectiles)
+			
+			for (EnemyProjectile projectile : this.m_enemyProjectiles)
 			{
 				projectile.update(elapsedTime);
 				
 				if (projectile.getM_position().getX() > this.m_ScreenWidth)
 				{
-					this.m_projectiles.remove(projectile);
+					this.m_enemyProjectiles.remove(projectile);
+				}
+			}
+			
+			if (this.m_jumpStarted)
+			{
+				this.m_jumpHoldTime += elapsedTime;
+				if (this.m_jumpHoldTime >= 2 * GameThread.nano)
+				{
+					this.m_jumpHoldTime = (long) Math.min(2 * GameThread.nano, this.m_jumpHoldTime);
+					float ratio = (float) (this.m_jumpHoldTime / (2 * GameThread.nano));
+					GameView.m_player.jumpReleased(ratio);
+					this.m_jumpHoldTime = 0;
+					this.m_jumpStarted = false;
+				}
+			}
+			
+			if(!m_canShoot){
+				this.m_rechargeTime+=elapsedTime;
+				if (this.m_rechargeTime >= 1 * GameThread.nano)
+				{
+					m_canShoot = true;
+					this.m_rechargeTime = 0;
 				}
 			}
 		}
-		
-		for (EnemyProjectile projectile : this.m_enemyProjectiles)
-		{
-			projectile.update(elapsedTime);
+		else if(m_gamestate == MENU){
 			
-			if (projectile.getM_position().getX() > this.m_ScreenWidth)
-			{
-				this.m_enemyProjectiles.remove(projectile);
-			}
 		}
-		
-		if (this.m_jumpStarted)
-		{
-			this.m_jumpHoldTime += elapsedTime;
-			if (this.m_jumpHoldTime >= 2 * GameThread.nano)
-			{
-				this.m_jumpHoldTime = (long) Math.min(2 * GameThread.nano, this.m_jumpHoldTime);
-				float ratio = (float) (this.m_jumpHoldTime / (2 * GameThread.nano));
-				GameView.m_player.jumpReleased(ratio);
-				this.m_jumpHoldTime = 0;
-				this.m_jumpStarted = false;
-			}
-		}
-		
-		// Manage physics
-		// Player should be tested with every bounding box for physic contact.
 		
 	}
 	
@@ -271,9 +318,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		{
 		case MotionEvent.ACTION_DOWN:
 		case MotionEvent.ACTION_POINTER_DOWN:
-			for (int a = 0; a < 2; a++) // Limit to 2 pointers. For more: event.getPointerCount(); a++)
+			for (int a = 0; a < event.getPointerCount(); a++)
 			{
-				
 				Log.d("GameView", "OnTouchEvent at " + (int) event.getX() + ", " + (int) event.getY());
 				
 				Log.d("GameView", "Number of pointers " + event.getPointerCount());
@@ -281,18 +327,23 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				multiTouchX[a] = (int) event.getX(a);
 				multiTouchY[a] = (int) event.getY(a);
 				
+				if(m_xButtonRect.contains(multiTouchX[a], multiTouchY[a])){
+					if(m_gamestate == GAME)
+						m_gamestate = MENU;
+					else if(m_gamestate == MENU)
+						m_gamestate = GAME;
+				}
+				
 				// If the touch is on first half of screen, jump
-				if (multiTouchX[a] < m_ScreenWidth / 2 && GameView.m_player.IsOnFloor())
+				else if (multiTouchX[a] < m_ScreenWidth / 2 && GameView.m_player.IsOnFloor() && m_gamestate == GAME)
 				{
 					this.m_jumpHoldTime = System.currentTimeMillis();
 					GameView.m_player.jumpStarted();
 				}
 				
 				// If its on other side of screen, throw something
-				else
+				else if(m_gamestate == GAME)
 				{
-					mediaShooting.seekTo(0);
-					mediaShooting.start();
 					throwSomething(multiTouchX[a], multiTouchY[a]);
 				}
 			}
@@ -310,7 +361,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				multiTouchY[a] = (int) event.getY(a);
 				
 				// If the touch is on first half of screen, jump
-				if (multiTouchX[a] < m_ScreenWidth / 2 && this.m_jumpHoldTime > 0)
+				if (multiTouchX[a] < m_ScreenWidth / 2 && this.m_jumpHoldTime > 0 && m_gamestate == GAME)
 				{
 					float ratio = (float) (this.m_jumpHoldTime / (2 * GameThread.nano));
 					GameView.m_player.jumpReleased(ratio);
@@ -327,19 +378,23 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	public void throwSomething(int posX, int posY)
 	{
 		
-		// should this statement be in a synchronized too ? (it is drawn in diff thread)
-		m_collectibleScore++;
-		m_Data.setDolla(m_collectibleScore);
-		m_Activity.setData(m_Data);
-		
-		synchronized (this.m_projectiles)
-		{
-			Rect playerBox = GameView.m_player.getBoundingBox();
-			Vector2D target = new Vector2D(posX, posY);
-			Vector2D direction = target.substract(m_player.getM_position());
-			direction.normalize();
-			direction = direction.multiply(1000);
-			m_projectiles.add(new Projectile(m_player.getM_position().getX() + playerBox.width() / 2, m_player.getM_position().getY() + playerBox.height() / 2, direction.getX(), direction.getY(), m_ScreenWidth, m_ScreenHeight, m_res));
+		if(m_canShoot){
+			m_collectibleScore++;
+			m_Data.setDolla(m_collectibleScore);
+			m_Activity.setData(m_Data);
+			
+			synchronized (this.m_projectiles)
+			{
+				Rect playerBox = GameView.m_player.getBoundingBox();
+				Vector2D target = new Vector2D(posX, posY);
+				Vector2D direction = target.substract(m_player.getM_position());
+				direction.normalize();
+				direction = direction.multiply(1000);
+				m_projectiles.add(new Projectile(m_player.getM_position().getX() + playerBox.width() / 2, m_player.getM_position().getY() + playerBox.height() / 2, direction.getX(), direction.getY(), m_ScreenWidth, m_ScreenHeight, m_res));
+			}
+			mediaShooting.seekTo(0);
+			mediaShooting.start();
+			m_canShoot = false;
 		}
 	}
 	

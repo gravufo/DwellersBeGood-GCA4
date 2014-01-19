@@ -44,12 +44,6 @@ public class Projectile extends GObject
 				this.m_shootAnim.draw(canvas, m_position, m_paint);
 			else
 				this.m_floatAnim.draw(canvas, m_position, m_paint);
-			
-			Paint paint = new Paint();
-			paint.setColor(Color.BLUE);
-			paint.setStrokeWidth(10);
-			
-			canvas.drawLine(m_position.getX(), m_position.getY(), 0, this.m_screenHeight/2, paint);
 		}
 	}
 	
