@@ -33,6 +33,7 @@ public class MapSegmentGenerator {
 	
 	public MapSegment generate(int difficulty)
 	{
+		difficulty = 30;
 		//Coin Creation
 		if(!m_generatedFloating && randomSeed.nextInt(99) + 1 < (10 + difficulty))
 		{

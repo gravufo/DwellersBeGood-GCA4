@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.graphics.Paint.Align;
 import android.graphics.Rect;
 import android.media.MediaPlayer;
@@ -44,7 +45,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	private static int m_ScreenWidth;
 	private static int m_ScreenHeight;
 	private Paint m_collectibleScorePaint;
-	private int m_collectibleScore;
+	public static int m_collectibleScore;
 	private Resources m_res;
 	private ArrayList<Projectile> m_projectiles;
 	private ArrayList<Projectile> m_projectilesToRemove;
@@ -90,9 +91,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		this.m_enemyProjectilesToRemove = new ArrayList<EnemyProjectile>();
 		
 		this.m_collectibleScorePaint = new Paint();
-		this.m_collectibleScorePaint.setColor(Color.RED);
-		this.m_collectibleScorePaint.setTextSize(28);
+		this.m_collectibleScorePaint.setColor(Color.YELLOW);
+		this.m_collectibleScorePaint.setTextSize(84);
 		this.m_collectibleScorePaint.setTextAlign(Align.LEFT);
+		
+		Typeface font = Typeface.createFromAsset(m_res.getAssets(), "fonts/woodbadge.ttf"); 
+		this.m_collectibleScorePaint.setTypeface(font);
 		
 		this.m_collectibleScore = 0;
 		
@@ -418,7 +422,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				{
 					if (m_RestartButtonRect.contains(multiTouchX[a], multiTouchY[a]))
 					{
-						m_gamestate = GAME;
+						m_Activity.reset();
 					}
 					else if (m_BackButtonRect.contains(multiTouchX[a], multiTouchY[a]))
 					{
@@ -464,7 +468,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		
 		if (m_canShoot)
 		{
-			m_collectibleScore++;
 			if (m_Data != null)
 			{
 				m_Data.setDolla(m_collectibleScore);

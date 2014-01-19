@@ -117,6 +117,8 @@ public class CoinSegment extends MapSegment
 				index = 0;
 			}
 			
+			GameView.m_collectibleScore += value;
+			
 			SoundManager.getInstance().getPlayer(index).start();
 			m_soundPlayed = true;
 		}

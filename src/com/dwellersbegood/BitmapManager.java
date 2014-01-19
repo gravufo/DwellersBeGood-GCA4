@@ -24,7 +24,7 @@ public class BitmapManager
 	{
 	}
 	
-	private ArrayList<Bitmap> m_bitmapCollection = new ArrayList<>();
+	private ArrayList<Bitmap> m_bitmapCollection = new ArrayList<Bitmap>();
 	
 	public static final float FirstFloorWidth = (float) 0.2;
 	public static final float CoinsHeight = (float) 0.12;

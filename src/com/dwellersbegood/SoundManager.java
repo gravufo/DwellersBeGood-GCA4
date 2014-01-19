@@ -9,7 +9,7 @@ import android.util.Log;
 public class SoundManager
 {
 	private static SoundManager m_instance;
-	private static HashMap<Integer, MediaPlayer> m_sfxCollection = new HashMap<>();
+	private static HashMap<Integer, MediaPlayer> m_sfxCollection = new HashMap<Integer, MediaPlayer>();
 	public static final int MENU_LOOP = 0;
 	public static final int BACKGROUND_MUSIC = 1;
 	public static final int FIRE_DEATH = 2;
