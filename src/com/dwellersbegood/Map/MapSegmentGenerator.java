@@ -46,7 +46,7 @@ public class MapSegmentGenerator {
 		else if(lastSegmentType == HoleMiddle)
 		{
 			if(!m_generatedFloating){
-				generateFloatingSegment(Floor);
+				generateFloatingSegment(Platform);
 			}
 			else{
 				generatePathSegment(HoleEnding);
