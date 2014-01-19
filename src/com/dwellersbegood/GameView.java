@@ -69,6 +69,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	private Bitmap m_RestartButtonBitmap;
 	private Rect m_BackButtonRect;
 	private Bitmap m_BackButtonBitmap;
+	private Rect m_GameOverButtonRect;
+	private Bitmap m_GameOverButtonBitmap;
 	private Paint m_buttonPaint;
 	private int m_gamestate;
 	
@@ -96,6 +98,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		this.m_ResumeButtonBitmap = BitmapFactory.decodeResource(m_res, R.drawable.resume);
 		this.m_RestartButtonBitmap = BitmapFactory.decodeResource(m_res, R.drawable.restart);
 		this.m_BackButtonBitmap = BitmapFactory.decodeResource(m_res, R.drawable.back);
+		this.m_GameOverButtonBitmap = BitmapFactory.decodeResource(m_res, R.drawable.gameover);
 		this.m_gamestate = GAME;
 		
 		this.m_jumpHoldTime = 0;
@@ -133,6 +136,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		this.m_ResumeButtonRect = new Rect(m_ScreenWidth/2 - m_ResumeButtonBitmap.getWidth()/2, m_ScreenHeight/4 - m_ResumeButtonBitmap.getHeight()/2,m_ScreenWidth/2 + m_ResumeButtonBitmap.getWidth()/2,m_ScreenHeight/4 + m_ResumeButtonBitmap.getHeight()/2);
 		this.m_RestartButtonRect = new Rect(m_ScreenWidth/2 - m_RestartButtonBitmap.getWidth()/2, m_ScreenHeight/2 - m_RestartButtonBitmap.getHeight()/2,m_ScreenWidth/2 + m_RestartButtonBitmap.getWidth()/2,m_ScreenHeight/2 + m_RestartButtonBitmap.getHeight()/2);
 		this.m_BackButtonRect = new Rect(m_ScreenWidth/2 - m_BackButtonBitmap.getWidth()/2, 3*m_ScreenHeight/4 - m_BackButtonBitmap.getHeight()/2,m_ScreenWidth/2 + m_BackButtonBitmap.getWidth()/2,3*m_ScreenHeight/4 + m_BackButtonBitmap.getHeight()/2);
+		this.m_GameOverButtonRect = new Rect(m_ScreenWidth/2 - m_GameOverButtonBitmap.getWidth()/2, m_ScreenHeight/4 - m_GameOverButtonBitmap.getHeight()/2,m_ScreenWidth/2 + m_GameOverButtonBitmap.getWidth()/2,m_ScreenHeight/4 + m_GameOverButtonBitmap.getHeight()/2);
 		
 		
 		// Create map
@@ -198,13 +202,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			canvas.drawBitmap(m_xButtonBitmap, null, m_xButtonRect, m_buttonPaint);
 			
 			if(m_gamestate == MENU){
-				canvas.drawColor(Color.argb(150,150,150,150));
+				canvas.drawColor(Color.argb(200,0,0,0));
 				
 				canvas.drawBitmap(m_ResumeButtonBitmap, null, this.m_ResumeButtonRect, this.m_buttonPaint);
-				canvas.drawBitmap(m_RestartButtonBitmap, null, this.m_RestartButtonRect, this.m_buttonPaint);
+				canvas.drawBitmap(m_BackButtonBitmap, null, this.m_RestartButtonRect, this.m_buttonPaint);
 			}
 			if(m_gamestate == GAMEOVER){
 				canvas.drawColor(Color.argb(200,0,0,0));
+				canvas.drawBitmap(m_GameOverButtonBitmap, null, this.m_ResumeButtonRect, this.m_buttonPaint);
+				canvas.drawBitmap(m_RestartButtonBitmap, null, this.m_ResumeButtonRect, this.m_buttonPaint);
+				canvas.drawBitmap(m_BackButtonBitmap, null, this.m_RestartButtonRect, this.m_buttonPaint);
 			}
 		}
 	}
@@ -373,7 +380,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 					}
 				}
 				else if(m_gamestate == GAMEOVER){
-					
+					if(m_RestartButtonRect.contains(multiTouchX[a], multiTouchY[a])){
+						m_gamestate = GAME;
+					}
+					else if(m_BackButtonRect.contains(multiTouchX[a], multiTouchY[a])){
+						// Return to main application
+						m_Activity.finish();
+					}
 				}
 			}
 			break;

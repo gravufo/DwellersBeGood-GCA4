@@ -59,7 +59,6 @@ public class MainActivity extends Activity
 		}
 		
 		Intent intent = new Intent(this, IntroActivity.class); this.startActivityForResult(intent, 1);
-		//BitmapManager.getInstance().loadBitmaps(this.getResources());
 	}
 	
 	@Override
@@ -71,6 +70,11 @@ public class MainActivity extends Activity
 			// this.m_Player.start();
 		}
 		
+		if (requestCode == 2)
+		{
+			// Previous activity was the GameActivity
+			// this.m_Player.start();
+		}
 	}
 	
 	public static Context getContext()
