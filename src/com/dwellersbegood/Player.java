@@ -1,7 +1,6 @@
 package com.dwellersbegood;
 
 import android.content.res.Resources;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -48,7 +47,7 @@ public class Player extends GObject
 		m_paint.setColor(Color.BLACK);
 		
 		this.m_runningAnim = new GAnimation(BitmapManager.getInstance().getBitmap(BitmapManager.PlayerRun), 45, 10);
-		this.m_jumpingAnim = new GAnimation(BitmapManager.getInstance().getBitmap(BitmapManager.PlayerJump), 10, 5, true);
+		this.m_jumpingAnim = new GAnimation(BitmapManager.getInstance().getBitmap(BitmapManager.PlayerJump), 24, 5, true);
 		
 		boundingBox.set((int) m_position.getX() + leftWidthOffset, (int) m_position.getY() + topHeightOffset, (int) m_position.getX() + m_runningAnim.getWidth() - rightWidthOffset, (int) m_position.getY() + m_runningAnim.getHeight() - botHeightOffset);
 	}
@@ -74,7 +73,7 @@ public class Player extends GObject
 		// mediaRunning.start();
 		
 		m_position = m_position.add(m_speed.multiply((float) (elapsedTime / GameThread.nano)));
-		if(!m_isOnFloor && !m_isOnPlatform)
+		if (!m_isOnFloor && !m_isOnPlatform)
 			m_speed.setY(m_speed.getY() + GameView.GRAVITY * ((float) (elapsedTime / GameThread.nano)));
 		boundingBox.set((int) m_position.getX() + leftWidthOffset, (int) m_position.getY() + topHeightOffset, (int) m_position.getX() + m_runningAnim.getWidth() - rightWidthOffset, (int) m_position.getY() + m_runningAnim.getHeight() - botHeightOffset);
 		
@@ -92,8 +91,9 @@ public class Player extends GObject
 		
 		if (m_isOnFloor)
 		{
-			if(m_speed.getY()>0){
-				m_position.setY(GameView.LEVEL_FLOOR - boundingBox.height() +50);
+			if (m_speed.getY() > 0)
+			{
+				m_position.setY(GameView.LEVEL_FLOOR - boundingBox.height() + 50);
 				m_speed.setY(0);
 				m_jumping = false;
 				m_jumpStarted = false;
@@ -102,7 +102,8 @@ public class Player extends GObject
 		
 		if (m_isOnPlatform)
 		{
-			if(m_speed.getY()>0){
+			if (m_speed.getY() > 0)
+			{
 				m_position.setY(m_platformLevel - boundingBox.height());
 				m_speed.setY(0);
 				m_jumping = false;
@@ -130,24 +131,29 @@ public class Player extends GObject
 		this.m_isOnFloor = isOnFloor;
 	}
 	
-	public boolean IsOnFloor(){
+	public boolean IsOnFloor()
+	{
 		return this.m_isOnFloor;
 	}
 	
-	public void setIsOnPlatform(boolean isOnPlatform){
+	public void setIsOnPlatform(boolean isOnPlatform)
+	{
 		this.m_isOnPlatform = isOnPlatform;
 	}
 	
-	public void setIsOnPlatform(boolean isOnPlatform, float platformLevel){
+	public void setIsOnPlatform(boolean isOnPlatform, float platformLevel)
+	{
 		this.m_isOnPlatform = isOnPlatform;
 		this.m_platformLevel = platformLevel;
 	}
 	
-	public boolean IsOnPlatform(){
+	public boolean IsOnPlatform()
+	{
 		return this.m_isOnPlatform;
 	}
 	
-	public void hitEnemy(){
+	public void hitEnemy()
+	{
 		
 	}
 	

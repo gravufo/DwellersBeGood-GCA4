@@ -22,6 +22,7 @@ public class MainActivity extends Activity
 	// http://www.rbgrn.net/content/307-light-racer-20-days-61-64-completion
 	private MediaPlayer m_Player;
 	private GData m_Data;
+	private boolean muteMedia = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -37,7 +38,7 @@ public class MainActivity extends Activity
 		myTextView.setTypeface(typeFace);
 		
 		// Activate background music
-		this.m_Player = MediaPlayer.create(this, R.raw.radiomartini);
+		this.m_Player = MediaPlayer.create(this, R.raw.menu_loop);
 		this.m_Player.setLooping(true);
 		
 		try
@@ -58,7 +59,8 @@ public class MainActivity extends Activity
 			this.m_Data = new GData();
 		}
 		
-		Intent intent = new Intent(this, IntroActivity.class); this.startActivityForResult(intent, 1);
+		Intent intent = new Intent(this, IntroActivity.class);
+		this.startActivityForResult(intent, 1);
 	}
 	
 	@Override
@@ -67,13 +69,15 @@ public class MainActivity extends Activity
 		if (requestCode == 1)
 		{
 			// Previous activity was the Intro
-			// this.m_Player.start();
+			if (!muteMedia && !m_Player.isPlaying())
+				this.m_Player.start();
 		}
 		
 		if (requestCode == 2)
 		{
 			// Previous activity was the GameActivity
-			// this.m_Player.start();
+			if (!muteMedia && !m_Player.isPlaying())
+				this.m_Player.start();
 		}
 	}
 	
@@ -97,9 +101,23 @@ public class MainActivity extends Activity
 		startActivity(intent);
 	}
 	
+	/**
+	 * Called when the mute button is pressed
+	 */
+	public void muteMedia(View view)
+	{
+		muteMedia = !muteMedia;
+		
+		if (muteMedia)
+			m_Player.pause();
+		else
+			m_Player.start();
+	}
+	
 	/** Called when the user clicks the Quit button */
 	public void Quit(View view)
 	{
+		m_Player.stop();
 		this.finish();
 	}
 	
@@ -108,7 +126,9 @@ public class MainActivity extends Activity
 	{
 		// TODO Auto-generated method stub
 		super.onPause();
-		// this.m_Player.pause();
+		
+		if (m_Player.isPlaying())
+			this.m_Player.pause();
 	}
 	
 	@Override
@@ -116,7 +136,9 @@ public class MainActivity extends Activity
 	{
 		// TODO Auto-generated method stub
 		super.onResume();
-		// this.m_Player.start();
+		
+		if (!muteMedia)
+			this.m_Player.start();
 	}
 	
 }

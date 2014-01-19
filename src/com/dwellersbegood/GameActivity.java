@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ public class GameActivity extends Activity
 	
 	private GameView m_gameView;
 	private GData m_Data;
+	private MediaPlayer m_BackgroundMusic = MediaPlayer.create(MainActivity.getContext(), R.raw.aztec_dolla_music);
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -30,7 +32,7 @@ public class GameActivity extends Activity
 		{
 			this.m_Data = (GData) extras.getSerializable("Dolla");
 		}
-		
+		m_BackgroundMusic.setLooping(true);
 		m_gameView = new GameView(this, this);
 		setContentView(m_gameView);
 	}
@@ -79,8 +81,6 @@ public class GameActivity extends Activity
 	// Save data in the device
 	protected void onStop()
 	{
-		// Player.stopMedia();
-		
 		try
 		{
 			FileOutputStream fos = this.openFileOutput("Data", Context.MODE_PRIVATE);
@@ -92,14 +92,31 @@ public class GameActivity extends Activity
 		{
 			Log.e("serializeObject", "error", ioe);
 		}
+		m_BackgroundMusic.stop();
 		super.onStop();
+	}
+	
+	@Override
+	protected void onRestart()
+	{
+		m_Data = null;
+		m_gameView = null;
+		m_BackgroundMusic.seekTo(0);
+		super.onRestart();
+	}
+	
+	@Override
+	protected void onResume()
+	{
+		m_BackgroundMusic.start();
+		super.onResume();
 	}
 	
 	@Override
 	// Save data in the device
 	protected void onPause()
 	{
-		// Player.stopMedia();
+		m_BackgroundMusic.pause();
 		
 		try
 		{
