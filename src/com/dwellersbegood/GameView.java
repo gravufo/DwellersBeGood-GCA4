@@ -140,6 +140,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		m_screenBoundingBox = new Rect(0, 0, GameView.m_ScreenWidth, GameView.m_ScreenHeight);
 		
 		int titleHeight = 10;
+		
 		int newGameHeight = m_ScreenHeight / 10 * 4;
 		int exitHeight = m_ScreenHeight / 10 * 7;
 		this.m_GameOverButtonRect = new Rect(m_ScreenWidth / 2 - m_GameOverButtonBitmap.getWidth() / 2, titleHeight, m_ScreenWidth / 2 + m_GameOverButtonBitmap.getWidth() / 2, titleHeight + m_GameOverButtonBitmap.getHeight());
@@ -405,6 +406,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 					else if (m_BackButtonRect.contains(multiTouchX[a], multiTouchY[a]))
 					{
 						// Return to main application
+						
 						Intent i = new Intent(m_Activity, MainActivity.class);
 						
 						i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -473,7 +475,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			synchronized (this.m_projectiles)
 			{
 				Rect playerBox = GameView.m_player.getBoundingBox();
+				
 				Vector2D target = new Vector2D(posX, posY - (BitmapManager.getInstance().getBitmap(BitmapManager.Laser2).getHeight()));
+				
 				Vector2D direction = target.substract(new Vector2D(m_player.getM_position().getX() + playerBox.width() / 2, m_player.getM_position().getY() + playerBox.height() / 2));
 				direction.normalize();
 				direction = direction.multiply(1000);
