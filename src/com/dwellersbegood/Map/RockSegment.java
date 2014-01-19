@@ -14,7 +14,8 @@ public class RockSegment extends MapSegment {
 
 	@Override
 	public void draw(Canvas canvas) {
-		// TODO Auto-generated method stub
+		canvas.drawBitmap(m_image, this.getM_position().getX(), this
+				.getM_position().getY(), null);
 
 	}
 

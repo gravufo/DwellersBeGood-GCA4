@@ -46,7 +46,7 @@ public class FireSegment extends MapSegment {
 	}
 
 	@Override
-	public void update(long ellapsedTime) {
+	public void update(long elapsedTime) {
 		switch(torchType)
 		{
 			case 0:
@@ -56,6 +56,8 @@ public class FireSegment extends MapSegment {
 				firePos = m_position.add(new Vector2D((float)0.05*GameView.getScreenSize().getX(),(float)0.05*GameView.getScreenSize().getX()));
 				break;
 		}
+		
+		m_fireAnim.update(elapsedTime);
 
 	}
 
