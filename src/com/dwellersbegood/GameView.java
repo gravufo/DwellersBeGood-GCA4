@@ -24,6 +24,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	public static final boolean ENABLED_DEBUG = false;
 	private final int MAX_TOUCH_COUNT = 10;
 	
+	public static Player m_player;
+	
 	private final GameActivity m_Activity;
 	private GameThread m_Thread;
 	private static int m_ScreenWidth;
@@ -31,7 +33,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	private Paint m_collectibleScorePaint;
 	private int m_collectibleScore;
 	private Resources m_res;
-	private Player m_player;
 	private BallEnemy m_enemy;
 	private ArrayList<Projectile> m_projectiles;
 	private Map m_map;
@@ -145,6 +146,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	public void update(long elapsedTime)
 	{
 		// On update la partie si celle-ci n'est pas terminé
+		m_player.setIsOnFloor(false);
 		m_map.update(elapsedTime);
 		m_player.update(elapsedTime);
 		m_enemy.update(elapsedTime);
@@ -171,6 +173,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				this.m_jumpStarted = false;
 			}
 		}
+		
+		// Manage physics
+		//Player should be tested with every bounding box for physic contact.
+		
 	}
 	
 	@Override

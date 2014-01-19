@@ -12,6 +12,7 @@ public class MapSegmentGenerator {
 	private MapSegment newSegment;
 	private static MapSegmentGenerator m_instance = null;
 	private Random randomSeed;
+	private boolean m_generatedFloating;
 		
 	public static MapSegmentGenerator Instance()
 	{
@@ -25,6 +26,7 @@ public class MapSegmentGenerator {
 		lastSegmentType = Floor;
 		lastSegment = new FloorSegment();
 		randomSeed = new Random();
+		m_generatedFloating = false;
 	};
 	
 	public MapSegment generate(int difficulty)
@@ -42,15 +44,22 @@ public class MapSegmentGenerator {
 		// A hole middle implies a platform to jump on
 		else if(lastSegmentType == HoleMiddle)
 		{
-			generatePathSegment(HoleEnding);
-			//if(!m_lastPlatform)
-				//generateFloatingSegment(floor);
+			if(!m_generatedFloating){
+				generateFloatingSegment(Floor);
+				m_generatedFloating = true;
+			}
+			else{
+				generatePathSegment(HoleEnding);
+				m_generatedFloating = false;
+			}
 		}
 		// What to do with holes half of the time close the hole, the other half continue it
 		else if(lastSegmentType == HoleBegining || lastSegmentType == HoleMiddle)
 		{
-			if(randomSeed.nextInt() % 2 == 0)
+			if(randomSeed.nextInt() % 2 == 0){
 				generatePathSegment(HoleEnding);
+				m_generatedFloating = false;
+			}
 			else
 				generatePathSegment(HoleMiddle);
 		}
@@ -100,9 +109,9 @@ public class MapSegmentGenerator {
 	private void generateFloatingSegment(int type)
 	{
 		newSegment = makeSegment(type);
-		Vector2D lastTopRight = lastSegment.getTopRightCorner();
-		lastTopRight.add(new Vector2D(1,0));
-		newSegment.moveTopLeftTo(lastTopRight);
+		Vector2D newPosition = lastSegment.getM_position().substract(new Vector2D(0,(float)(newSegment.getHeight()*1.5)));
+		newPosition.add(new Vector2D(1,0));
+		newSegment.moveTopLeftTo(newPosition);
 	}
 	
 	private MapSegment makeSegment(int type)

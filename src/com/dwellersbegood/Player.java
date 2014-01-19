@@ -15,6 +15,7 @@ public class Player extends GObject
 	private GAnimation m_jumpingAnim;
 	private boolean m_jumping, m_jumpStarted;
 	private float m_jumpSpeed;
+	private boolean m_isOnFloor;
 	
 	public Player()
 	{
@@ -31,6 +32,8 @@ public class Player extends GObject
 		m_jumping = false;
 		m_jumpStarted = false;
 		m_jumpSpeed = -500;
+		
+		m_isOnFloor = true;
 		
 		m_paint = new Paint();
 		m_paint.setColor(Color.BLACK);
@@ -58,7 +61,7 @@ public class Player extends GObject
 	public void update(long elapsedTime)
 	{
 		m_position = m_position.add(m_speed.multiply((float) (elapsedTime / GameThread.nano)));
-		if(m_position.getY() < GameView.PLAYER_MIN_Y)
+		if(!m_isOnFloor)
 			m_speed.setY(m_speed.getY() + GameView.GRAVITY * ((float) (elapsedTime / GameThread.nano)));
 		boundingBox.set((int) m_position.getX() + leftWidthOffset, (int) m_position.getY() + topHeightOffset, (int) m_position.getX() + m_runningAnim.getWidth() - rightWidthOffset, (int) m_position.getY() + m_runningAnim.getHeight() - botHeightOffset);
 		
@@ -72,7 +75,7 @@ public class Player extends GObject
 			m_jumpStarted = true;
 		}
 		
-		if (m_position.getY() > GameView.PLAYER_MIN_Y)
+		if (m_isOnFloor)
 		{
 			m_position.setY(GameView.PLAYER_MIN_Y);
 			m_speed.setY(0);
@@ -92,6 +95,10 @@ public class Player extends GObject
 	
 	public void jumpReleased(float ratio){
 		//m_jumpSpeed = -600 * ratio;
+	}
+	
+	public void setIsOnFloor(boolean isOnFloor){
+		this.m_isOnFloor = isOnFloor;
 	}
 	
 }
