@@ -34,7 +34,7 @@ public class MapSegmentGenerator {
 	public MapSegment generate(int difficulty)
 	{
 		//Coin Creation
-		if(!m_generatedFloating && randomSeed.nextInt(99) + 1 < 10)
+		if(!m_generatedFloating && randomSeed.nextInt(99) + 1 < (10 + difficulty))
 		{
 			generateFloatingSegment(Coin);
 		}
@@ -66,7 +66,7 @@ public class MapSegmentGenerator {
 		{
 			int danger = randomSeed.nextInt(100) + difficulty;
 			
-			if(danger > 30 && lastSegmentType == Floor)
+			if(danger > 80 && lastSegmentType == Floor)
 			{
 				switch(randomSeed.nextInt(4))
 				{
