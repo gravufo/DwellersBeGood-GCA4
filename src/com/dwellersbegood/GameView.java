@@ -456,8 +456,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			synchronized (this.m_projectiles)
 			{
 				Rect playerBox = GameView.m_player.getBoundingBox();
-				Vector2D target = new Vector2D(posX, posY);
-				Vector2D direction = target.substract(m_player.getM_position());
+				Vector2D target = new Vector2D(posX, posY-(BitmapManager.getInstance().getBitmap(BitmapManager.Laser2).getHeight()));
+				Vector2D direction = target.substract(new Vector2D(m_player.getM_position().getX() + playerBox.width() / 2, m_player.getM_position().getY() + playerBox.height() / 2));
 				direction.normalize();
 				direction = direction.multiply(1000);
 				m_projectiles.add(new Projectile(m_player.getM_position().getX() + playerBox.width() / 2, m_player.getM_position().getY() + playerBox.height() / 2, direction.getX(), direction.getY(), m_ScreenWidth, m_ScreenHeight, m_res));
