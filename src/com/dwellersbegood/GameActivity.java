@@ -99,7 +99,6 @@ public class GameActivity extends Activity
 	@Override
 	protected void onRestart()
 	{
-		m_Data = null;
 		m_gameView = null;
 		m_BackgroundMusic.seekTo(0);
 		super.onRestart();
@@ -149,5 +148,12 @@ public class GameActivity extends Activity
 		this.setResult(RESULT_OK, data);
 		System.gc();
 		super.finishActivity(1);
+	}
+	
+	public void reset(){
+		m_Data = null;
+		m_gameView = new GameView(this, this);
+		setContentView(m_gameView);
+		super.onRestart();
 	}
 }

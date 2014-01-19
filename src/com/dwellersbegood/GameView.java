@@ -403,7 +403,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				{
 					if (m_RestartButtonRect.contains(multiTouchX[a], multiTouchY[a]))
 					{
-						m_gamestate = GAME;
+						m_Activity.reset();
 					}
 					else if (m_BackButtonRect.contains(multiTouchX[a], multiTouchY[a]))
 					{
