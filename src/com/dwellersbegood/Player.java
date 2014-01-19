@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.media.MediaPlayer;
 
 public class Player extends GObject
 {
@@ -16,6 +17,9 @@ public class Player extends GObject
 	private boolean m_jumping, m_jumpStarted;
 	private float m_jumpSpeed;
 	private boolean m_isOnFloor;
+	
+	private static MediaPlayer mediaRunning = MediaPlayer.create(MainActivity.getContext(), R.raw.running);
+	private static MediaPlayer mediaJumpFall = MediaPlayer.create(MainActivity.getContext(), R.raw.jump_fall);
 	
 	public Player()
 	{
@@ -47,12 +51,13 @@ public class Player extends GObject
 	@Override
 	public void draw(Canvas canvas)
 	{
-		if(!m_jumping)
+		if (!m_jumping)
 			this.m_runningAnim.draw(canvas, m_position, m_paint);
 		else
 			this.m_jumpingAnim.draw(canvas, m_position, m_paint);
 		
-		if(GameView.ENABLED_DEBUG){
+		if (GameView.ENABLED_DEBUG)
+		{
 			canvas.drawRect(boundingBox, m_debugPaint);
 		}
 	}
@@ -60,17 +65,24 @@ public class Player extends GObject
 	@Override
 	public void update(long elapsedTime)
 	{
+		
+		// mediaRunning.start();
+		
 		m_position = m_position.add(m_speed.multiply((float) (elapsedTime / GameThread.nano)));
-		if(!m_isOnFloor)
+		if (!m_isOnFloor)
 			m_speed.setY(m_speed.getY() + GameView.GRAVITY * ((float) (elapsedTime / GameThread.nano)));
 		boundingBox.set((int) m_position.getX() + leftWidthOffset, (int) m_position.getY() + topHeightOffset, (int) m_position.getX() + m_runningAnim.getWidth() - rightWidthOffset, (int) m_position.getY() + m_runningAnim.getHeight() - botHeightOffset);
 		
-		if(m_jumping && !m_jumpingAnim.getDone())
+		if (m_jumping && !m_jumpingAnim.getDone())
 			this.m_jumpingAnim.update(elapsedTime);
 		else
+		{
+			mediaJumpFall.seekTo(0);
+			mediaJumpFall.start();
 			this.m_runningAnim.update(elapsedTime);
-		
-		if(m_jumping && m_jumpingAnim.getCurrentFrame()== 4 && !m_jumpStarted){
+		}
+		if (m_jumping && m_jumpingAnim.getCurrentFrame() == 4 && !m_jumpStarted)
+		{
 			m_speed.setY(m_jumpSpeed);
 			m_jumpStarted = true;
 		}
@@ -93,16 +105,24 @@ public class Player extends GObject
 		}
 	}
 	
-	public void jumpReleased(float ratio){
-		//m_jumpSpeed = -600 * ratio;
+	public void jumpReleased(float ratio)
+	{
+		// m_jumpSpeed = -600 * ratio;
 	}
 	
-	public void setIsOnFloor(boolean isOnFloor){
+	public void setIsOnFloor(boolean isOnFloor)
+	{
 		this.m_isOnFloor = isOnFloor;
 	}
 	
-	public void hitEnemy(){
+	public void hitEnemy()
+	{
 		
 	}
 	
+	public static void stopMedia()
+	{
+		mediaJumpFall.stop();
+		mediaRunning.stop();
+	}
 }

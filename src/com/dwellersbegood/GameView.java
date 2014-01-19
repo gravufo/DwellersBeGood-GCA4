@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Rect;
+import android.media.MediaPlayer;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -27,20 +28,22 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	public static final boolean ENABLED_DEBUG = true;
 	private final int MAX_TOUCH_COUNT = 10;
 	
+	private static MediaPlayer mediaShooting = MediaPlayer.create(MainActivity.getContext(), R.raw.laser_good);
+	
 	public static Player m_player;
 	
 	private final GameActivity m_Activity;
 	private GameThread m_Thread;
 	private static int m_ScreenWidth;
 	private static int m_ScreenHeight;
-	private Paint m_collectibleScorePaint;
+	private final Paint m_collectibleScorePaint;
 	private int m_collectibleScore;
-	private Resources m_res;
+	private final Resources m_res;
 	private BallEnemy m_enemy;
-	private ArrayList<Projectile> m_projectiles;
-	private ArrayList<EnemyProjectile> m_enemyProjectiles;
+	private final ArrayList<Projectile> m_projectiles;
+	private final ArrayList<EnemyProjectile> m_enemyProjectiles;
 	private Map m_map;
-	private GData m_Data;
+	private final GData m_Data;
 	private final int[] multiTouchX;
 	private final int[] multiTouchY;
 	private Rect m_screenBoundingBox;
@@ -68,8 +71,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		this.m_jumpHoldTime = 0;
 		this.m_jumpStarted = true;
 		
+		mediaShooting.setLooping(false);
+		mediaShooting.setVolume((float) 0.1, (float) 0.1);
+		
 		m_Data = m_Activity.getData();
-		if(m_Data != null)
+		if (m_Data != null)
 			m_collectibleScore = m_Data.getDolla();
 		
 		multiTouchX = new int[MAX_TOUCH_COUNT];
@@ -88,7 +94,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		this.m_ScreenWidth = this.getWidth();
 		this.m_ScreenHeight = this.getHeight();
 		
-		m_screenBoundingBox = new Rect(0,0,this.m_ScreenWidth,this.m_ScreenHeight);
+		m_screenBoundingBox = new Rect(0, 0, this.m_ScreenWidth, this.m_ScreenHeight);
 		
 		// Create map
 		
@@ -134,7 +140,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			m_map.draw(canvas);
 			
 			m_player.draw(canvas);
-			//m_enemy.draw(canvas);
+			// m_enemy.draw(canvas);
 			
 			synchronized (this.m_projectiles)
 			{
@@ -149,7 +155,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				projectile.draw(canvas);
 			}
 			
-			canvas.drawText(this.m_collectibleScore+"", 100, 40, this.m_collectibleScorePaint);
+			canvas.drawText(this.m_collectibleScore + "", 100, 40, this.m_collectibleScorePaint);
 		}
 	}
 	
@@ -158,20 +164,22 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		// On update la partie si celle-ci n'est pas terminé
 		m_player.setIsOnFloor(false);
 		m_map.update(elapsedTime);
-		for(MapSegment segment:m_map.getMapSegments())
+		for (MapSegment segment : m_map.getMapSegments())
 		{
-			if(segment.getM_Type() == MapSegmentGenerator.Enemy){
-				EnemySegment enemy = (EnemySegment)segment;
-				if(enemy.ShouldDrawShot()){
+			if (segment.getM_Type() == MapSegmentGenerator.Enemy)
+			{
+				EnemySegment enemy = (EnemySegment) segment;
+				if (enemy.ShouldDrawShot())
+				{
 					Vector2D target = GameView.m_player.getM_position();
 					Vector2D direction = target.substract(enemy.getM_position());
 					direction.normalize();
 					direction = direction.multiply(1000);
-					m_enemyProjectiles.add(new EnemyProjectile(enemy.getM_position().getX(), enemy.getM_position().getY() + enemy.getBoundingBox().height()/2, direction.getX(), direction.getY(), m_ScreenWidth, m_ScreenHeight, m_res));
+					m_enemyProjectiles.add(new EnemyProjectile(enemy.getM_position().getX(), enemy.getM_position().getY() + enemy.getBoundingBox().height() / 2, direction.getX(), direction.getY(), m_ScreenWidth, m_ScreenHeight, m_res));
 					enemy.resetShotTimer();
 				}
 			}
-			if(m_player.getBoundingBox().intersect(segment.getBoundingBox()))
+			if (m_player.getBoundingBox().intersect(segment.getBoundingBox()))
 				ManageCollision(segment);
 		}
 		m_player.update(elapsedTime);
@@ -183,7 +191,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			{
 				projectile.update(elapsedTime);
 				
-				if(!projectile.getBoundingBox().intersect(this.m_screenBoundingBox)){
+				if (!projectile.getBoundingBox().intersect(this.m_screenBoundingBox))
+				{
 					this.m_projectiles.remove(this);
 				}
 			}
@@ -193,16 +202,19 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		{
 			projectile.update(elapsedTime);
 			
-			if(!projectile.getBoundingBox().intersect(this.m_screenBoundingBox)){
+			if (!projectile.getBoundingBox().intersect(this.m_screenBoundingBox))
+			{
 				this.m_projectiles.remove(this);
 			}
 		}
 		
-		if(this.m_jumpStarted){
+		if (this.m_jumpStarted)
+		{
 			this.m_jumpHoldTime += elapsedTime;
-			if(this.m_jumpHoldTime >= 2 * GameThread.nano){
+			if (this.m_jumpHoldTime >= 2 * GameThread.nano)
+			{
 				this.m_jumpHoldTime = (long) Math.min(2 * GameThread.nano, this.m_jumpHoldTime);
-				float ratio = (float)(this.m_jumpHoldTime / (2 * GameThread.nano));
+				float ratio = (float) (this.m_jumpHoldTime / (2 * GameThread.nano));
 				this.m_player.jumpReleased(ratio);
 				this.m_jumpHoldTime = 0;
 				this.m_jumpStarted = false;
@@ -210,7 +222,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		}
 		
 		// Manage physics
-		//Player should be tested with every bounding box for physic contact.
+		// Player should be tested with every bounding box for physic contact.
 		
 	}
 	
@@ -232,13 +244,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				multiTouchY[a] = (int) event.getY(a);
 				
 				// If the touch is on first half of screen, jump
-				if (multiTouchX[a] < m_ScreenWidth / 2){
+				if (multiTouchX[a] < m_ScreenWidth / 2)
+				{
 					this.m_jumpHoldTime = System.currentTimeMillis();
 					this.m_player.jumpStarted();
 				}
 				
 				// If its on other side of screen, throw something
-				else{
+				else
+				{
+					mediaShooting.seekTo(0);
+					mediaShooting.start();
 					throwSomething(multiTouchX[a], multiTouchY[a]);
 				}
 			}
@@ -256,33 +272,36 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				multiTouchY[a] = (int) event.getY(a);
 				
 				// If the touch is on first half of screen, jump
-				if (multiTouchX[a] < m_ScreenWidth / 2 && this.m_jumpHoldTime > 0){
-					float ratio = (float)(this.m_jumpHoldTime / (2 * GameThread.nano));
+				if (multiTouchX[a] < m_ScreenWidth / 2 && this.m_jumpHoldTime > 0)
+				{
+					float ratio = (float) (this.m_jumpHoldTime / (2 * GameThread.nano));
 					this.m_player.jumpReleased(ratio);
 					this.m_jumpHoldTime = 0;
 					this.m_jumpStarted = false;
 				}
 			}
-				
+			
 		default:
 		}
 		return true;
 	}
 	
-	public void throwSomething(int posX, int posY){
+	public void throwSomething(int posX, int posY)
+	{
 		
 		// should this statement be in a synchronized too ? (it is drawn in diff thread)
 		m_collectibleScore++;
 		m_Data.setDolla(m_collectibleScore);
 		m_Activity.setData(m_Data);
 		
-		synchronized(this.m_projectiles){
+		synchronized (this.m_projectiles)
+		{
 			Rect playerBox = this.m_player.getBoundingBox();
 			Vector2D target = new Vector2D(posX, posY);
 			Vector2D direction = target.substract(m_player.getM_position());
 			direction.normalize();
 			direction = direction.multiply(1000);
-			m_projectiles.add(new Projectile(m_player.getM_position().getX() + playerBox.width()/2, m_player.getM_position().getY() + playerBox.height()/2, direction.getX(), direction.getY(), m_ScreenWidth, m_ScreenHeight, m_res));
+			m_projectiles.add(new Projectile(m_player.getM_position().getX() + playerBox.width() / 2, m_player.getM_position().getY() + playerBox.height() / 2, direction.getX(), direction.getY(), m_ScreenWidth, m_ScreenHeight, m_res));
 		}
 	}
 	
@@ -291,8 +310,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		return new Vector2D(m_ScreenWidth, m_ScreenHeight);
 	}
 	
-	public void ManageCollision(MapSegment segment){
-		switch(segment.getM_Type()){
+	public void ManageCollision(MapSegment segment)
+	{
+		switch (segment.getM_Type())
+		{
 		case MapSegmentGenerator.Floor:
 			GameView.m_player.setIsOnFloor(true);
 			break;
