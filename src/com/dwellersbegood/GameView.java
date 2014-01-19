@@ -24,7 +24,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 {
 	
 	public static final float GRAVITY = 600;
-	public static final float PLAYER_MIN_Y = 500;
+	public static float PLAYER_MIN_Y;
 	public static final boolean ENABLED_DEBUG = true;
 	private final int MAX_TOUCH_COUNT = 10;
 	
@@ -94,12 +94,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		this.m_ScreenWidth = this.getWidth();
 		this.m_ScreenHeight = this.getHeight();
 		
+		PLAYER_MIN_Y = m_ScreenHeight * 3 / 4;
+		
 		m_screenBoundingBox = new Rect(0, 0, this.m_ScreenWidth, this.m_ScreenHeight);
 		
 		// Create map
 		
 		m_map = new Map(this.m_ScreenWidth, this.m_ScreenHeight);
-		m_player = new Player((float)(m_ScreenWidth/7), (float)(m_ScreenHeight*0.10), 0, 50, m_ScreenWidth, m_ScreenHeight, m_res);
+		m_player = new Player(m_ScreenWidth / 7, (float) (m_ScreenHeight * 0.10), 0, 50, m_ScreenWidth, m_ScreenHeight, m_res);
 		m_enemy = new BallEnemy(800, 500, 0, 0, m_ScreenWidth, m_ScreenHeight, m_res);
 		
 		Log.d("GameView", "Starting thread");

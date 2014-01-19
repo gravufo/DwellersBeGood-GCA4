@@ -77,8 +77,6 @@ public class Player extends GObject
 			this.m_jumpingAnim.update(elapsedTime);
 		else
 		{
-			mediaJumpFall.seekTo(0);
-			mediaJumpFall.start();
 			this.m_runningAnim.update(elapsedTime);
 		}
 		if (m_jumping && m_jumpingAnim.getCurrentFrame() == 4 && !m_jumpStarted)
