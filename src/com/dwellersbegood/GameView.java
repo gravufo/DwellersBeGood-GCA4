@@ -64,7 +64,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	
 	private Rect m_xButtonRect;
 	private Bitmap m_xButtonBitmap;
-	private Paint m_xButtonPaint;
+	private Rect m_ResumeButtonRect;
+	private Bitmap m_ResumeButtonBitmap;
+	private Rect m_RestartButtonRect;
+	private Bitmap m_RestartButtonBitmap;
+	private Rect m_BackButtonRect;
+	private Bitmap m_BackButtonBitmap;
+	private Paint m_buttonPaint;
 	private int m_gamestate;
 	
 	public GameView(GameActivity activity, Context context)
@@ -85,9 +91,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		
 		this.m_collectibleScore = 0;
 		
-		this.m_xButtonPaint = new Paint();
-		this.m_xButtonPaint.setColor(Color.BLACK);
+		this.m_buttonPaint = new Paint();
+		this.m_buttonPaint.setColor(Color.BLACK);
 		this.m_xButtonBitmap = BitmapFactory.decodeResource(m_res, R.drawable.xbutton);
+		//this.m_ResumeButtonBitmap = BitmapFactory.decodeResource(m_res, R.drawable.resume);
+		//this.m_RestartButtonBitmap = BitmapFactory.decodeResource(m_res, R.drawable.restart);
+		//this.m_BackButtonBitmap = BitmapFactory.decodeResource(m_res, R.drawable.back);
 		this.m_gamestate = GAME;
 		
 		this.m_jumpHoldTime = 0;
@@ -121,9 +130,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		
 		m_screenBoundingBox = new Rect(0, 0, GameView.m_ScreenWidth, GameView.m_ScreenHeight);
 		
-		this.m_xButtonRect = new Rect(m_ScreenWidth - m_xButtonBitmap.getWidth() - 10,10,m_ScreenWidth - 10,10+m_xButtonBitmap.getHeight());
-		// Create map
+		/*this.m_xButtonRect = new Rect(m_ScreenWidth - m_xButtonBitmap.getWidth() - 10,10,m_ScreenWidth - 10,10+m_xButtonBitmap.getHeight());
+		this.m_ResumeButtonRect = new Rect(m_ScreenWidth/2 - m_ResumeButton.getWidth()/2, m_ScreenHeight/4 - m_ResumeButton.getHeight()/2,m_ScreenWidth/2 + m_ResumeButton.getWidth()/2,m_ScreenHeight/4 + m_ResumeButton.getHeight()/2);
+		this.m_RestartButtonRect = new Rect(m_ScreenWidth/2 - m_RestartButton.getWidth()/2, m_ScreenHeight/2 - m_RestartButton.getHeight()/2,m_ScreenWidth/2 + m_RestartButton.getWidth()/2,m_ScreenHeight/2 + m_RestartButton.getHeight()/2);
+		this.m_BackButtonRect = new Rect(m_ScreenWidth/2 - m_BackButton.getWidth()/2, 3*m_ScreenHeight/4 - m_BackButton.getHeight()/2,m_ScreenWidth/2 + m_BackButton.getWidth()/2,3*m_ScreenHeight/4 + m_BackButton.getHeight()/2);
+		*/
 		
+		// Create map
 		m_map = new Map(GameView.m_ScreenWidth, GameView.m_ScreenHeight);
 		m_player = new Player(m_ScreenWidth / 7, (float) (m_ScreenHeight * 0.10), 0, 50, m_ScreenWidth, m_ScreenHeight, m_res);
 		m_enemy = new BallEnemy(800, 500, 0, 0, m_ScreenWidth, m_ScreenHeight, m_res);
@@ -183,7 +196,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			
 			canvas.drawText(this.m_collectibleScore + "", 100, 40, this.m_collectibleScorePaint);
 			
-			canvas.drawBitmap(m_xButtonBitmap, null, m_xButtonRect, m_xButtonPaint);
+			canvas.drawBitmap(m_xButtonBitmap, null, m_xButtonRect, m_buttonPaint);
 			
 			if(m_gamestate == MENU){
 				canvas.drawColor(Color.argb(150,150,150,150));
