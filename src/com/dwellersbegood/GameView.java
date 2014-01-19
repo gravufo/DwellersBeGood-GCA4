@@ -201,7 +201,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				canvas.drawColor(Color.argb(150,150,150,150));
 			}
 			if(m_gamestate == GAMEOVER){
-				canvas.drawColor(Color.argb(150,150,150,150));
+				canvas.drawColor(Color.argb(200,40,60,40));
 			}
 		}
 	}
