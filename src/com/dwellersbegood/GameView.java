@@ -38,7 +38,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	private Resources m_res;
 	private BallEnemy m_enemy;
 	private ArrayList<Projectile> m_projectiles;
-	public static ArrayList<EnemyProjectile> m_enemyProjectilesToAdd;
 	private ArrayList<EnemyProjectile> m_enemyProjectiles;
 	private Map m_map;
 	private GData m_Data;
@@ -145,6 +144,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				}
 			}
 			
+			for (EnemyProjectile projectile : this.m_enemyProjectiles)
+			{
+				projectile.draw(canvas);
+			}
+			
 			canvas.drawText(this.m_collectibleScore+"", 100, 40, this.m_collectibleScorePaint);
 		}
 	}
@@ -185,7 +189,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			}
 		}
 		
-		for (EnemyProjectile projectile : this.m_enemyProjectilesToAdd)
+		for (EnemyProjectile projectile : this.m_enemyProjectiles)
 		{
 			projectile.update(elapsedTime);
 			

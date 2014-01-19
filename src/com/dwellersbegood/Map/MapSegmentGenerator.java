@@ -111,7 +111,7 @@ public class MapSegmentGenerator {
 		newSegment = makeSegment(type);
 		Vector2D newPosition = lastSegment.getTopLeftCorner();
 		
-		float height = newSegment.getHeight();;
+		float height = newSegment.getHeight();
 		switch(type)
 		{
 			case Enemy:
@@ -126,7 +126,7 @@ public class MapSegmentGenerator {
 				break;
 		}
 		
-		newPosition.add(new Vector2D(1,-1*height));
+		newPosition = newPosition.add(new Vector2D(1,-1*height));
 		newSegment.moveTopLeftTo(newPosition);
 		m_generatedFloating = true;
 	}

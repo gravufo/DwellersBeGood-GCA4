@@ -26,7 +26,7 @@ public class EnemyProjectile extends GObject
 		m_paint = new Paint();
 		m_paint.setColor(Color.BLACK);
 		
-		this.m_shootAnim = new GAnimation(BitmapFactory.decodeResource(this.m_res, R.drawable.laser_shoot), 6, 3, true);
+		this.m_shootAnim = new GAnimation(BitmapManager.getInstance().getBitmap(BitmapManager.Laser2), 8, 5, true);
 
 		boundingBox.set((int) m_position.getX() + leftWidthOffset, (int) m_position.getY() + topHeightOffset, (int) m_position.getX() + m_shootAnim.getWidth() - rightWidthOffset, (int) m_position.getY() + m_shootAnim.getHeight() - botHeightOffset);
 	}
@@ -50,7 +50,7 @@ public class EnemyProjectile extends GObject
 		if (!this.m_shootAnim.getDone())
 			this.m_shootAnim.update(elapsedTime);
 		
-		m_speed.setY(m_speed.getY() + GameView.GRAVITY * ((float) (elapsedTime / GameThread.nano)));
+		//m_speed.setY(m_speed.getY() + GameView.GRAVITY * ((float) (elapsedTime / GameThread.nano)));
 	}
 	
 }

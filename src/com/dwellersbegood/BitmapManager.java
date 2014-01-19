@@ -38,6 +38,7 @@ public class BitmapManager
 	public static final int Fire = 10;
 	public static final int Rock = 11;
 	public static final int Enemy = 12;
+	public static final int Laser2 = 13;
 	
 	public void loadBitmaps(Resources res)
 	{
@@ -54,6 +55,7 @@ public class BitmapManager
 		m_bitmapCollection.add(BitmapFactory.decodeResource(res, R.drawable.fireexample));
 		m_bitmapCollection.add(BitmapFactory.decodeResource(res, R.drawable.rockexample));
 		m_bitmapCollection.add(BitmapFactory.decodeResource(res, R.drawable.enemyexample));
+		m_bitmapCollection.add(BitmapFactory.decodeResource(res, R.drawable.anim_laser2));
 	}
 	
 	public Bitmap scaleToSize(Bitmap sprite, int desiredWidth, int desiredHeight)
