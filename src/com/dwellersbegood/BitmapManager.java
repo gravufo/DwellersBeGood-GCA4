@@ -75,8 +75,8 @@ public class BitmapManager
 	public static final int PlayerJump = 29;
 	
 	public static final int XButton = 30;
-	public static final int ResumeButton = 31;
-	public static final int RestartButton = 32;
+	public static final int ResumeButton = 32;
+	public static final int RestartButton = 31;
 	public static final int GameOver = 33;
 	public static final int BackButton = 34;
 	

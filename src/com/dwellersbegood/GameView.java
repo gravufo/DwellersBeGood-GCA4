@@ -9,9 +9,9 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.graphics.Paint.Align;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -95,7 +95,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		this.m_collectibleScorePaint.setTextSize(84);
 		this.m_collectibleScorePaint.setTextAlign(Align.LEFT);
 		
-		Typeface font = Typeface.createFromAsset(m_res.getAssets(), "fonts/woodbadge.ttf"); 
+		Typeface font = Typeface.createFromAsset(m_res.getAssets(), "fonts/woodbadge.ttf");
 		this.m_collectibleScorePaint.setTypeface(font);
 		
 		this.m_collectibleScore = 0;
@@ -210,7 +210,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				projectile.draw(canvas);
 			}
 			
-			canvas.drawText(this.m_collectibleScore + "", 100, 40, this.m_collectibleScorePaint);
+			canvas.drawText(this.m_collectibleScore + "", m_ScreenWidth / 20, m_ScreenHeight / 8, this.m_collectibleScorePaint);
 			
 			canvas.drawBitmap(m_xButtonBitmap, null, m_xButtonRect, m_buttonPaint);
 			

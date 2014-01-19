@@ -98,6 +98,8 @@ public class CoinSegment extends MapSegment
 	@Override
 	public void touchedByPlayer()
 	{
+		super.touchedByPlayer();
+		
 		if (!m_soundPlayed)
 		{
 			int index;
