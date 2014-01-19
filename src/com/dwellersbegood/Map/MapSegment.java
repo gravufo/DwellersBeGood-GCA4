@@ -9,6 +9,7 @@ import com.dwellersbegood.Vector2D;
 public abstract class MapSegment extends GObject{
 	
 	protected int m_Type;
+	protected boolean m_touchedPlayer = false;
 	
 	public int getM_Type()
 	{
@@ -43,6 +44,8 @@ public abstract class MapSegment extends GObject{
 	{
 		return this.m_position;
 	}
+	
+	public void touchedByPlayer(){m_touchedPlayer = true;};
 	
 	public abstract void draw(Canvas canvas);
 

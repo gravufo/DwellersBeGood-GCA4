@@ -1,5 +1,6 @@
 package com.dwellersbegood.Map;
 
+import java.security.acl.LastOwnerException;
 import java.util.Random;
 
 import com.dwellersbegood.GameView;
@@ -65,7 +66,7 @@ public class MapSegmentGenerator {
 		{
 			int danger = randomSeed.nextInt(100) + difficulty;
 			
-			if(danger > 30)
+			if(danger > 30 && lastSegmentType == Floor)
 			{
 				switch(randomSeed.nextInt(4))
 				{
