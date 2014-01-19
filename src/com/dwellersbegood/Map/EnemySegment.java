@@ -2,8 +2,11 @@ package com.dwellersbegood.Map;
 
 import com.dwellersbegood.BitmapManager;
 import com.dwellersbegood.GameView;
+import com.dwellersbegood.Projectile;
+import com.dwellersbegood.Vector2D;
 
 import android.graphics.Canvas;
+import android.graphics.Rect;
 
 public class EnemySegment extends MapSegment {
 	
@@ -31,17 +34,19 @@ public class EnemySegment extends MapSegment {
 		this.boundingBox.set((int)this.getM_position().getX(), (int)this.getM_position().getY(), (int)this.getM_position().getX() + this.getWidth(), (int)this.getM_position().getY() + this.getHeight());
 		
 		m_timeSinceLastShot += ellapsedTime;
-		if(m_timeSinceLastShot >= TIMETOSHOT){
-			fireAtPlayer();
-		}
 		
 		if(this.boundingBox.intersect(GameView.m_player.getBoundingBox())){
 			GameView.m_player.hitEnemy();
 		}
 	}
 	
-	public void fireAtPlayer(){
+	public boolean ShouldDrawShot(){
+		
+		return m_timeSinceLastShot >= TIMETOSHOT;
 		
 	}
-
+	
+	public void resetShotTimer(){
+		m_timeSinceLastShot = 0;
+	}
 }

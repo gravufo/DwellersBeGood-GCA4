@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.dwellersbegood.Map.EnemySegment;
 import com.dwellersbegood.Map.Map;
 import com.dwellersbegood.Map.MapSegment;
 import com.dwellersbegood.Map.MapSegmentGenerator;
@@ -37,6 +38,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	private Resources m_res;
 	private BallEnemy m_enemy;
 	private ArrayList<Projectile> m_projectiles;
+	public static ArrayList<EnemyProjectile> m_enemyProjectilesToAdd;
+	private ArrayList<EnemyProjectile> m_enemyProjectiles;
 	private Map m_map;
 	private GData m_Data;
 	private final int[] multiTouchX;
@@ -54,6 +57,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		getHolder().addCallback(this);
 		setFocusable(true);
 		this.m_projectiles = new ArrayList<Projectile>();
+		this.m_enemyProjectiles = new ArrayList<EnemyProjectile>();
 		
 		this.m_collectibleScorePaint = new Paint();
 		this.m_collectibleScorePaint.setColor(Color.RED);
@@ -152,6 +156,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		m_map.update(elapsedTime);
 		for(MapSegment segment:m_map.getMapSegments())
 		{
+			if(segment.getM_Type() == MapSegmentGenerator.Enemy){
+				EnemySegment enemy = (EnemySegment)segment;
+				if(enemy.ShouldDrawShot()){
+					Vector2D target = GameView.m_player.getM_position();
+					Vector2D direction = target.substract(enemy.getM_position());
+					direction.normalize();
+					direction = direction.multiply(1000);
+					m_enemyProjectiles.add(new EnemyProjectile(enemy.getM_position().getX(), enemy.getM_position().getY() + enemy.getBoundingBox().height()/2, direction.getX(), direction.getY(), m_ScreenWidth, m_ScreenHeight, m_res));
+					enemy.resetShotTimer();
+				}
+			}
 			if(m_player.getBoundingBox().intersect(segment.getBoundingBox()))
 				ManageCollision(segment);
 		}
@@ -167,6 +182,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				if(!projectile.getBoundingBox().intersect(this.m_screenBoundingBox)){
 					this.m_projectiles.remove(this);
 				}
+			}
+		}
+		
+		for (EnemyProjectile projectile : this.m_enemyProjectilesToAdd)
+		{
+			projectile.update(elapsedTime);
+			
+			if(!projectile.getBoundingBox().intersect(this.m_screenBoundingBox)){
+				this.m_projectiles.remove(this);
 			}
 		}
 		
@@ -269,6 +293,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			GameView.m_player.setIsOnFloor(true);
 			break;
 		case MapSegmentGenerator.Platform:
+			GameView.m_player.setIsOnFloor(true);
 			break;
 		case MapSegmentGenerator.Fire:
 			break;
@@ -279,10 +304,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		case MapSegmentGenerator.Enemy:
 			break;
 		case MapSegmentGenerator.HoleBegining:
+			GameView.m_player.setIsOnFloor(true);
 			break;
 		case MapSegmentGenerator.HoleMiddle:
 			break;
 		case MapSegmentGenerator.HoleEnding:
+			GameView.m_player.setIsOnFloor(true);
 			break;
 		}
 	}
