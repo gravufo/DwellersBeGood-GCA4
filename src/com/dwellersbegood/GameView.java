@@ -93,9 +93,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		this.m_buttonPaint = new Paint();
 		this.m_buttonPaint.setColor(Color.BLACK);
 		this.m_xButtonBitmap = BitmapFactory.decodeResource(m_res, R.drawable.xbutton);
-		//this.m_ResumeButtonBitmap = BitmapFactory.decodeResource(m_res, R.drawable.resume);
-		//this.m_RestartButtonBitmap = BitmapFactory.decodeResource(m_res, R.drawable.restart);
-		//this.m_BackButtonBitmap = BitmapFactory.decodeResource(m_res, R.drawable.back);
+		this.m_ResumeButtonBitmap = BitmapFactory.decodeResource(m_res, R.drawable.resume);
+		this.m_RestartButtonBitmap = BitmapFactory.decodeResource(m_res, R.drawable.restart);
+		this.m_BackButtonBitmap = BitmapFactory.decodeResource(m_res, R.drawable.back);
 		this.m_gamestate = GAME;
 		
 		this.m_jumpHoldTime = 0;
@@ -130,10 +130,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		m_screenBoundingBox = new Rect(0, 0, GameView.m_ScreenWidth, GameView.m_ScreenHeight);
 		
 		this.m_xButtonRect = new Rect(m_ScreenWidth - m_xButtonBitmap.getWidth() - 10,10,m_ScreenWidth - 10,10+m_xButtonBitmap.getHeight());
-		/*this.m_ResumeButtonRect = new Rect(m_ScreenWidth/2 - m_ResumeButton.getWidth()/2, m_ScreenHeight/4 - m_ResumeButton.getHeight()/2,m_ScreenWidth/2 + m_ResumeButton.getWidth()/2,m_ScreenHeight/4 + m_ResumeButton.getHeight()/2);
-		this.m_RestartButtonRect = new Rect(m_ScreenWidth/2 - m_RestartButton.getWidth()/2, m_ScreenHeight/2 - m_RestartButton.getHeight()/2,m_ScreenWidth/2 + m_RestartButton.getWidth()/2,m_ScreenHeight/2 + m_RestartButton.getHeight()/2);
-		this.m_BackButtonRect = new Rect(m_ScreenWidth/2 - m_BackButton.getWidth()/2, 3*m_ScreenHeight/4 - m_BackButton.getHeight()/2,m_ScreenWidth/2 + m_BackButton.getWidth()/2,3*m_ScreenHeight/4 + m_BackButton.getHeight()/2);
-		*/
+		this.m_ResumeButtonRect = new Rect(m_ScreenWidth/2 - m_ResumeButtonBitmap.getWidth()/2, m_ScreenHeight/4 - m_ResumeButtonBitmap.getHeight()/2,m_ScreenWidth/2 + m_ResumeButtonBitmap.getWidth()/2,m_ScreenHeight/4 + m_ResumeButtonBitmap.getHeight()/2);
+		this.m_RestartButtonRect = new Rect(m_ScreenWidth/2 - m_RestartButtonBitmap.getWidth()/2, m_ScreenHeight/2 - m_RestartButtonBitmap.getHeight()/2,m_ScreenWidth/2 + m_RestartButtonBitmap.getWidth()/2,m_ScreenHeight/2 + m_RestartButtonBitmap.getHeight()/2);
+		this.m_BackButtonRect = new Rect(m_ScreenWidth/2 - m_BackButtonBitmap.getWidth()/2, 3*m_ScreenHeight/4 - m_BackButtonBitmap.getHeight()/2,m_ScreenWidth/2 + m_BackButtonBitmap.getWidth()/2,3*m_ScreenHeight/4 + m_BackButtonBitmap.getHeight()/2);
+		
 		
 		// Create map
 		m_map = new Map(GameView.m_ScreenWidth, GameView.m_ScreenHeight);
@@ -199,9 +199,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			
 			if(m_gamestate == MENU){
 				canvas.drawColor(Color.argb(150,150,150,150));
+				
+				canvas.drawBitmap(m_ResumeButtonBitmap, null, this.m_ResumeButtonRect, this.m_buttonPaint);
+				canvas.drawBitmap(m_RestartButtonBitmap, null, this.m_RestartButtonRect, this.m_buttonPaint);
 			}
 			if(m_gamestate == GAMEOVER){
-				canvas.drawColor(Color.argb(200,40,60,40));
+				canvas.drawColor(Color.argb(200,0,0,0));
 			}
 		}
 	}
@@ -343,24 +346,34 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				multiTouchX[a] = (int) event.getX(a);
 				multiTouchY[a] = (int) event.getY(a);
 				
-				if(m_xButtonRect.contains(multiTouchX[a], multiTouchY[a])){
-					if(m_gamestate == GAME)
+				if(m_gamestate == GAME){
+					if(m_xButtonRect.contains(multiTouchX[a], multiTouchY[a])){
 						m_gamestate = MENU;
-					else if(m_gamestate == MENU)
+					}
+					else if (multiTouchX[a] < m_ScreenWidth / 2 && GameView.m_player.IsOnFloor())
+					{
+						this.m_jumpHoldTime = System.currentTimeMillis();
+						GameView.m_player.jumpStarted();
+					}
+					else
+					{
+						throwSomething(multiTouchX[a], multiTouchY[a]);
+					}
+				}
+				else if(m_gamestate == MENU){
+					if(m_xButtonRect.contains(multiTouchX[a], multiTouchY[a])){
 						m_gamestate = GAME;
+					}
+					else if(m_ResumeButtonRect.contains(multiTouchX[a], multiTouchY[a])){
+						m_gamestate = GAME;
+					}
+					else if(m_BackButtonRect.contains(multiTouchX[a], multiTouchY[a])){
+						// Return to main application
+						m_Activity.finish();
+					}
 				}
-				
-				// If the touch is on first half of screen, jump
-				else if (multiTouchX[a] < m_ScreenWidth / 2 && GameView.m_player.IsOnFloor() && m_gamestate == GAME)
-				{
-					this.m_jumpHoldTime = System.currentTimeMillis();
-					GameView.m_player.jumpStarted();
-				}
-				
-				// If its on other side of screen, throw something
-				else if(m_gamestate == GAME)
-				{
-					throwSomething(multiTouchX[a], multiTouchY[a]);
+				else if(m_gamestate == GAMEOVER){
+					
 				}
 			}
 			break;
