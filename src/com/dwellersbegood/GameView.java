@@ -39,18 +39,18 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	
 	public static Player m_player;
 	
-	private final GameActivity m_Activity;
+	private GameActivity m_Activity;
 	private GameThread m_Thread;
 	private static int m_ScreenWidth;
 	private static int m_ScreenHeight;
-	private final Paint m_collectibleScorePaint;
+	private Paint m_collectibleScorePaint;
 	private int m_collectibleScore;
-	private final Resources m_res;
-	private final ArrayList<Projectile> m_projectiles;
-	private final ArrayList<Projectile> m_projectilesToRemove;
-	private final ArrayList<EnemyProjectile> m_enemyProjectiles;
+	private Resources m_res;
+	private ArrayList<Projectile> m_projectiles;
+	private ArrayList<Projectile> m_projectilesToRemove;
+	private ArrayList<EnemyProjectile> m_enemyProjectiles;
 	private Map m_map;
-	private final GData m_Data;
+	private GData m_Data;
 	private int[] multiTouchX;
 	private int[] multiTouchY;
 	private Rect m_screenBoundingBox;

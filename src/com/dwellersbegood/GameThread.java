@@ -11,9 +11,9 @@ public class GameThread extends Thread
 	private long m_ElapsedThreadTime;
 	private long m_NewTime;
 	private long m_OldTime;
-	private final GameView m_gameView;
+	private GameView m_gameView;
 	
-	private final SurfaceHolder m_surfaceHolder;
+	private SurfaceHolder m_surfaceHolder;
 	
 	public GameThread(GameView gameView, SurfaceHolder surfaceHolder)
 	{

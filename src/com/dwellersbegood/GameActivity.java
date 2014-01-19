@@ -15,7 +15,7 @@ public class GameActivity extends Activity
 	
 	private GameView m_gameView;
 	private GData m_Data;
-	private MediaPlayer m_BackgroundMusic = MediaPlayer.create(MainActivity.getContext(), R.raw.aztec_dolla_music);
+	private MediaPlayer m_BackgroundMusic = SoundManager.getInstance().getPlayer(SoundManager.BACKGROUND_MUSIC);
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)

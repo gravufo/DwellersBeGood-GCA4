@@ -4,7 +4,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.Paint.Style;
 
 public abstract class GObject
 {
@@ -12,6 +11,8 @@ public abstract class GObject
 	protected Vector2D m_speed;
 	protected int m_screenWidth;
 	protected int m_screenHeight;
+	protected boolean m_touchedPlayer = false;
+	protected boolean m_soundPlayed = false;
 	
 	protected Rect boundingBox = new Rect();
 	protected int rightWidthOffset = 0;
@@ -55,7 +56,7 @@ public abstract class GObject
 	{
 		return boundingBox;
 	}
-
+	
 	public Vector2D getM_position()
 	{
 		return m_position;
@@ -75,4 +76,9 @@ public abstract class GObject
 	{
 		this.m_speed = m_speed;
 	}
+	
+	public void touchedByPlayer()
+	{
+		m_touchedPlayer = true;
+	};
 }

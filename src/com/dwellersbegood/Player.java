@@ -10,7 +10,7 @@ public class Player extends GObject
 {
 	
 	private Resources m_res;
-	private final Paint m_paint;
+	private Paint m_paint;
 	private GAnimation m_runningAnim;
 	private GAnimation m_jumpingAnim;
 	private boolean m_jumping, m_jumpStarted;
@@ -128,6 +128,9 @@ public class Player extends GObject
 	
 	public void setIsOnFloor(boolean isOnFloor)
 	{
+		if (!this.IsOnFloor() && isOnFloor)
+			SoundManager.getInstance().getPlayer(SoundManager.JUMP_FALL).start();
+		
 		this.m_isOnFloor = isOnFloor;
 	}
 	
