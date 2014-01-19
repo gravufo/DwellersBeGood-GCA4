@@ -85,7 +85,7 @@ public class CoinSegment extends MapSegment {
 					(int) this.getM_position().getY() + this.getHeight());
 		} else {
 			m_position.setY(m_position.getY()
-					+ (float) (GameView.getScreenSize().getY() * 0.5
+					- (float) (GameView.getScreenSize().getY() * 0.5
 							* elapsedTime / GameThread.nano));
 		}
 	}

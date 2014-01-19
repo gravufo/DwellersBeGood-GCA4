@@ -128,7 +128,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		GameView.m_ScreenHeight = this.getHeight();
 		
 		LEVEL_FLOOR = (float) (GameView.m_ScreenHeight * 0.65);
-		LEVEL_PLATFORM = (float) (GameView.m_ScreenHeight * 0.50);
+		LEVEL_PLATFORM = (float) (GameView.m_ScreenHeight * 0.60);
 		
 		m_screenBoundingBox = new Rect(0, 0, GameView.m_ScreenWidth, GameView.m_ScreenHeight);
 		

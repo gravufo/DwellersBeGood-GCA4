@@ -22,11 +22,11 @@ public class Map extends GObject {
 	
 	public Map(int screenWidth, int screenHeight){
 		bgPos = 0;
-		bgSpeed = -100;
+		bgSpeed = -50;
 		m_background = BitmapManager.getInstance().getBitmap(BitmapManager.Background);
 		m_mapSegments = new LinkedList<MapSegment>();
 		m_mapSegments.add(MapSegmentGenerator.Instance().getLastSegment());
-		addStartingFloors(30);
+		addStartingFloors(10);
 	}
 	
 	public void draw(Canvas canvas)
