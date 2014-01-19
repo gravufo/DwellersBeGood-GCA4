@@ -5,9 +5,14 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 
 public class GameActivity extends Activity
 {
@@ -38,6 +43,36 @@ public class GameActivity extends Activity
 	public void setData(GData data)
 	{
 		m_Data = data;
+	}
+	
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		this.m_gameView.setPause(true);
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	builder.setMessage("Go To The Homemenu ?")
+    	       .setCancelable(false)
+    	       .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+    	           public void onClick(DialogInterface dialog, int id) {
+    	               finish();
+    	           }
+    	       })
+    	       .setNegativeButton("No", new DialogInterface.OnClickListener() {
+    	           public void onClick(DialogInterface dialog, int id) {
+    	                dialog.cancel();   	 
+    	           }
+    	       });
+    	AlertDialog alert = builder.create();
+    	alert.show();
+		return alert;
+	}
+	
+	@Override
+	// Si la touche back est pressé, on retourne au menu
+	public boolean onKeyDown(int keyCode, KeyEvent event)  {
+	    if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+	    	this.onCreateDialog(5);
+	    }
+	    return false;
 	}
 	
 	@Override
@@ -78,5 +113,24 @@ public class GameActivity extends Activity
 			Log.e("serializeObject", "error", ioe);
 		}
 		super.onPause();
+	}
+	
+	@Override
+	public void finish() {
+		try
+		{
+			FileOutputStream fos = this.openFileOutput("Data", Context.MODE_PRIVATE);
+			ObjectOutputStream os = new ObjectOutputStream(fos);
+			os.writeObject(this.m_Data);
+			os.close();
+		}
+		catch (IOException ioe)
+		{
+			Log.e("serializeObject", "error", ioe);
+		}
+		Intent data = new Intent();
+		this.setResult(RESULT_OK, data);
+		System.gc();
+		super.finishActivity(1);
 	}
 }

@@ -25,7 +25,7 @@ public class Map extends GObject {
 		bgSpeed = -50;
 		m_background = BitmapManager.getInstance().getBitmap(BitmapManager.Background);
 		m_mapSegments = new LinkedList<MapSegment>();
-		m_mapSegments.add(MapSegmentGenerator.Instance().getLastSegment());
+		m_mapSegments.add(MapSegmentGenerator.Instance().restartGenerator());
 		addStartingFloors(10);
 	}
 	

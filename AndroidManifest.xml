@@ -36,25 +36,6 @@
                 android:value="com.example.dwellersbegood.MainActivity" />
         </activity>
         <activity
-            android:name="com.dwellersbegood.MultiplayerConnectionActivity"
-            android:label="@string/title_activity_multiplayer_connection"
-            android:parentActivityName="com.dwellersbegood.MainActivity"
-            android:screenOrientation="landscape" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.dwellersbegood.MainActivity" />
-        </activity>
-        <activity
-            android:name="com.dwellersbegood.SearchDevicesActivity"
-            android:label="@string/title_activity_search_devices"
-            android:parentActivityName="com.dwellersbegood.MainActivity"
-            android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Dialog" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.dwellersbegood.MainActivity" />
-        </activity>
-        <activity
             android:name="com.dwellersbegood.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName="com.dwellersbegood.MainActivity"

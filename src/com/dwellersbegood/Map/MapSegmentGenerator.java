@@ -170,4 +170,12 @@ public class MapSegmentGenerator {
 		generatePathSegment(Floor);
 		return newSegment;
 	}
+
+	public MapSegment restartGenerator()
+	{
+		lastSegment = makeSegment(Floor);
+		lastSegmentType = Floor;
+		
+		return lastSegment;
+	}
 }

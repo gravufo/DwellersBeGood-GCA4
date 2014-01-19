@@ -3,6 +3,7 @@ package com.dwellersbegood;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -45,10 +46,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	private static int m_ScreenHeight;
 	private final Paint m_collectibleScorePaint;
 	private int m_collectibleScore;
-	private final Resources m_res;
-	private final ArrayList<Projectile> m_projectiles;
-	private final ArrayList<Projectile> m_projectilesToRemove;
-	private final ArrayList<EnemyProjectile> m_enemyProjectiles;
+	private Resources m_res;
+	private ArrayList<Projectile> m_projectiles;
+	private ArrayList<Projectile> m_projectilesToRemove;
+	private ArrayList<EnemyProjectile> m_enemyProjectiles;
 	private Map m_map;
 	private final GData m_Data;
 	private int[] multiTouchX;
@@ -73,6 +74,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	private Bitmap m_GameOverButtonBitmap;
 	private Paint m_buttonPaint;
 	private int m_gamestate;
+	
+	private boolean m_leaveGame;
 	
 	public GameView(GameActivity activity, Context context)
 	{
@@ -103,6 +106,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		
 		this.m_jumpHoldTime = 0;
 		this.m_jumpStarted = true;
+		
+		m_leaveGame = false;
 		
 		mediaShooting.setLooping(false);
 		mediaShooting.setVolume((float) 0.1, (float) 0.1);
@@ -205,7 +210,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				canvas.drawColor(Color.argb(200,0,0,0));
 				
 				canvas.drawBitmap(m_ResumeButtonBitmap, null, this.m_ResumeButtonRect, this.m_buttonPaint);
-				canvas.drawBitmap(m_BackButtonBitmap, null, this.m_RestartButtonRect, this.m_buttonPaint);
+				canvas.drawBitmap(m_BackButtonBitmap, null, this.m_BackButtonRect, this.m_buttonPaint);
 			}
 			if(m_gamestate == GAMEOVER){
 				canvas.drawColor(Color.argb(200,0,0,0));
@@ -332,7 +337,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			}
 		}
 		else if(m_gamestate == MENU){
-			
 		}
 		
 	}
@@ -357,7 +361,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 					if(m_xButtonRect.contains(multiTouchX[a], multiTouchY[a])){
 						m_gamestate = MENU;
 					}
-					else if (multiTouchX[a] < m_ScreenWidth / 2 && GameView.m_player.IsOnFloor())
+					else if (multiTouchX[a] < m_ScreenWidth / 2)
 					{
 						this.m_jumpHoldTime = System.currentTimeMillis();
 						GameView.m_player.jumpStarted();
@@ -376,7 +380,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 					}
 					else if(m_BackButtonRect.contains(multiTouchX[a], multiTouchY[a])){
 						// Return to main application
+						Intent i = new Intent(m_Activity,MainActivity.class);
+
+						  i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+						  m_Activity.startActivity(i);
+
 						m_Activity.finish();
+						this.m_leaveGame=true;
 					}
 				}
 				else if(m_gamestate == GAMEOVER){
@@ -384,8 +394,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 						m_gamestate = GAME;
 					}
 					else if(m_BackButtonRect.contains(multiTouchX[a], multiTouchY[a])){
-						// Return to main application
+						Intent i = new Intent(m_Activity,MainActivity.class);
+
+						  i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+						  m_Activity.startActivity(i);
+
 						m_Activity.finish();
+						this.m_leaveGame=true;
 					}
 				}
 			}
@@ -472,5 +487,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			GameView.m_player.setIsOnFloor(true);
 			break;
 		}
+	}
+	
+	public void setPause(boolean pause){
+		m_Thread.setRunning(!pause);
 	}
 }
