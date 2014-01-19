@@ -200,12 +200,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				}
 				break;
 			case MapSegmentGenerator.Fire:
-				break;
 			case MapSegmentGenerator.Rock:
-				break;
 			case MapSegmentGenerator.Coin:
-				break;
 			case MapSegmentGenerator.Enemy:
+				if(segment.getBoundingBox().intersect(m_player.getBoundingBox()))
+					segment.touchedByPlayer();
 				break;
 			case MapSegmentGenerator.HoleBegining:
 				//GameView.m_player.setIsOnFloor(true);
