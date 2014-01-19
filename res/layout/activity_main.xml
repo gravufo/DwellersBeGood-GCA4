@@ -8,7 +8,7 @@
     <LinearLayout
         android:id="@+id/LinearLayout2"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dip"
         android:layout_weight="1"
         android:gravity="center_horizontal"
         android:orientation="vertical"
@@ -34,15 +34,6 @@
             android:layout_marginTop="20dip"
             android:onClick="SingleplayerMode"
             android:text="@string/main_menu_buttonSingle" />
-
-        <Button
-            android:id="@+id/buttonSettings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dip"
-            android:layout_marginTop="20dip"
-            android:onClick="Settings"
-            android:text="@string/main_menu_buttonSettings" />
 
         <Button
             android:id="@+id/buttonQuit"
