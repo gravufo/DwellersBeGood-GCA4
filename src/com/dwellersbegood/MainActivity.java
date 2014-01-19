@@ -8,6 +8,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+<<<<<<< HEAD
+=======
+import android.graphics.Typeface;
+>>>>>>> a52f9931ed6a1ad5fff68cab5737899c9ebc5cd5
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,10 +34,11 @@ public class MainActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		this.m_Res = getResources();
+		
 		// setContentView(R.layout.activity_main);
 		
 		context = getApplicationContext();
-		
+
 		try
 		{
 			FileInputStream fis = this.openFileInput("Data");
