@@ -11,6 +11,7 @@ public class PlatformSegment extends MapSegment
 	
 	public PlatformSegment()
 	{
+		m_Type = MapSegmentGenerator.Platform;
 		switch(loopIndex)
 		{
 			case 0:

@@ -101,4 +101,8 @@ public class Player extends GObject
 		this.m_isOnFloor = isOnFloor;
 	}
 	
+	public void hitEnemy(){
+		
+	}
+	
 }

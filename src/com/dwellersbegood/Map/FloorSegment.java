@@ -14,6 +14,7 @@ public class FloorSegment extends MapSegment {
 
 	FloorSegment()
 	{
+		m_Type = MapSegmentGenerator.Floor;
 		switch(loopIndex)
 		{
 			case 0:
@@ -48,5 +49,5 @@ public class FloorSegment extends MapSegment {
 			GameView.m_player.setIsOnFloor(true);
 		}
 	}
-
+	
 }

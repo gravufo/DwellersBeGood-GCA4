@@ -3,6 +3,11 @@ package com.dwellersbegood.Map;
 import android.graphics.Canvas;
 
 public class FireSegment extends MapSegment {
+	
+	
+	public FireSegment(){
+		m_Type = MapSegmentGenerator.Fire;
+	}
 
 	@Override
 	public void draw(Canvas canvas) {

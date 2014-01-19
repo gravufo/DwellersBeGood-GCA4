@@ -11,6 +11,7 @@ public class CoinSegment extends MapSegment {
 
 	public CoinSegment()
 	{
+		m_Type = MapSegmentGenerator.Coin;
 		m_image = BitmapManager.getInstance().getBitmap(BitmapManager.Coin);
 	}
 	

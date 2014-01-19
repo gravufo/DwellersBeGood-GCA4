@@ -15,6 +15,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.dwellersbegood.Map.Map;
+import com.dwellersbegood.Map.MapSegment;
+import com.dwellersbegood.Map.MapSegmentGenerator;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback
 {
@@ -148,6 +150,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		// On update la partie si celle-ci n'est pas terminé
 		m_player.setIsOnFloor(false);
 		m_map.update(elapsedTime);
+		for(MapSegment segment:m_map.getMapSegments())
+		{
+			if(m_player.getBoundingBox().intersect(segment.getBoundingBox()))
+				ManageCollision(segment);
+		}
 		m_player.update(elapsedTime);
 		m_enemy.update(elapsedTime);
 		
@@ -250,8 +257,33 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			m_projectiles.add(new Projectile(m_player.getM_position().getX() + playerBox.width()/2, m_player.getM_position().getY() + playerBox.height()/2, direction.getX(), direction.getY(), m_ScreenWidth, m_ScreenHeight, m_res));
 		}
 	}
+	
 	public static Vector2D getScreenSize()
 	{
 		return new Vector2D(m_ScreenWidth, m_ScreenHeight);
+	}
+	
+	public void ManageCollision(MapSegment segment){
+		switch(segment.getM_Type()){
+		case MapSegmentGenerator.Floor:
+			GameView.m_player.setIsOnFloor(true);
+			break;
+		case MapSegmentGenerator.Platform:
+			break;
+		case MapSegmentGenerator.Fire:
+			break;
+		case MapSegmentGenerator.Rock:
+			break;
+		case MapSegmentGenerator.Coin:
+			break;
+		case MapSegmentGenerator.Enemy:
+			break;
+		case MapSegmentGenerator.HoleBegining:
+			break;
+		case MapSegmentGenerator.HoleMiddle:
+			break;
+		case MapSegmentGenerator.HoleEnding:
+			break;
+		}
 	}
 }

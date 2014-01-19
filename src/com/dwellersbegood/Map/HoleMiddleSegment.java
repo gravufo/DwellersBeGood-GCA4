@@ -8,6 +8,7 @@ public class HoleMiddleSegment extends MapSegment
 {
 	public HoleMiddleSegment()
 	{
+		m_Type = MapSegmentGenerator.HoleMiddle;
 		m_image = BitmapManager.getInstance().getBitmap(BitmapManager.HoleMiddle);
 	}
 	

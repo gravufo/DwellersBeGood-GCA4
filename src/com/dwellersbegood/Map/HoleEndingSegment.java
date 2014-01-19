@@ -8,6 +8,7 @@ public class HoleEndingSegment extends MapSegment {
 
 	public HoleEndingSegment()
 	{
+		m_Type = MapSegmentGenerator.HoleEnding;
 		m_image = BitmapManager.getInstance().getBitmap(BitmapManager.HoleEnding);
 	}
 	

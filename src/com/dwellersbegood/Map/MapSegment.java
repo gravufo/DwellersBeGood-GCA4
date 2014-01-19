@@ -8,6 +8,13 @@ import com.dwellersbegood.Vector2D;
 
 public abstract class MapSegment extends GObject{
 	
+	protected int m_Type;
+	
+	public int getM_Type()
+	{
+		return m_Type;
+	}
+
 	protected Bitmap m_image;
 	
 	public void moveTopLeftTo(Vector2D position)

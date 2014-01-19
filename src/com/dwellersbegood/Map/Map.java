@@ -91,4 +91,8 @@ public class Map extends GObject {
 		}
 		System.out.println("");
 	}
+	
+	public LinkedList<MapSegment> getMapSegments(){
+		return m_mapSegments;
+	}
 }

@@ -8,6 +8,7 @@ public class HoleBeginingSegment extends MapSegment {
 
 	public HoleBeginingSegment()
 	{
+		m_Type = MapSegmentGenerator.HoleBegining;
 		m_image = BitmapManager.getInstance().getBitmap(BitmapManager.HoleBeginning);
 		
 	}

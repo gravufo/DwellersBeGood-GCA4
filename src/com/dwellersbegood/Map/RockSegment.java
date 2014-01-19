@@ -1,8 +1,16 @@
 package com.dwellersbegood.Map;
 
+import com.dwellersbegood.BitmapManager;
+
 import android.graphics.Canvas;
 
 public class RockSegment extends MapSegment {
+	
+	public RockSegment()
+	{
+		m_Type = MapSegmentGenerator.Rock;
+		m_image = BitmapManager.getInstance().getBitmap(BitmapManager.HoleMiddle);
+	}
 
 	@Override
 	public void draw(Canvas canvas) {
