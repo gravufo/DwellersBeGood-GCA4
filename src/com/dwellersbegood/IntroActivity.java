@@ -1,14 +1,11 @@
 package com.dwellersbegood;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 
 public class IntroActivity extends Activity
 {
@@ -37,51 +34,50 @@ public class IntroActivity extends Activity
 		new PrefetchData().execute();
 	}
 	
-	public void setLoadingCompleted(boolean completed){
+	public void setLoadingCompleted(boolean completed)
+	{
 		m_loadingCompleted = completed;
 	}
-	public boolean getLoadingCompleted(){
+	
+	public boolean getLoadingCompleted()
+	{
 		return m_loadingCompleted;
 	}
-	
 	
 	/**
 	 * Async Task to make http call
 	 */
-	private class PrefetchData extends AsyncTask<Void, Void, Void> {
-
+	private class PrefetchData extends AsyncTask<Void, Void, Void>
+	{
+		
 		@Override
-		protected void onPreExecute() {
+		protected void onPreExecute()
+		{
 			super.onPreExecute();
-			// before making http calls			
-
+			// before making http calls
+			
 		}
-
+		
 		@Override
-		protected Void doInBackground(Void... arg0) {
+		protected Void doInBackground(Void... arg0)
+		{
 			/*
-			 * Will make http call here This call will download required data
-			 * before launching the app 
-			 * example: 
-			 * 1. Downloading and storing in SQLite 
-			 * 2. Downloading images 
-			 * 3. Fetching and parsing the xml / json 
-			 * 4. Sending device information to server 
-			 * 5. etc.,
+			 * Will make http call here This call will download required data before launching the app example: 1. Downloading and storing in SQLite 2. Downloading images 3. Fetching and parsing the xml / json 4. Sending device information to server 5. etc.,
 			 */
 			BitmapManager.getInstance().loadBitmaps(m_Res, m_ScreenWidth, m_ScreenHeight);
-			
+			SoundManager.getInstance().loadSfx(m_Res);
 			return null;
 		}
-
+		
 		@Override
-		protected void onPostExecute(Void result) {
+		protected void onPostExecute(Void result)
+		{
 			super.onPostExecute(result);
 			// close this activity
 			Log.d("Intro", "Finished loading SHITSS ********* ");
 			setLoadingCompleted(true);
-			//finish();
+			// finish();
 		}
-
+		
 	}
 }

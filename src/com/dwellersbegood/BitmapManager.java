@@ -1,6 +1,6 @@
 package com.dwellersbegood;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -24,11 +24,11 @@ public class BitmapManager
 	{
 	}
 	
-	private final Vector<Bitmap> m_bitmapCollection = new Vector<Bitmap>();
+	private ArrayList<Bitmap> m_bitmapCollection = new ArrayList<Bitmap>();
 	
-	public static final float FirstFloorWidth = (float)0.2;
-	public static final float CoinsHeight = (float)0.12;
-	public static final float FloatingPlatformsWidth = (float)0.2;
+	public static final float FirstFloorWidth = (float) 0.2;
+	public static final float CoinsHeight = (float) 0.12;
+	public static final float FloatingPlatformsWidth = (float) 0.2;
 	public static final float EnemyHeight = (float) 0.35;
 	public static final float Rock1Width = (float) 0.15;
 	public static final float Rock2Width = (float) 0.10;
@@ -36,7 +36,7 @@ public class BitmapManager
 	public static final float Torch1Height = (float) 0.30;
 	public static final float Torch2Width = (float) 0.30;
 	public static final float FireAnimeHeight = (float) 0.15;
-	public static final float Laser2AnimWidth = (float) 0.10*5;
+	public static final float Laser2AnimWidth = (float) 0.10 * 5;
 	public static final float PlayerHeight = (float) 0.3;
 	
 	public static final int Background = 0;
@@ -72,49 +72,49 @@ public class BitmapManager
 	
 	public void loadBitmaps(Resources res, int width, int height)
 	{
-		m_bitmapCollection.add(scaleToSizeByHeight(BitmapFactory.decodeResource(res, R.drawable.loop_bg_cut),1,height));
+		m_bitmapCollection.add(scaleToSizeByHeight(BitmapFactory.decodeResource(res, R.drawable.loop_bg), 1, height));
 		
 		Bitmap plate = BitmapFactory.decodeResource(res, R.drawable.plateforme1_2);
 		float ratio = getFloorScaling(plate, FirstFloorWidth, width);
-		////
-		m_bitmapCollection.add(scaleByPercentage(BitmapFactory.decodeResource(res, R.drawable.plateforme1_2),ratio));
-		m_bitmapCollection.add(scaleByPercentage(BitmapFactory.decodeResource(res, R.drawable.plateforme2),ratio));
-		m_bitmapCollection.add(scaleByPercentage(BitmapFactory.decodeResource(res, R.drawable.plateforme3),ratio));
-		m_bitmapCollection.add(scaleByPercentage(BitmapFactory.decodeResource(res, R.drawable.plateforme4),ratio));
-		m_bitmapCollection.add(scaleByPercentage(BitmapFactory.decodeResource(res, R.drawable.plateforme5),ratio));
-		m_bitmapCollection.add(scaleByPercentage(BitmapFactory.decodeResource(res, R.drawable.plateforme6),ratio));
-		m_bitmapCollection.add(scaleByPercentage(BitmapFactory.decodeResource(res, R.drawable.plateforme7),ratio));
-		m_bitmapCollection.add(scaleByPercentage(BitmapFactory.decodeResource(res, R.drawable.plateforme8),ratio));
-		////
-		m_bitmapCollection.add(scaleToSizeByHeight(BitmapFactory.decodeResource(res, R.drawable.coin),CoinsHeight,height));
-		////
-		m_bitmapCollection.add(scaleByPercentage(BitmapFactory.decodeResource(res, R.drawable.hole_beginning),ratio));
-		m_bitmapCollection.add(scaleByPercentage(BitmapFactory.decodeResource(res, R.drawable.hole_end),ratio));
-		m_bitmapCollection.add(scaleByPercentage(BitmapFactory.decodeResource(res, R.drawable.hole),ratio));
-		////
-		m_bitmapCollection.add(scaleToSizeByWidth(BitmapFactory.decodeResource(res, R.drawable.plateforme_flottante1),FloatingPlatformsWidth,width));
-		m_bitmapCollection.add(scaleToSizeByWidth(BitmapFactory.decodeResource(res, R.drawable.plateforme_flottante2),FloatingPlatformsWidth,width));
-		////
+		// //
+		m_bitmapCollection.add(scaleByPercentage(BitmapFactory.decodeResource(res, R.drawable.plateforme1_2), ratio));
+		m_bitmapCollection.add(scaleByPercentage(BitmapFactory.decodeResource(res, R.drawable.plateforme2), ratio));
+		m_bitmapCollection.add(scaleByPercentage(BitmapFactory.decodeResource(res, R.drawable.plateforme3), ratio));
+		m_bitmapCollection.add(scaleByPercentage(BitmapFactory.decodeResource(res, R.drawable.plateforme4), ratio));
+		m_bitmapCollection.add(scaleByPercentage(BitmapFactory.decodeResource(res, R.drawable.plateforme5), ratio));
+		m_bitmapCollection.add(scaleByPercentage(BitmapFactory.decodeResource(res, R.drawable.plateforme6), ratio));
+		m_bitmapCollection.add(scaleByPercentage(BitmapFactory.decodeResource(res, R.drawable.plateforme7), ratio));
+		m_bitmapCollection.add(scaleByPercentage(BitmapFactory.decodeResource(res, R.drawable.plateforme8), ratio));
+		// //
+		m_bitmapCollection.add(scaleToSizeByHeight(BitmapFactory.decodeResource(res, R.drawable.coin), CoinsHeight, height));
+		// //
+		m_bitmapCollection.add(scaleByPercentage(BitmapFactory.decodeResource(res, R.drawable.hole_beginning), ratio));
+		m_bitmapCollection.add(scaleByPercentage(BitmapFactory.decodeResource(res, R.drawable.hole_end), ratio));
+		m_bitmapCollection.add(scaleByPercentage(BitmapFactory.decodeResource(res, R.drawable.hole), ratio));
+		// //
+		m_bitmapCollection.add(scaleToSizeByWidth(BitmapFactory.decodeResource(res, R.drawable.plateforme_flottante1), FloatingPlatformsWidth, width));
+		m_bitmapCollection.add(scaleToSizeByWidth(BitmapFactory.decodeResource(res, R.drawable.plateforme_flottante2), FloatingPlatformsWidth, width));
+		// //
 		m_bitmapCollection.add(BitmapFactory.decodeResource(res, R.drawable.anim_laser2));
-		///
-		m_bitmapCollection.add(scaleToSizeByHeight(BitmapFactory.decodeResource(res, R.drawable.ennemi1),EnemyHeight,height));
-		m_bitmapCollection.add(scaleToSizeByHeight(BitmapFactory.decodeResource(res, R.drawable.ennemi2),EnemyHeight,height));
-		m_bitmapCollection.add(scaleToSizeByHeight(BitmapFactory.decodeResource(res, R.drawable.ennemi3),EnemyHeight,height));
-		///
-		m_bitmapCollection.add(scaleToSizeByWidth(BitmapFactory.decodeResource(res, R.drawable.roche1),Rock1Width,width));
-		m_bitmapCollection.add(scaleToSizeByWidth(BitmapFactory.decodeResource(res, R.drawable.roche2),Rock2Width,width));
-		m_bitmapCollection.add(scaleToSizeByWidth(BitmapFactory.decodeResource(res, R.drawable.roche3),Rock3Width,width));
-		///
-		m_bitmapCollection.add(scaleToSizeByHeight(BitmapFactory.decodeResource(res, R.drawable.anim_mort_statue),EnemyHeight,height));
-		m_bitmapCollection.add(scaleToSizeByHeight(BitmapFactory.decodeResource(res, R.drawable.sac),CoinsHeight,height));
-		m_bitmapCollection.add(scaleToSizeByHeight(BitmapFactory.decodeResource(res, R.drawable.gem),CoinsHeight,height));
-		///
-		m_bitmapCollection.add(scaleToSizeByHeight(BitmapFactory.decodeResource(res, R.drawable.torche1),Torch1Height,height));
-		m_bitmapCollection.add(scaleToSizeByWidth(BitmapFactory.decodeResource(res, R.drawable.torche2),Torch2Width,width));
-		m_bitmapCollection.add(scaleToSizeByHeight(BitmapFactory.decodeResource(res, R.drawable.fireanim),FireAnimeHeight,height));
+		// /
+		m_bitmapCollection.add(scaleToSizeByHeight(BitmapFactory.decodeResource(res, R.drawable.ennemi1), EnemyHeight, height));
+		m_bitmapCollection.add(scaleToSizeByHeight(BitmapFactory.decodeResource(res, R.drawable.ennemi2), EnemyHeight, height));
+		m_bitmapCollection.add(scaleToSizeByHeight(BitmapFactory.decodeResource(res, R.drawable.ennemi3), EnemyHeight, height));
+		// /
+		m_bitmapCollection.add(scaleToSizeByWidth(BitmapFactory.decodeResource(res, R.drawable.roche1), Rock1Width, width));
+		m_bitmapCollection.add(scaleToSizeByWidth(BitmapFactory.decodeResource(res, R.drawable.roche2), Rock2Width, width));
+		m_bitmapCollection.add(scaleToSizeByWidth(BitmapFactory.decodeResource(res, R.drawable.roche3), Rock3Width, width));
+		// /
+		m_bitmapCollection.add(scaleToSizeByHeight(BitmapFactory.decodeResource(res, R.drawable.anim_mort_statue), EnemyHeight, height));
+		m_bitmapCollection.add(scaleToSizeByHeight(BitmapFactory.decodeResource(res, R.drawable.sac), CoinsHeight, height));
+		m_bitmapCollection.add(scaleToSizeByHeight(BitmapFactory.decodeResource(res, R.drawable.gem), CoinsHeight, height));
+		// /
+		m_bitmapCollection.add(scaleToSizeByHeight(BitmapFactory.decodeResource(res, R.drawable.torche1), Torch1Height, height));
+		m_bitmapCollection.add(scaleToSizeByWidth(BitmapFactory.decodeResource(res, R.drawable.torche2), Torch2Width, width));
+		m_bitmapCollection.add(scaleToSizeByHeight(BitmapFactory.decodeResource(res, R.drawable.fireanim), FireAnimeHeight, height));
 		//
-		m_bitmapCollection.add(scaleToSizeByHeight(BitmapFactory.decodeResource(res, R.drawable.player_run),PlayerHeight,height));
-		m_bitmapCollection.add(scaleToSizeByHeight(BitmapFactory.decodeResource(res, R.drawable.player_jump),PlayerHeight,height));
+		m_bitmapCollection.add(scaleToSizeByHeight(BitmapFactory.decodeResource(res, R.drawable.player_run), PlayerHeight, height));
+		m_bitmapCollection.add(scaleToSizeByHeight(BitmapFactory.decodeResource(res, R.drawable.player_jump), PlayerHeight, height));
 		
 		Log.d("BitmapManager", "Loaded all bitmap");
 	}
@@ -122,7 +122,7 @@ public class BitmapManager
 	public Bitmap scaleToSizeByWidth(Bitmap sprite, float widthPercentage, int screenWidth)
 	{
 		Matrix matrix = new Matrix();
-		float scale = ((float) screenWidth*widthPercentage / (float) sprite.getWidth());
+		float scale = (screenWidth * widthPercentage / sprite.getWidth());
 		
 		matrix.postScale(scale, scale);
 		return Bitmap.createBitmap(sprite, 0, 0, sprite.getWidth(), sprite.getHeight(), matrix, true);
@@ -131,7 +131,7 @@ public class BitmapManager
 	public Bitmap scaleToSizeByHeight(Bitmap sprite, float heightPercentage, int screenHeight)
 	{
 		Matrix matrix = new Matrix();
-		float scale = ((float) screenHeight*heightPercentage / (float) sprite.getHeight());
+		float scale = (screenHeight * heightPercentage / sprite.getHeight());
 		
 		matrix.postScale(scale, scale);
 		return Bitmap.createBitmap(sprite, 0, 0, sprite.getWidth(), sprite.getHeight(), matrix, true);
@@ -147,7 +147,7 @@ public class BitmapManager
 	
 	private float getFloorScaling(Bitmap sprite, float widthPercentage, int screenWidth)
 	{
-		return ((float) screenWidth*widthPercentage / (float) sprite.getWidth());
+		return (screenWidth * widthPercentage / sprite.getWidth());
 	}
 	
 	public Bitmap getBitmap(int index)

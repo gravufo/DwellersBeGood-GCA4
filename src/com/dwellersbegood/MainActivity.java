@@ -8,12 +8,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
 public class MainActivity extends Activity
 {
@@ -23,7 +21,7 @@ public class MainActivity extends Activity
 	
 	// For background music management, see :
 	// http://www.rbgrn.net/content/307-light-racer-20-days-61-64-completion
-	private MediaPlayer m_Player;
+	private MediaPlayer m_Player = null;
 	private GData m_Data;
 	private boolean muteMedia = false;
 	
@@ -32,13 +30,10 @@ public class MainActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		this.m_Res = getResources();
-		//setContentView(R.layout.activity_main);
+		
+		// setContentView(R.layout.activity_main);
 		
 		context = getApplicationContext();
-		
-		// Activate background music
-		this.m_Player = MediaPlayer.create(this, R.raw.menu_loop);
-		this.m_Player.setLooping(true);
 		
 		try
 		{
@@ -65,18 +60,20 @@ public class MainActivity extends Activity
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
+		// Previous activity was the Intro
 		if (requestCode == 1)
 		{
-			// Previous activity was the Intro
+			m_Player = SoundManager.getInstance().getPlayer(SoundManager.MENU_LOOP);
+			
 			if (!muteMedia && !m_Player.isPlaying())
 				this.m_Player.start();
 			
 			this.m_HomeMenuView = new HomeMenuView(this, this, this.m_Res);
 		}
 		
+		// Previous activity was the GameActivity
 		if (requestCode == 2)
 		{
-			// Previous activity was the GameActivity
 			if (!muteMedia && !m_Player.isPlaying())
 				this.m_Player.start();
 		}
@@ -128,7 +125,7 @@ public class MainActivity extends Activity
 		// TODO Auto-generated method stub
 		super.onPause();
 		
-		if (m_Player.isPlaying())
+		if (m_Player != null && m_Player.isPlaying())
 			this.m_Player.pause();
 	}
 	
@@ -138,8 +135,7 @@ public class MainActivity extends Activity
 		// TODO Auto-generated method stub
 		super.onResume();
 		
-		if (!muteMedia)
+		if (m_Player != null && !muteMedia)
 			this.m_Player.start();
 	}
-	
 }

@@ -6,16 +6,16 @@ import android.graphics.Canvas;
 import com.dwellersbegood.GObject;
 import com.dwellersbegood.Vector2D;
 
-public abstract class MapSegment extends GObject{
+public abstract class MapSegment extends GObject
+{
 	
 	protected int m_Type;
-	protected boolean m_touchedPlayer = false;
 	
 	public int getM_Type()
 	{
 		return m_Type;
 	}
-
+	
 	protected Bitmap m_image;
 	
 	public void moveTopLeftTo(Vector2D position)
@@ -35,7 +35,7 @@ public abstract class MapSegment extends GObject{
 	
 	public Vector2D getTopRightCorner()
 	{
-		Vector2D topRightCorner = new Vector2D(this.getWidth(),0);
+		Vector2D topRightCorner = new Vector2D(this.getWidth(), 0);
 		topRightCorner = topRightCorner.add(this.m_position);
 		return topRightCorner;
 	}
@@ -45,11 +45,15 @@ public abstract class MapSegment extends GObject{
 		return this.m_position;
 	}
 	
-	public void touchedByPlayer(){m_touchedPlayer = true;};
-	
-	public abstract void draw(Canvas canvas);
-
 	@Override
-	public abstract void update(long ellapsedTime);
-
+	public abstract void draw(Canvas canvas);
+	
+	@Override
+	public abstract void update(long elapsedTime);
+	
+	@Override
+	public void touchedByPlayer()
+	{
+		super.touchedByPlayer();
+	};
 }

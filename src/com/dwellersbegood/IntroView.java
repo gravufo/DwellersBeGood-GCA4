@@ -1,6 +1,5 @@
 package com.dwellersbegood;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -14,12 +13,12 @@ import android.view.SurfaceView;
 public class IntroView extends SurfaceView implements SurfaceHolder.Callback
 {
 	private Bitmap m_IntroBitmap;
-	private final Resources m_Res;
+	private Resources m_Res;
 	private IntroThread m_Thread;
-	private final IntroActivity m_Activity;
+	private IntroActivity m_Activity;
 	private int m_ScreenWidth;
 	private int m_ScreenHeight;
-	private final Paint m_Paint;
+	private Paint m_Paint;
 	
 	public IntroView(Context context, IntroActivity _Activity, Resources _Res)
 	{
@@ -74,7 +73,7 @@ public class IntroView extends SurfaceView implements SurfaceHolder.Callback
 		this.m_Thread.setRunning(true);
 		this.m_Thread.start();
 		
-		//BitmapManager.getInstance().loadBitmaps(this.m_Res, m_ScreenWidth, m_ScreenHeight);
+		// BitmapManager.getInstance().loadBitmaps(this.m_Res, m_ScreenWidth, m_ScreenHeight);
 	}
 	
 	@Override
@@ -89,7 +88,8 @@ public class IntroView extends SurfaceView implements SurfaceHolder.Callback
 		this.m_Activity.finish();
 	}
 	
-	public IntroActivity getActivity(){
+	public IntroActivity getActivity()
+	{
 		return m_Activity;
 	}
 	

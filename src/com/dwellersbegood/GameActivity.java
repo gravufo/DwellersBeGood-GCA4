@@ -8,9 +8,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -20,7 +20,7 @@ public class GameActivity extends Activity
 	
 	private GameView m_gameView;
 	private GData m_Data;
-	private MediaPlayer m_BackgroundMusic = MediaPlayer.create(MainActivity.getContext(), R.raw.aztec_dolla_music);
+	private MediaPlayer m_BackgroundMusic = SoundManager.getInstance().getPlayer(SoundManager.BACKGROUND_MUSIC);
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -48,33 +48,39 @@ public class GameActivity extends Activity
 	}
 	
 	@Override
-	protected Dialog onCreateDialog(int id) {
+	protected Dialog onCreateDialog(int id)
+	{
 		this.m_gameView.setPause(true);
-    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	builder.setMessage("Go To The Homemenu ?")
-    	       .setCancelable(false)
-    	       .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-    	           public void onClick(DialogInterface dialog, int id) {
-    	               finish();
-    	           }
-    	       })
-    	       .setNegativeButton("No", new DialogInterface.OnClickListener() {
-    	           public void onClick(DialogInterface dialog, int id) {
-    	                dialog.cancel();   	 
-    	           }
-    	       });
-    	AlertDialog alert = builder.create();
-    	alert.show();
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("Go To The Homemenu ?").setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener()
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int id)
+			{
+				finish();
+			}
+		}).setNegativeButton("No", new DialogInterface.OnClickListener()
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int id)
+			{
+				dialog.cancel();
+			}
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
 		return alert;
 	}
 	
 	@Override
 	// Si la touche back est pressé, on retourne au menu
-	public boolean onKeyDown(int keyCode, KeyEvent event)  {
-	    if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-	    	this.onCreateDialog(5);
-	    }
-	    return false;
+	public boolean onKeyDown(int keyCode, KeyEvent event)
+	{
+		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0)
+		{
+			this.onCreateDialog(5);
+		}
+		return false;
 	}
 	
 	@Override
@@ -132,7 +138,8 @@ public class GameActivity extends Activity
 	}
 	
 	@Override
-	public void finish() {
+	public void finish()
+	{
 		try
 		{
 			FileOutputStream fos = this.openFileOutput("Data", Context.MODE_PRIVATE);

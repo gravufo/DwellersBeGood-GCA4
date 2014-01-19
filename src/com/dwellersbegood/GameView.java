@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.graphics.Paint.Align;
 import android.graphics.Rect;
 import android.media.MediaPlayer;
@@ -40,18 +41,19 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	
 	public static Player m_player;
 	
-	private final GameActivity m_Activity;
+	private GameActivity m_Activity;
 	private GameThread m_Thread;
 	private static int m_ScreenWidth;
 	private static int m_ScreenHeight;
 	private Paint m_collectibleScorePaint;
-	private int m_collectibleScore;
+	public static int m_collectibleScore;
 	private Resources m_res;
 	private ArrayList<Projectile> m_projectiles;
 	private ArrayList<Projectile> m_projectilesToRemove;
 	private ArrayList<EnemyProjectile> m_enemyProjectiles;
+	private ArrayList<EnemyProjectile> m_enemyProjectilesToRemove;
 	private Map m_map;
-	private final GData m_Data;
+	private GData m_Data;
 	private int[] multiTouchX;
 	private int[] multiTouchY;
 	private Rect m_screenBoundingBox;
@@ -87,11 +89,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		this.m_projectiles = new ArrayList<Projectile>();
 		this.m_projectilesToRemove = new ArrayList<Projectile>();
 		this.m_enemyProjectiles = new ArrayList<EnemyProjectile>();
+		this.m_enemyProjectilesToRemove = new ArrayList<EnemyProjectile>();
 		
 		this.m_collectibleScorePaint = new Paint();
-		this.m_collectibleScorePaint.setColor(Color.RED);
-		this.m_collectibleScorePaint.setTextSize(28);
+		this.m_collectibleScorePaint.setColor(Color.YELLOW);
+		this.m_collectibleScorePaint.setTextSize(84);
 		this.m_collectibleScorePaint.setTextAlign(Align.LEFT);
+		
+		Typeface font = Typeface.createFromAsset(m_res.getAssets(), "fonts/woodbadge.ttf"); 
+		this.m_collectibleScorePaint.setTypeface(font);
 		
 		this.m_collectibleScore = 0;
 		
@@ -138,12 +144,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		m_screenBoundingBox = new Rect(0, 0, GameView.m_ScreenWidth, GameView.m_ScreenHeight);
 		
 		int titleHeight = 10;
-        int newGameHeight = m_ScreenHeight/10*4;
-        int exitHeight = m_ScreenHeight/10*7;
-        this.m_GameOverButtonRect = new Rect(m_ScreenWidth / 2 - m_GameOverButtonBitmap.getWidth() / 2, titleHeight, m_ScreenWidth / 2 + m_GameOverButtonBitmap.getWidth() / 2, titleHeight + m_GameOverButtonBitmap.getHeight());
-        this.m_ResumeButtonRect = new Rect(m_ScreenWidth / 2 - m_ResumeButtonBitmap.getWidth() / 2, newGameHeight, m_ScreenWidth / 2 + m_ResumeButtonBitmap.getWidth() / 2, newGameHeight + m_ResumeButtonBitmap.getHeight());
-        this.m_RestartButtonRect = new Rect(m_ScreenWidth / 2 - m_RestartButtonBitmap.getWidth() / 2, newGameHeight, m_ScreenWidth / 2 + m_RestartButtonBitmap.getWidth() / 2, newGameHeight + m_RestartButtonBitmap.getHeight());
-        this.m_BackButtonRect = new Rect(m_ScreenWidth / 2 - m_BackButtonBitmap.getWidth() / 2, exitHeight, m_ScreenWidth / 2 + m_BackButtonBitmap.getWidth() / 2, exitHeight + m_BackButtonBitmap.getHeight());
+		
+		int newGameHeight = m_ScreenHeight / 10 * 4;
+		int exitHeight = m_ScreenHeight / 10 * 7;
+		this.m_GameOverButtonRect = new Rect(m_ScreenWidth / 2 - m_GameOverButtonBitmap.getWidth() / 2, titleHeight, m_ScreenWidth / 2 + m_GameOverButtonBitmap.getWidth() / 2, titleHeight + m_GameOverButtonBitmap.getHeight());
+		this.m_ResumeButtonRect = new Rect(m_ScreenWidth / 2 - m_ResumeButtonBitmap.getWidth() / 2, newGameHeight, m_ScreenWidth / 2 + m_ResumeButtonBitmap.getWidth() / 2, newGameHeight + m_ResumeButtonBitmap.getHeight());
+		this.m_RestartButtonRect = new Rect(m_ScreenWidth / 2 - m_RestartButtonBitmap.getWidth() / 2, newGameHeight, m_ScreenWidth / 2 + m_RestartButtonBitmap.getWidth() / 2, newGameHeight + m_RestartButtonBitmap.getHeight());
+		this.m_BackButtonRect = new Rect(m_ScreenWidth / 2 - m_BackButtonBitmap.getWidth() / 2, exitHeight, m_ScreenWidth / 2 + m_BackButtonBitmap.getWidth() / 2, exitHeight + m_BackButtonBitmap.getHeight());
 		
 		this.m_xButtonRect = new Rect(m_ScreenWidth - m_xButtonBitmap.getWidth() - 10, 10, m_ScreenWidth - 10, 10 + m_xButtonBitmap.getHeight());
 		
@@ -230,7 +237,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		// On update la partie si celle-ci n'est pas terminé
 		if (m_gamestate == GAME)
 		{
-			if (m_player.getM_position().getY() > this.m_ScreenHeight)
+			if (m_player.getM_position().getY() > GameView.m_ScreenHeight)
 				m_gamestate = GAMEOVER;
 			m_player.setIsOnFloor(false);
 			m_player.setIsOnPlatform(false);
@@ -291,7 +298,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				{
 					projectile.update(elapsedTime);
 					
-					if (projectile.getM_position().getX() > this.m_ScreenWidth)
+					if (projectile.getM_position().getX() > GameView.m_ScreenWidth)
 					{
 						synchronized (this.m_projectiles)
 						{
@@ -310,14 +317,26 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				this.m_projectilesToRemove.clear();
 			}
 			
-			for (EnemyProjectile projectile : this.m_enemyProjectiles)
+			synchronized (this.m_enemyProjectiles)
 			{
-				projectile.update(elapsedTime);
-				
-				if (projectile.getM_position().getX() > this.m_ScreenWidth)
+				for (EnemyProjectile projectile : this.m_enemyProjectiles)
+				{
+					projectile.update(elapsedTime);
+					
+					if (projectile.getM_position().getX() > GameView.m_ScreenWidth)
+					{
+						this.m_enemyProjectilesToRemove.add(projectile);
+					}
+				}
+			}
+			
+			synchronized (this.m_enemyProjectiles)
+			{
+				for (EnemyProjectile projectile : this.m_enemyProjectilesToRemove)
 				{
 					this.m_enemyProjectiles.remove(projectile);
 				}
+				this.m_enemyProjectilesToRemove.clear();
 			}
 			
 			if (this.m_jumpStarted)
@@ -391,11 +410,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 					else if (m_BackButtonRect.contains(multiTouchX[a], multiTouchY[a]))
 					{
 						// Return to main application
-						Intent i = new Intent(m_Activity,MainActivity.class);
-
+						
+						Intent i = new Intent(m_Activity, MainActivity.class);
+						
 						i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 						m_Activity.startActivity(i);
-
+						
 						m_Activity.finish();
 					}
 				}
@@ -407,11 +427,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 					}
 					else if (m_BackButtonRect.contains(multiTouchX[a], multiTouchY[a]))
 					{
-						Intent i = new Intent(m_Activity,MainActivity.class);
-
-						  i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-						  m_Activity.startActivity(i);
-
+						Intent i = new Intent(m_Activity, MainActivity.class);
+						
+						i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+						m_Activity.startActivity(i);
+						
 						m_Activity.finish();
 					}
 				}
@@ -449,14 +469,18 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		
 		if (m_canShoot)
 		{
-			m_collectibleScore++;
-			m_Data.setDolla(m_collectibleScore);
-			m_Activity.setData(m_Data);
+			if (m_Data != null)
+			{
+				m_Data.setDolla(m_collectibleScore);
+				m_Activity.setData(m_Data);
+			}
 			
 			synchronized (this.m_projectiles)
 			{
 				Rect playerBox = GameView.m_player.getBoundingBox();
-				Vector2D target = new Vector2D(posX, posY-(BitmapManager.getInstance().getBitmap(BitmapManager.Laser2).getHeight()));
+				
+				Vector2D target = new Vector2D(posX, posY - (BitmapManager.getInstance().getBitmap(BitmapManager.Laser2).getHeight()));
+				
 				Vector2D direction = target.substract(new Vector2D(m_player.getM_position().getX() + playerBox.width() / 2, m_player.getM_position().getY() + playerBox.height() / 2));
 				direction.normalize();
 				direction = direction.multiply(1000);
@@ -502,7 +526,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		}
 	}
 	
-	public void setPause(boolean pause){
+	public void setPause(boolean pause)
+	{
 		m_Thread.setRunning(!pause);
 	}
 }
