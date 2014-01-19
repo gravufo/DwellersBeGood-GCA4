@@ -1,18 +1,14 @@
 package com.dwellersbegood;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Point;
-import android.graphics.PointF;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;

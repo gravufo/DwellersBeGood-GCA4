@@ -44,7 +44,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	private GameThread m_Thread;
 	private static int m_ScreenWidth;
 	private static int m_ScreenHeight;
-	private final Paint m_collectibleScorePaint;
+	private Paint m_collectibleScorePaint;
 	private int m_collectibleScore;
 	private Resources m_res;
 	private ArrayList<Projectile> m_projectiles;
