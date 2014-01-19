@@ -36,12 +36,19 @@ public class CoinSegment extends MapSegment {
 	@Override
 	public void update(long elapsedTime) 
 	{
+		if(!m_touchedPlayer)
+		{
 		angle += 2*elapsedTime/GameThread.nano;
 		if(angle > 2*Math.PI)
 			angle -= 2*Math.PI;
 		
-		m_position.setY((float)(Math.sin(angle)*0.20*screenSize + screenSize/2));
+		m_position.setY((float)(Math.sin(angle)/20*screenSize + screenSize/2));
 		
 		this.boundingBox.set((int)this.getM_position().getX(), (int)this.getM_position().getY(), (int)this.getM_position().getX() + this.getWidth(), (int)this.getM_position().getY() + this.getHeight());
+		}
+		else
+		{
+			m_position.setY(m_position.getY() + (float)(GameView.getScreenSize().getY()*0.5*elapsedTime/GameThread.nano));
+		}
 	}
 }
