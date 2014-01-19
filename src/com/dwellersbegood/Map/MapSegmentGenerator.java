@@ -33,7 +33,7 @@ public class MapSegmentGenerator {
 	public MapSegment generate(int difficulty)
 	{
 		//Coin Creation
-		if(randomSeed.nextInt(99) + 1 < 10)
+		if(!m_generatedFloating && randomSeed.nextInt(99) + 1 < 10)
 		{
 			generateFloatingSegment(Coin);
 		}
@@ -111,22 +111,11 @@ public class MapSegmentGenerator {
 		newSegment = makeSegment(type);
 		Vector2D newPosition = lastSegment.getTopLeftCorner();
 		
-		float height = newSegment.getHeight();
-		switch(type)
-		{
-			case Enemy:
-			case Fire:
-			case Rock:
-				break;
-			case Coin:
-				height += (float)(GameView.getScreenSize().getY()/4.0);
-				break;
-			case Platform:
-				height += (float)(GameView.getScreenSize().getY()/10.0);
-				break;
-		}
+		float height = 0;
+		if(type == Platform)
+			height = GameView.getScreenSize().getY()/(float)7;
+		newPosition = newPosition.add(new Vector2D(1,-1*newSegment.getHeight() - height));
 		
-		newPosition = newPosition.add(new Vector2D(1,-1*height));
 		newSegment.moveTopLeftTo(newPosition);
 		m_generatedFloating = true;
 	}

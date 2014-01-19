@@ -33,7 +33,7 @@ public class Player extends GObject
 		m_jumpStarted = false;
 		m_jumpSpeed = -500;
 		
-		m_isOnFloor = true;
+		m_isOnFloor = false;
 		
 		m_paint = new Paint();
 		m_paint.setColor(Color.BLACK);
