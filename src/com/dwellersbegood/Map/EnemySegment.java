@@ -15,7 +15,7 @@ public class EnemySegment extends MapSegment {
 	public EnemySegment(){
 		m_Type = MapSegmentGenerator.Enemy;
 		m_timeSinceLastShot = 0;
-		m_image = BitmapManager.getInstance().getBitmap(BitmapManager.Enemy);
+		m_image = BitmapManager.getInstance().getBitmap(BitmapManager.Enemy1);
 	}
 
 	@Override

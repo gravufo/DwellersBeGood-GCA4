@@ -58,10 +58,8 @@ public class MainActivity extends Activity
 			this.m_Data = new GData();
 		}
 		
-		/*
-		 * Intent intent = new Intent(this, IntroActivity.class); this.startActivityForResult(intent, 1);
-		 */
-		BitmapManager.getInstance().loadBitmaps(this.getResources());
+		Intent intent = new Intent(this, IntroActivity.class); this.startActivityForResult(intent, 1);
+		//BitmapManager.getInstance().loadBitmaps(this.getResources());
 	}
 	
 	@Override

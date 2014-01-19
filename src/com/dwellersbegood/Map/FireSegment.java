@@ -9,7 +9,7 @@ public class FireSegment extends MapSegment {
 	
 	public FireSegment(){
 		m_Type = MapSegmentGenerator.Fire;
-		m_image = BitmapManager.getInstance().getBitmap(BitmapManager.Fire);
+		m_image = BitmapManager.getInstance().getBitmap(BitmapManager.Torch1);
 	}
 
 	@Override

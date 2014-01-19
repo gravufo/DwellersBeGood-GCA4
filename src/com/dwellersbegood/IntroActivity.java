@@ -1,10 +1,14 @@
 package com.dwellersbegood;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Point;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.KeyEvent;
-import android.view.Menu;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
 
 public class IntroActivity extends Activity
 {
@@ -12,7 +16,9 @@ public class IntroActivity extends Activity
 	private IntroView m_IntroView;
 	private Resources m_Res;
 	
-	// Highscores
+	private int m_ScreenWidth, m_ScreenHeight;
+	
+	private boolean m_loadingCompleted;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -20,21 +26,62 @@ public class IntroActivity extends Activity
 		super.onCreate(savedInstanceState);
 		this.m_Res = this.getResources();
 		
+		DisplayMetrics metrics = this.m_Res.getDisplayMetrics();
+		m_ScreenWidth = metrics.widthPixels;
+		m_ScreenHeight = metrics.heightPixels;
+		
 		this.m_IntroView = new IntroView(this, this, this.m_Res);
-		BitmapManager.getInstance().loadBitmaps(this.m_Res);
+		
+		m_loadingCompleted = false;
+		
+		new PrefetchData().execute();
 	}
 	
-	@Override
-	// Si la touche back est pressé, on retourne au menu
-	public boolean onKeyDown(int keyCode, KeyEvent event)
-	{
-		return true;
+	public void setLoadingCompleted(boolean completed){
+		m_loadingCompleted = completed;
+	}
+	public boolean getLoadingCompleted(){
+		return m_loadingCompleted;
 	}
 	
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu)
-	{
-		return true;
-	}
 	
+	/**
+	 * Async Task to make http call
+	 */
+	private class PrefetchData extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			// before making http calls			
+
+		}
+
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			/*
+			 * Will make http call here This call will download required data
+			 * before launching the app 
+			 * example: 
+			 * 1. Downloading and storing in SQLite 
+			 * 2. Downloading images 
+			 * 3. Fetching and parsing the xml / json 
+			 * 4. Sending device information to server 
+			 * 5. etc.,
+			 */
+			BitmapManager.getInstance().loadBitmaps(m_Res, m_ScreenWidth, m_ScreenHeight);
+			
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			super.onPostExecute(result);
+			// close this activity
+			Log.d("Intro", "Finished loading SHITSS ********* ");
+			setLoadingCompleted(true);
+			//finish();
+		}
+
+	}
 }

@@ -23,7 +23,7 @@ public class Map extends GObject {
 	public Map(int screenWidth, int screenHeight){
 		bgPos = 0;
 		bgSpeed = -100;
-		m_background = BitmapManager.getInstance().scaleToSize(BitmapManager.getInstance().getBitmap(BitmapManager.Background), screenWidth, screenHeight);
+		m_background = BitmapManager.getInstance().getBitmap(BitmapManager.Background);
 		m_mapSegments = new LinkedList<MapSegment>();
 		m_mapSegments.add(MapSegmentGenerator.Instance().getLastSegment());
 		addStartingFloors(30);

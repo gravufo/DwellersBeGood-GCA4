@@ -16,12 +16,12 @@ public class IntroView extends SurfaceView implements SurfaceHolder.Callback
 	private Bitmap m_IntroBitmap;
 	private final Resources m_Res;
 	private IntroThread m_Thread;
-	private final Activity m_Activity;
+	private final IntroActivity m_Activity;
 	private int m_ScreenWidth;
 	private int m_ScreenHeight;
 	private final Paint m_Paint;
 	
-	public IntroView(Context context, Activity _Activity, Resources _Res)
+	public IntroView(Context context, IntroActivity _Activity, Resources _Res)
 	{
 		super(context);
 		getHolder().addCallback(this);
@@ -73,6 +73,8 @@ public class IntroView extends SurfaceView implements SurfaceHolder.Callback
 		this.m_Thread = new IntroThread(getHolder(), this);
 		this.m_Thread.setRunning(true);
 		this.m_Thread.start();
+		
+		//BitmapManager.getInstance().loadBitmaps(this.m_Res, m_ScreenWidth, m_ScreenHeight);
 	}
 	
 	@Override
@@ -85,6 +87,10 @@ public class IntroView extends SurfaceView implements SurfaceHolder.Callback
 	public void FinishIntro()
 	{
 		this.m_Activity.finish();
+	}
+	
+	public IntroActivity getActivity(){
+		return m_Activity;
 	}
 	
 }
