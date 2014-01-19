@@ -39,6 +39,11 @@ public abstract class MapSegment extends GObject{
 		return topRightCorner;
 	}
 	
+	public Vector2D getTopLeftCorner()
+	{
+		return this.m_position;
+	}
+	
 	public abstract void draw(Canvas canvas);
 
 	@Override

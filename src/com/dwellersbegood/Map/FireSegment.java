@@ -1,5 +1,7 @@
 package com.dwellersbegood.Map;
 
+import com.dwellersbegood.BitmapManager;
+
 import android.graphics.Canvas;
 
 public class FireSegment extends MapSegment {
@@ -7,6 +9,7 @@ public class FireSegment extends MapSegment {
 	
 	public FireSegment(){
 		m_Type = MapSegmentGenerator.Fire;
+		m_image = BitmapManager.getInstance().getBitmap(BitmapManager.Fire);
 	}
 
 	@Override

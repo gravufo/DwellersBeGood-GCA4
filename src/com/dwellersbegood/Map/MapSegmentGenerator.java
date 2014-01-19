@@ -2,6 +2,7 @@ package com.dwellersbegood.Map;
 
 import java.util.Random;
 
+import com.dwellersbegood.GameView;
 import com.dwellersbegood.Vector2D;
 
 
@@ -37,7 +38,7 @@ public class MapSegmentGenerator {
 			generateFloatingSegment(Coin);
 		}
 		// At least one floor before next danger
-		else if (lastSegmentType == Fire || lastSegmentType == Rock)
+		else if (lastSegmentType == Fire || lastSegmentType == Rock || lastSegmentType == Enemy)
 		{
 			generatePathSegment(Floor);
 		}
@@ -46,11 +47,9 @@ public class MapSegmentGenerator {
 		{
 			if(!m_generatedFloating){
 				generateFloatingSegment(Floor);
-				m_generatedFloating = true;
 			}
 			else{
 				generatePathSegment(HoleEnding);
-				m_generatedFloating = false;
 			}
 		}
 		// What to do with holes half of the time close the hole, the other half continue it
@@ -58,7 +57,6 @@ public class MapSegmentGenerator {
 		{
 			if(randomSeed.nextInt() % 2 == 0){
 				generatePathSegment(HoleEnding);
-				m_generatedFloating = false;
 			}
 			else
 				generatePathSegment(HoleMiddle);
@@ -67,24 +65,25 @@ public class MapSegmentGenerator {
 		{
 			int danger = randomSeed.nextInt(100) + difficulty;
 			
-			if(danger > 20)
+			if(danger > 30)
 			{
-				switch(randomSeed.nextInt(3))
+				switch(randomSeed.nextInt(4))
 				{
 					case 0:
 						generatePathSegment(HoleBegining);
 						break;
 					case 1:
-						generatePathSegment(HoleBegining);
+						generateFloatingSegment(Enemy);
 						break;
 					case 2:
-						generatePathSegment(HoleBegining);
+						generateFloatingSegment(Fire);
 						break;
-					default:
-						generatePathSegment(HoleBegining);
+					case 3:
+						generateFloatingSegment(Rock);
 				}
 			}else{
 				generatePathSegment(Floor);
+				m_generatedFloating = false;
 			}
 		}
 		
@@ -104,14 +103,32 @@ public class MapSegmentGenerator {
 		newSegment.moveTopLeftTo(lastTopRight);
 		lastSegment = newSegment;
 		lastSegmentType = type;
+		m_generatedFloating = false;
 	}
 	
 	private void generateFloatingSegment(int type)
 	{
 		newSegment = makeSegment(type);
-		Vector2D newPosition = lastSegment.getM_position().substract(new Vector2D(0,(float)(newSegment.getHeight()*1.5)));
-		newPosition.add(new Vector2D(1,0));
+		Vector2D newPosition = lastSegment.getTopLeftCorner();
+		
+		float height = newSegment.getHeight();;
+		switch(type)
+		{
+			case Enemy:
+			case Fire:
+			case Rock:
+				break;
+			case Coin:
+				height += (float)(GameView.getScreenSize().getY()/4.0);
+				break;
+			case Platform:
+				height += (float)(GameView.getScreenSize().getY()/10.0);
+				break;
+		}
+		
+		newPosition.add(new Vector2D(1,-1*height));
 		newSegment.moveTopLeftTo(newPosition);
+		m_generatedFloating = true;
 	}
 	
 	private MapSegment makeSegment(int type)
@@ -159,4 +176,9 @@ public class MapSegmentGenerator {
 	public final static int Platform = 6;
 	public final static int Coin = 7;
 	public final static int Enemy = 8;
+
+	public MapSegment generateStartingFloor() {
+		generatePathSegment(Floor);
+		return newSegment;
+	}
 }

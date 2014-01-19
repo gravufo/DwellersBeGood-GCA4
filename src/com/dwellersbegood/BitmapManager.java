@@ -35,6 +35,9 @@ public class BitmapManager
 	public static final int HoleMiddle = 7;
 	public static final int Platform0 = 8;
 	public static final int Platform1 = 9;
+	public static final int Fire = 10;
+	public static final int Rock = 11;
+	public static final int Enemy = 12;
 	
 	public void loadBitmaps(Resources res)
 	{
@@ -48,6 +51,9 @@ public class BitmapManager
 		m_bitmapCollection.add(BitmapFactory.decodeResource(res, R.drawable.holemiddle));
 		m_bitmapCollection.add(BitmapFactory.decodeResource(res, R.drawable.platform1));
 		m_bitmapCollection.add(BitmapFactory.decodeResource(res, R.drawable.platform2));
+		m_bitmapCollection.add(BitmapFactory.decodeResource(res, R.drawable.fireexample));
+		m_bitmapCollection.add(BitmapFactory.decodeResource(res, R.drawable.rockexample));
+		m_bitmapCollection.add(BitmapFactory.decodeResource(res, R.drawable.enemyexample));
 	}
 	
 	public Bitmap scaleToSize(Bitmap sprite, int desiredWidth, int desiredHeight)

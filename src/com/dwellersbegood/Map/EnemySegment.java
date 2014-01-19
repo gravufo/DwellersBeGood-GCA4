@@ -1,5 +1,6 @@
 package com.dwellersbegood.Map;
 
+import com.dwellersbegood.BitmapManager;
 import com.dwellersbegood.GameView;
 
 import android.graphics.Canvas;
@@ -13,6 +14,7 @@ public class EnemySegment extends MapSegment {
 	public EnemySegment(){
 		m_Type = MapSegmentGenerator.Enemy;
 		m_timeSinceLastShot = 0;
+		m_image = BitmapManager.getInstance().getBitmap(BitmapManager.Enemy);
 	}
 
 	@Override

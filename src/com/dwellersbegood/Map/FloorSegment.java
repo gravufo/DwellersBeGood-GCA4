@@ -28,7 +28,7 @@ public class FloorSegment extends MapSegment {
 				break;
 		}
 		
-		m_position = new Vector2D(GameView.getScreenSize().getX()- getWidth(), GameView.getScreenSize().getY()*(float)0.75);
+		m_position = new Vector2D(0, GameView.getScreenSize().getY()*(float)0.75);
 		
 		loopIndex = (loopIndex + 1)%3;
 	}

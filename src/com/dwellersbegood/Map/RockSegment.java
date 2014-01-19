@@ -9,7 +9,7 @@ public class RockSegment extends MapSegment {
 	public RockSegment()
 	{
 		m_Type = MapSegmentGenerator.Rock;
-		m_image = BitmapManager.getInstance().getBitmap(BitmapManager.HoleMiddle);
+		m_image = BitmapManager.getInstance().getBitmap(BitmapManager.Rock);
 	}
 
 	@Override

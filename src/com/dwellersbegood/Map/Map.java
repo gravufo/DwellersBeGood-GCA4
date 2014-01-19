@@ -22,10 +22,11 @@ public class Map extends GObject {
 	
 	public Map(int screenWidth, int screenHeight){
 		bgPos = 0;
-		bgSpeed = -400;
+		bgSpeed = -100;
 		m_background = BitmapManager.getInstance().scaleToSize(BitmapManager.getInstance().getBitmap(BitmapManager.Background), screenWidth, screenHeight);
 		m_mapSegments = new LinkedList<MapSegment>();
 		m_mapSegments.add(MapSegmentGenerator.Instance().getLastSegment());
+		addStartingFloors(30);
 	}
 	
 	public void draw(Canvas canvas)
@@ -55,7 +56,7 @@ public class Map extends GObject {
 		
 		for(MapSegment segment:m_mapSegments)
 		{
-			segment.setM_position(segment.getM_position().substract(new Vector2D((float)(elapsedTime/GameThread.nano)*100,0)));
+			segment.setM_position(segment.getM_position().substract(new Vector2D((float)(elapsedTime/GameThread.nano)*500,0)));
 			segment.update(elapsedTime);
 		}
 	}
@@ -90,6 +91,12 @@ public class Map extends GObject {
 			bla = m_mapSegments.get(m_mapSegments.size() - 1).getTopRightCorner().getX();
 		}
 		System.out.println("");
+	}
+	
+	private void addStartingFloors(int amount)
+	{
+		for(int i = 0 ; i < amount; i++)
+			m_mapSegments.add(MapSegmentGenerator.Instance().generateStartingFloor());
 	}
 	
 	public LinkedList<MapSegment> getMapSegments(){
