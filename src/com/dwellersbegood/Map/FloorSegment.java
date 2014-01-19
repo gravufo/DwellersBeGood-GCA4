@@ -28,7 +28,7 @@ public class FloorSegment extends MapSegment {
 				break;
 		}
 		
-		m_position = new Vector2D(0, GameView.getScreenSize().getY()*(float)0.75);
+		m_position = new Vector2D(0, GameView.LEVEL_FLOOR);
 		
 		loopIndex = (loopIndex + 1)%3;
 	}
@@ -45,9 +45,6 @@ public class FloorSegment extends MapSegment {
 	@Override
 	public void update(long ellapsedTime) {
 		this.boundingBox.set((int)this.getM_position().getX(), (int)this.getM_position().getY(), (int)this.getM_position().getX() + this.getWidth(), (int)this.getM_position().getY() + this.getHeight());
-		if(this.boundingBox.intersect(GameView.m_player.getBoundingBox())){
-			GameView.m_player.setIsOnFloor(true);
-		}
 	}
 	
 }

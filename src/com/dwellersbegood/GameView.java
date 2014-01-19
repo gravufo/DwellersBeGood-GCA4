@@ -23,8 +23,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 {
 	
 	public static final float GRAVITY = 600;
-	public static final float PLAYER_MIN_Y = 500;
-	public static final boolean ENABLED_DEBUG = true;
+	public static float LEVEL_FLOOR = 0;
+	public static float LEVEL_PLATFORM = 0;
+	public static final boolean ENABLED_DEBUG = false;
 	private final int MAX_TOUCH_COUNT = 10;
 	
 	public static Player m_player;
@@ -87,6 +88,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	{
 		this.m_ScreenWidth = this.getWidth();
 		this.m_ScreenHeight = this.getHeight();
+		
+		LEVEL_FLOOR = (float) (this.m_ScreenHeight * 0.75);
+		LEVEL_PLATFORM = (float) (this.m_ScreenHeight * 0.55);
 		
 		m_screenBoundingBox = new Rect(0,0,this.m_ScreenWidth,this.m_ScreenHeight);
 		
@@ -157,7 +161,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	{
 		// On update la partie si celle-ci n'est pas terminé
 		m_player.setIsOnFloor(false);
+		m_player.setIsOnPlatform(false);
 		m_map.update(elapsedTime);
+		Vector2D playerPos = new Vector2D(m_player.getM_position().getX()+m_player.getBoundingBox().width()/2,m_player.getM_position().getY()+m_player.getBoundingBox().height());
 		for(MapSegment segment:m_map.getMapSegments())
 		{
 			if(segment.getM_Type() == MapSegmentGenerator.Enemy){
@@ -171,8 +177,35 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 					enemy.resetShotTimer();
 				}
 			}
-			if(m_player.getBoundingBox().intersect(segment.getBoundingBox()))
-				ManageCollision(segment);
+			
+			switch(segment.getM_Type()){
+			case MapSegmentGenerator.Floor:
+				if(segment.getBoundingBox().contains((int)playerPos.getX(), (int)playerPos.getY())){
+					m_player.setIsOnFloor(true);
+				}
+				break;
+			case MapSegmentGenerator.Platform:
+				if(segment.getBoundingBox().contains((int)playerPos.getX(), (int)playerPos.getY())){
+					m_player.setIsOnPlatform(true, segment.getBoundingBox().top);
+				}
+				break;
+			case MapSegmentGenerator.Fire:
+				break;
+			case MapSegmentGenerator.Rock:
+				break;
+			case MapSegmentGenerator.Coin:
+				break;
+			case MapSegmentGenerator.Enemy:
+				break;
+			case MapSegmentGenerator.HoleBegining:
+				//GameView.m_player.setIsOnFloor(true);
+				break;
+			case MapSegmentGenerator.HoleMiddle:
+				break;
+			case MapSegmentGenerator.HoleEnding:
+				//GameView.m_player.setIsOnFloor(true);
+				break;
+			}
 		}
 		m_player.update(elapsedTime);
 		m_enemy.update(elapsedTime);
@@ -232,7 +265,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				multiTouchY[a] = (int) event.getY(a);
 				
 				// If the touch is on first half of screen, jump
-				if (multiTouchX[a] < m_ScreenWidth / 2){
+				if (multiTouchX[a] < m_ScreenWidth / 2 && this.m_player.IsOnFloor()){
 					this.m_jumpHoldTime = System.currentTimeMillis();
 					this.m_player.jumpStarted();
 				}

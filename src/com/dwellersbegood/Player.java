@@ -16,6 +16,8 @@ public class Player extends GObject
 	private boolean m_jumping, m_jumpStarted;
 	private float m_jumpSpeed;
 	private boolean m_isOnFloor;
+	private boolean m_isOnPlatform;
+	private float m_platformLevel;
 	
 	public Player()
 	{
@@ -34,6 +36,9 @@ public class Player extends GObject
 		m_jumpSpeed = -500;
 		
 		m_isOnFloor = false;
+		m_isOnPlatform = false;
+		
+		m_platformLevel = 0;
 		
 		m_paint = new Paint();
 		m_paint.setColor(Color.BLACK);
@@ -61,7 +66,7 @@ public class Player extends GObject
 	public void update(long elapsedTime)
 	{
 		m_position = m_position.add(m_speed.multiply((float) (elapsedTime / GameThread.nano)));
-		if(!m_isOnFloor)
+		if(!m_isOnFloor && !m_isOnPlatform)
 			m_speed.setY(m_speed.getY() + GameView.GRAVITY * ((float) (elapsedTime / GameThread.nano)));
 		boundingBox.set((int) m_position.getX() + leftWidthOffset, (int) m_position.getY() + topHeightOffset, (int) m_position.getX() + m_runningAnim.getWidth() - rightWidthOffset, (int) m_position.getY() + m_runningAnim.getHeight() - botHeightOffset);
 		
@@ -77,10 +82,22 @@ public class Player extends GObject
 		
 		if (m_isOnFloor)
 		{
-			m_position.setY(GameView.PLAYER_MIN_Y);
-			m_speed.setY(0);
-			m_jumping = false;
-			m_jumpStarted = false;
+			if(m_speed.getY()>0){
+				m_position.setY(GameView.LEVEL_FLOOR - boundingBox.height());
+				m_speed.setY(0);
+				m_jumping = false;
+				m_jumpStarted = false;
+			}
+		}
+		
+		if (m_isOnPlatform)
+		{
+			if(m_speed.getY()>0){
+				m_position.setY(m_platformLevel - boundingBox.height());
+				m_speed.setY(0);
+				m_jumping = false;
+				m_jumpStarted = false;
+			}
 		}
 	}
 	
@@ -99,6 +116,23 @@ public class Player extends GObject
 	
 	public void setIsOnFloor(boolean isOnFloor){
 		this.m_isOnFloor = isOnFloor;
+	}
+	
+	public boolean IsOnFloor(){
+		return this.m_isOnFloor;
+	}
+	
+	public void setIsOnPlatform(boolean isOnPlatform){
+		this.m_isOnPlatform = isOnPlatform;
+	}
+	
+	public void setIsOnPlatform(boolean isOnPlatform, float platformLevel){
+		this.m_isOnPlatform = isOnPlatform;
+		this.m_platformLevel = platformLevel;
+	}
+	
+	public boolean IsOnPlatform(){
+		return this.m_isOnPlatform;
 	}
 	
 	public void hitEnemy(){
