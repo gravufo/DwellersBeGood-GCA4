@@ -276,24 +276,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				for(Projectile projectile : this.m_projectilesToRemove){
 					this.m_projectiles.remove(projectile);
 				}
-				break;
-				//GameView.m_player.setIsOnFloor(true);
-				break;
-			case MapSegmentGenerator.Fire:
-			case MapSegmentGenerator.Rock:
-			case MapSegmentGenerator.Coin:
-			case MapSegmentGenerator.Enemy:
-				if(segment.getBoundingBox().intersect(m_player.getBoundingBox()))
-					segment.touchedByPlayer();
-				break;
-			case MapSegmentGenerator.HoleBegining:
-				//GameView.m_player.setIsOnFloor(true);
-				break;
-			case MapSegmentGenerator.HoleMiddle:
-				break;
-			case MapSegmentGenerator.HoleEnding:
-				//GameView.m_player.setIsOnFloor(true);
-				break;
+				this.m_projectilesToRemove.clear();
 			}
 			
 			for (EnemyProjectile projectile : this.m_enemyProjectiles)
