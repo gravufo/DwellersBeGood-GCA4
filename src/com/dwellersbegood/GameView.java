@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -99,11 +98,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		
 		this.m_buttonPaint = new Paint();
 		this.m_buttonPaint.setColor(Color.BLACK);
-		this.m_xButtonBitmap = BitmapFactory.decodeResource(m_res, R.drawable.xbutton);
-		this.m_ResumeButtonBitmap = BitmapFactory.decodeResource(m_res, R.drawable.resume);
-		this.m_RestartButtonBitmap = BitmapFactory.decodeResource(m_res, R.drawable.restart);
-		this.m_BackButtonBitmap = BitmapFactory.decodeResource(m_res, R.drawable.back);
-		this.m_GameOverButtonBitmap = BitmapFactory.decodeResource(m_res, R.drawable.gameover);
+		this.m_xButtonBitmap = BitmapManager.getInstance().getBitmap(BitmapManager.XButton);
+		this.m_ResumeButtonBitmap = BitmapManager.getInstance().getBitmap(BitmapManager.ResumeButton);
+		this.m_RestartButtonBitmap = BitmapManager.getInstance().getBitmap(BitmapManager.RestartButton);
+		this.m_BackButtonBitmap = BitmapManager.getInstance().getBitmap(BitmapManager.BackButton);
+		this.m_GameOverButtonBitmap = BitmapManager.getInstance().getBitmap(BitmapManager.GameOver);
 		this.m_gamestate = GAME;
 		
 		this.m_jumpHoldTime = 0;
