@@ -36,15 +36,6 @@
             android:text="@string/main_menu_buttonSingle" />
 
         <Button
-            android:id="@+id/buttonMulti"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dip"
-            android:layout_marginTop="20dip"
-            android:onClick="MultiplayerMode"
-            android:text="@string/main_menu_buttonMulti" />
-
-        <Button
             android:id="@+id/buttonSettings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

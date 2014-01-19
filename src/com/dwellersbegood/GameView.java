@@ -33,6 +33,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	
 	private final int MENU = 0;
 	private final int GAME = 1;
+	private final int GAMEOVER = 2;
 	
 	private static MediaPlayer mediaShooting = MediaPlayer.create(MainActivity.getContext(), R.raw.laser_good);
 	
@@ -187,6 +188,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			if(m_gamestate == MENU){
 				canvas.drawColor(Color.argb(150,150,150,150));
 			}
+			if(m_gamestate == GAMEOVER){
+				canvas.drawColor(Color.argb(150,150,150,150));
+			}
 		}
 	}
 	
@@ -194,6 +198,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	{
 		// On update la partie si celle-ci n'est pas terminé
 		if(m_gamestate == GAME){
+			if(m_player.getM_position().getY() > this.m_ScreenHeight)
+				m_gamestate = GAMEOVER;
 			m_player.setIsOnFloor(false);
 			m_player.setIsOnPlatform(false);
 			m_map.update(elapsedTime);

@@ -85,14 +85,7 @@ public class MainActivity extends Activity
 	{
 		Intent intent = new Intent(this, GameActivity.class);
 		intent.putExtra("Dolla", this.m_Data);
-		startActivity(intent);
-	}
-	
-	/** Called when the user clicks the Multiplayer button */
-	public void MultiplayerMode(View view)
-	{
-		Intent intent = new Intent(this, MultiplayerConnectionActivity.class);
-		startActivity(intent);
+		startActivityForResult(intent, 2);
 	}
 	
 	/** Called when the user clicks the Settings button */
