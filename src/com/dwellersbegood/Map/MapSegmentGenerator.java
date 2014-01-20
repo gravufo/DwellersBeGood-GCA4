@@ -115,7 +115,7 @@ public class MapSegmentGenerator {
 		float height = 0;
 		if(type == Platform)
 			height = GameView.getScreenSize().getY()/(float)7;
-		newPosition = newPosition.add(new Vector2D(0,-1*newSegment.getHeight() - height));
+		newPosition = newPosition.add(new Vector2D(0,-1*newSegment.getHeight() - height + lastSegment.getImage().getHeight()/6));
 		
 		newSegment.moveTopLeftTo(newPosition);
 		m_generatedFloating = true;

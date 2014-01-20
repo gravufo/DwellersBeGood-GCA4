@@ -89,7 +89,7 @@ public class Player extends GObject
 		{
 			if (m_speed.getY() > 0)
 			{
-				m_position.setY(GameView.LEVEL_FLOOR - boundingBox.height() + 50);
+				m_position.setY(GameView.LEVEL_FLOOR - boundingBox.height());
 				m_speed.setY(0);
 				m_jumping = false;
 				m_jumpStarted = false;

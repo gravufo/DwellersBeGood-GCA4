@@ -78,6 +78,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	
 	private boolean m_leaveGame;
 	
+	private Paint m_floorPaint;
+	
 	public GameView(GameActivity activity, Context context)
 	{
 		super(context);
@@ -123,6 +125,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		
 		multiTouchX = new int[MAX_TOUCH_COUNT];
 		multiTouchY = new int[MAX_TOUCH_COUNT];
+		
+		this.m_floorPaint = new Paint();
+		this.m_floorPaint.setColor(Color.BLUE);
+		this.m_floorPaint.setStrokeWidth(5);
 	}
 	
 	@Override
@@ -137,7 +143,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		GameView.m_ScreenWidth = this.getWidth();
 		GameView.m_ScreenHeight = this.getHeight();
 		
-		LEVEL_FLOOR = (float) (GameView.m_ScreenHeight * 0.65);
+		LEVEL_FLOOR = (float) (GameView.m_ScreenHeight * 0.70);
 		LEVEL_PLATFORM = (float) (GameView.m_ScreenHeight * 0.60);
 		
 		m_screenBoundingBox = new Rect(0, 0, GameView.m_ScreenWidth, GameView.m_ScreenHeight);
@@ -214,6 +220,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			
 			canvas.drawBitmap(m_xButtonBitmap, null, m_xButtonRect, m_buttonPaint);
 			
+			if(ENABLED_DEBUG)
+				canvas.drawLine(0,LEVEL_FLOOR, m_ScreenWidth,LEVEL_FLOOR,m_floorPaint);
+			
 			if (m_gamestate == MENU)
 			{
 				canvas.drawColor(Color.argb(200, 0, 0, 0));
@@ -233,7 +242,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	
 	public void update(long elapsedTime)
 	{
-		// On update la partie si celle-ci n'est pas terminé
+		// On update la partie si celle-ci n'est pas terminï¿½
 		if (m_gamestate == GAME)
 		{
 			if (m_player.getM_position().getY() > GameView.m_ScreenHeight)

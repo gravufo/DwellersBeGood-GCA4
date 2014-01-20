@@ -33,6 +33,10 @@ public abstract class MapSegment extends GObject
 		return m_image.getWidth();
 	}
 	
+	public Bitmap getImage(){
+		return m_image;
+	}
+	
 	public Vector2D getTopRightCorner()
 	{
 		Vector2D topRightCorner = new Vector2D(this.getWidth(), 0);
