@@ -29,7 +29,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	public static final float GRAVITY = 600;
 	public static float LEVEL_FLOOR = 0;
 	public static float LEVEL_PLATFORM = 0;
-	public static final boolean ENABLED_DEBUG = false;
+	public static final boolean ENABLED_DEBUG = true;
 	private final int MAX_TOUCH_COUNT = 10;
 	
 	private final int MENU = 0;
@@ -76,6 +76,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	private Paint m_buttonPaint;
 	private int m_gamestate;
 	
+	private int m_playerHealth;
+	
 	private boolean m_leaveGame;
 	
 	private Paint m_floorPaint;
@@ -113,6 +115,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		
 		this.m_jumpHoldTime = 0;
 		this.m_jumpStarted = true;
+		
+		m_playerHealth = 3;
 		
 		m_leaveGame = false;
 		
@@ -217,6 +221,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			}
 			
 			canvas.drawText(this.m_collectibleScore + "", m_ScreenWidth / 20, m_ScreenHeight / 8, this.m_collectibleScorePaint);
+			for(int i = 0; i < m_playerHealth; i++){
+				canvas.drawCircle(m_ScreenWidth/10 + i*m_ScreenWidth/20,m_ScreenHeight/8,30, m_buttonPaint);
+			}
 			
 			canvas.drawBitmap(m_xButtonBitmap, null, m_xButtonRect, m_buttonPaint);
 			
@@ -334,6 +341,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 					if (projectile.getM_position().getX() > GameView.m_ScreenWidth)
 					{
 						this.m_enemyProjectilesToRemove.add(projectile);
+					}
+					else if(projectile.getBoundingBox().intersect(m_player.getBoundingBox())){
+						m_playerHealth--;
+						this.m_enemyProjectilesToRemove.add(projectile);
+						if(m_playerHealth == 0)
+							m_gamestate = GAMEOVER;
 					}
 				}
 			}

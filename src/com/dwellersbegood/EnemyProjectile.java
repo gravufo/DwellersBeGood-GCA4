@@ -37,6 +37,8 @@ public class EnemyProjectile extends GObject
 		if (canvas != null)
 		{
 			this.m_shootAnim.draw(canvas, m_position, m_paint);
+			if(GameView.ENABLED_DEBUG)
+				canvas.drawRect(boundingBox, m_debugPaint);
 		}
 	}
 	

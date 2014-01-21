@@ -11,7 +11,7 @@ import com.dwellersbegood.GameView;
 public class EnemySegment extends MapSegment
 {
 	
-	public static final long TIMETOSHOT = 500;
+	public static final long TIMETOSHOT = 2500;
 	private Random seed;
 	private int EnemyType;
 	
