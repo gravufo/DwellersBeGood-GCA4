@@ -336,9 +336,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 					break;
 				case MapSegmentGenerator.HoleMiddle:
 				{
-					//code to start falling death animation
-					segment.touchedByPlayer();
-					m_gamestate = GAMEOVER;
+					if (segment.getBoundingBox().intersect(m_player.getBoundingBox()))
+					{
+						//code to start falling death animation
+						segment.touchedByPlayer();
+						m_gamestate = GAMEOVER;
+					}
 				}
 					break;
 				case MapSegmentGenerator.HoleEnding:

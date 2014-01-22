@@ -33,9 +33,9 @@ public class MapSegmentGenerator {
 	
 	public MapSegment generate(int difficulty)
 	{
-		difficulty = 30;
+		difficulty = 1;
 		//Coin Creation
-		if(m_generatedFloating == 0 && randomSeed.nextInt(99) + 1 < (10 + difficulty))
+		if(m_generatedFloating < 1 && randomSeed.nextInt(99) + 1 < (10 + difficulty))
 		{
 			generateFloatingSegment(Coin);
 		}
@@ -68,7 +68,7 @@ public class MapSegmentGenerator {
 		{
 			int danger = randomSeed.nextInt(100) + difficulty;
 			
-			if(danger > 80 && lastSegmentType == Floor && m_generatedFloating == 0)
+			if(danger > 70 && lastSegmentType == Floor && m_generatedFloating == 0)
 			{
 				switch(randomSeed.nextInt(4))
 				{
@@ -119,7 +119,7 @@ public class MapSegmentGenerator {
 		newPosition = newPosition.add(new Vector2D(0,-1*newSegment.getHeight() - height + lastSegment.getImage().getHeight()/6));
 		
 		newSegment.moveTopLeftTo(newPosition);
-		m_generatedFloating += 2;
+		m_generatedFloating = 2;
 	}
 	
 	private MapSegment makeSegment(int type)
