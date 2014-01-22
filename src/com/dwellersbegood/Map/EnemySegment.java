@@ -5,8 +5,10 @@ import java.util.Random;
 import android.graphics.Canvas;
 
 import com.dwellersbegood.BitmapManager;
+import com.dwellersbegood.GAnimation;
 import com.dwellersbegood.GameThread;
 import com.dwellersbegood.GameView;
+import com.dwellersbegood.Vector2D;
 
 public class EnemySegment extends MapSegment
 {
@@ -14,6 +16,10 @@ public class EnemySegment extends MapSegment
 	public static final long TIMETOSHOT = 2500;
 	private Random seed;
 	private int EnemyType;
+	private boolean m_dead;
+	private GAnimation m_deadAnim;
+	private Vector2D m_animOffset;
+	private boolean m_deadAnimDone;
 	
 	private long m_timeSinceLastShot;
 	
@@ -40,16 +46,26 @@ public class EnemySegment extends MapSegment
 			EnemyType = 2;
 			break;
 		}
+		
+		m_dead = false;
+		m_deadAnim = new GAnimation(BitmapManager.getInstance().getBitmap(BitmapManager.MortStatue), 12, 6, true);
+		m_animOffset = new Vector2D(m_image.getWidth()/2-m_deadAnim.getWidth()/2, m_image.getHeight()/2-m_deadAnim.getHeight()/2);
+		m_deadAnimDone = false;
 	}
 	
 	@Override
 	public void draw(Canvas canvas)
 	{
-		canvas.drawBitmap(m_image, this.getM_position().getX(), this.getM_position().getY(), null);
-		
-		if (GameView.ENABLED_DEBUG)
-		{
-			canvas.drawRect(boundingBox, m_debugPaint);
+		if(!m_deadAnimDone){
+			if(!m_dead)
+				canvas.drawBitmap(m_image, this.getM_position().getX(), this.getM_position().getY(), null);
+			else
+				m_deadAnim.draw(canvas, m_position.add(m_animOffset), null);
+			
+			if (GameView.ENABLED_DEBUG)
+			{
+				canvas.drawRect(boundingBox, m_debugPaint);
+			}
 		}
 	}
 	
@@ -58,7 +74,14 @@ public class EnemySegment extends MapSegment
 	{
 		
 		this.boundingBox.set((int) this.getM_position().getX(), (int) this.getM_position().getY(), (int) this.getM_position().getX() + this.getWidth(), (int) this.getM_position().getY() + this.getHeight());
-		m_timeSinceLastShot += elapsedTime / GameThread.nano * 1000;
+		if(m_dead){
+			m_deadAnim.update(elapsedTime);
+			m_timeSinceLastShot = 0;
+			if(m_deadAnim.getDone())
+				m_deadAnimDone = true;
+		}
+		else
+			m_timeSinceLastShot += elapsedTime / GameThread.nano * 1000;
 		
 	}
 	
@@ -72,5 +95,9 @@ public class EnemySegment extends MapSegment
 	public void resetShotTimer()
 	{
 		m_timeSinceLastShot = 0;
+	}
+	
+	public void setDead(boolean dead){
+		m_dead = dead;
 	}
 }

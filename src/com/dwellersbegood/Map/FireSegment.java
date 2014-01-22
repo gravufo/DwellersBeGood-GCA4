@@ -44,8 +44,6 @@ public class FireSegment extends MapSegment {
 
 		m_fireAnim.draw(canvas, firePos, null);
 		canvas.drawBitmap(m_image, m_position.getX(), m_position.getY(), null);
-		canvas.drawCircle(m_position.getX(), m_position.getY(), 10, m_debugPaint);
-		canvas.drawCircle(firePos.getX(), firePos.getY(), 10, m_debugPaint);
 	}
 
 	@Override

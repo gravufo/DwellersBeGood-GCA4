@@ -44,6 +44,9 @@ public class Projectile extends GObject
 				this.m_shootAnim.draw(canvas, m_position, m_paint);
 			else
 				this.m_floatAnim.draw(canvas, m_position, m_paint);
+			
+			if(GameView.ENABLED_DEBUG)
+				canvas.drawRect(boundingBox, m_debugPaint);
 		}
 	}
 	

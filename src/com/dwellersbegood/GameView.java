@@ -288,10 +288,23 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 						m_player.setIsOnPlatform(true, segment.getBoundingBox().top);
 					}
 					break;
+				case MapSegmentGenerator.Enemy:
+					synchronized (this.m_projectiles)
+					{
+						for (Projectile projectile : this.m_projectiles)
+						{
+							synchronized (this.m_projectiles)
+							{
+								if(segment.getBoundingBox().intersect(projectile.getBoundingBox())){
+									((EnemySegment)segment).setDead(true);
+									this.m_projectilesToRemove.add(projectile);
+								}
+							}
+						}
+					}
 				case MapSegmentGenerator.Fire:
 				case MapSegmentGenerator.Rock:
 				case MapSegmentGenerator.Coin:
-				case MapSegmentGenerator.Enemy:
 					if (segment.getBoundingBox().intersect(m_player.getBoundingBox()))
 						segment.touchedByPlayer();
 					break;
