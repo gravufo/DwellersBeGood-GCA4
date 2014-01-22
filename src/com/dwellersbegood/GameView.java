@@ -29,7 +29,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	public static final float GRAVITY = 600;
 	public static float LEVEL_FLOOR = 0;
 	public static float LEVEL_PLATFORM = 0;
-	public static final boolean ENABLED_DEBUG = true;
+	public static final boolean ENABLED_DEBUG = false;
 	private final int MAX_TOUCH_COUNT = 10;
 	
 	private final int MENU = 0;

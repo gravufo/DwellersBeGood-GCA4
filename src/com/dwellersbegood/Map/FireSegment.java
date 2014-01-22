@@ -15,13 +15,14 @@ public class FireSegment extends MapSegment {
 	private int torchType;
 	private GAnimation m_fireAnim;
 	private Vector2D firePos;
+	private static Vector2D m_fireOffset;
 	
 	public FireSegment(){
 		m_Type = MapSegmentGenerator.Fire;
 		seed = new Random();
 		m_fireAnim = new GAnimation(BitmapManager.getInstance().getBitmap(BitmapManager.FireAnim), 12, 6);
 		
-		switch(seed.nextInt(2))
+		switch(seed.nextInt(1))
 		{
 			case 0:
 				torchType = 0;
@@ -34,7 +35,7 @@ public class FireSegment extends MapSegment {
 		}
 		
 		firePos = new Vector2D(0,0);
-		
+		m_fireOffset = new Vector2D(m_image.getWidth()/2 - m_fireAnim.getWidth()/2, (float)(-this.m_fireAnim.getHeight()*0.75));
 		
 	}
 
@@ -43,6 +44,8 @@ public class FireSegment extends MapSegment {
 
 		m_fireAnim.draw(canvas, firePos, null);
 		canvas.drawBitmap(m_image, m_position.getX(), m_position.getY(), null);
+		canvas.drawCircle(m_position.getX(), m_position.getY(), 10, m_debugPaint);
+		canvas.drawCircle(firePos.getX(), firePos.getY(), 10, m_debugPaint);
 	}
 
 	@Override
@@ -50,7 +53,8 @@ public class FireSegment extends MapSegment {
 		switch(torchType)
 		{
 			case 0:
-				firePos = m_position.substract(new Vector2D((float)0.05*GameView.getScreenSize().getX(),(float)0.05*GameView.getScreenSize().getX()));
+				firePos = m_position.add(m_fireOffset);
+				//firePos = m_position.substract(new Vector2D((float)0.05*GameView.getScreenSize().getX(),(float)0.05*GameView.getScreenSize().getX()));
 				break;
 			case 1:
 				firePos = m_position.add(new Vector2D((float)0.05*GameView.getScreenSize().getX(),(float)0.05*GameView.getScreenSize().getX()));
