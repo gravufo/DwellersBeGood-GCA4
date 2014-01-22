@@ -29,22 +29,30 @@ public class EnemySegment extends MapSegment
 		m_Type = MapSegmentGenerator.Enemy;
 		m_timeSinceLastShot = 0;
 		
-		int ratio = seed.nextInt(3);
+		int ratio = seed.nextInt(2);
 		
-		switch (ratio)
+		switch(ratio)
 		{
-		case 0:
-			m_image = BitmapManager.getInstance().getBitmap(BitmapManager.Enemy0);
-			EnemyType = 0;
-			break;
-		case 1:
-			m_image = BitmapManager.getInstance().getBitmap(BitmapManager.Enemy1);
-			EnemyType = 1;
-			break;
-		case 2:
-			m_image = BitmapManager.getInstance().getBitmap(BitmapManager.Enemy2);
-			EnemyType = 2;
-			break;
+			case 0:
+				m_image = BitmapManager.getInstance().getBitmap(BitmapManager.Enemy0);
+				EnemyType = 0;
+				botHeightOffset = (int)(getHeight()/25);
+				topHeightOffset = (int)(getHeight()/3.5);
+				leftWidthOffset = (int)(getWidth()/4);
+				rightWidthOffset = (int)(getWidth()/30);
+				break;
+			case 1:
+				m_image = BitmapManager.getInstance().getBitmap(BitmapManager.Enemy1);
+				EnemyType = 1;
+				botHeightOffset = (int)(getHeight()/31);
+				topHeightOffset = (int)(getHeight()/2.8);
+				leftWidthOffset = (int)(getWidth()/4.5);
+				rightWidthOffset = (int)(getWidth()/9);
+				break;
+			case 2:
+				m_image = BitmapManager.getInstance().getBitmap(BitmapManager.Enemy2);
+				EnemyType = 2;
+				break;
 		}
 		
 		m_dead = false;
@@ -72,8 +80,8 @@ public class EnemySegment extends MapSegment
 	@Override
 	public void update(long elapsedTime)
 	{
-		
-		this.boundingBox.set((int) this.getM_position().getX(), (int) this.getM_position().getY(), (int) this.getM_position().getX() + this.getWidth(), (int) this.getM_position().getY() + this.getHeight());
+		calculateBoundingBox(m_position, getWidth(), getHeight());
+		//this.boundingBox.set((int) this.getM_position().getX(), (int) this.getM_position().getY(), (int) this.getM_position().getX() + this.getWidth(), (int) this.getM_position().getY() + this.getHeight());
 		if(m_dead){
 			m_deadAnim.update(elapsedTime);
 			m_timeSinceLastShot = 0;

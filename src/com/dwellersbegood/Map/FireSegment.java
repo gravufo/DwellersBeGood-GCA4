@@ -15,14 +15,15 @@ public class FireSegment extends MapSegment {
 	private int torchType;
 	private GAnimation m_fireAnim;
 	private Vector2D firePos;
-	private static Vector2D m_fireOffset;
+	private static Vector2D m_fireOffset0;
+	private static Vector2D m_fireOffset1;
 	
 	public FireSegment(){
 		m_Type = MapSegmentGenerator.Fire;
 		seed = new Random();
 		m_fireAnim = new GAnimation(BitmapManager.getInstance().getBitmap(BitmapManager.FireAnim), 12, 6);
 		
-		switch(seed.nextInt(1))
+		switch(seed.nextInt(2))
 		{
 			case 0:
 				torchType = 0;
@@ -34,8 +35,15 @@ public class FireSegment extends MapSegment {
 				break;
 		}
 		
-		firePos = new Vector2D(0,0);
-		m_fireOffset = new Vector2D(m_image.getWidth()/2 - m_fireAnim.getWidth()/2, (float)(-this.m_fireAnim.getHeight()*0.75));
+		
+		m_fireOffset0 = new Vector2D(m_image.getWidth()/2 - m_fireAnim.getWidth()/(float)1.7, (float)(-this.m_fireAnim.getHeight()*0.75));
+		m_fireOffset1 = new Vector2D((float) (-m_fireAnim.getWidth()/(float)2.2), -m_fireAnim.getWidth()/3);
+		
+		botHeightOffset = (int)(m_fireAnim.getHeight()/13);
+		topHeightOffset = (int)(m_fireAnim.getHeight()/4);
+		leftWidthOffset = (int)(m_fireAnim.getWidth()/3.2);
+		rightWidthOffset = (int)(m_fireAnim.getWidth()/5.7);
+		
 		
 	}
 
@@ -44,6 +52,11 @@ public class FireSegment extends MapSegment {
 
 		m_fireAnim.draw(canvas, firePos, null);
 		canvas.drawBitmap(m_image, m_position.getX(), m_position.getY(), null);
+		
+		if (GameView.ENABLED_DEBUG)
+		{
+			canvas.drawRect(boundingBox, m_debugPaint);
+		}
 	}
 
 	@Override
@@ -51,14 +64,13 @@ public class FireSegment extends MapSegment {
 		switch(torchType)
 		{
 			case 0:
-				firePos = m_position.add(m_fireOffset);
-				//firePos = m_position.substract(new Vector2D((float)0.05*GameView.getScreenSize().getX(),(float)0.05*GameView.getScreenSize().getX()));
+				firePos = m_position.add(m_fireOffset0);
 				break;
 			case 1:
-				firePos = m_position.add(new Vector2D((float)0.05*GameView.getScreenSize().getX(),(float)0.05*GameView.getScreenSize().getX()));
+				firePos = m_position.add(m_fireOffset1);
 				break;
 		}
-		
+		calculateBoundingBox(firePos, m_fireAnim.getWidth(), m_fireAnim.getHeight());
 		m_fireAnim.update(elapsedTime);
 
 	}

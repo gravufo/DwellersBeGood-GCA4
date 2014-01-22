@@ -45,6 +45,8 @@ public class FloorSegment extends MapSegment
 		
 		m_position = new Vector2D(0, GameView.LEVEL_FLOOR - this.m_image.getHeight()/6);
 		
+		topHeightOffset = (int)(getHeight()/7);
+		calculateBoundingBox(m_position,getWidth(), getHeight());
 		loopIndex = (loopIndex + 1) % 8;
 	}
 	
@@ -61,7 +63,8 @@ public class FloorSegment extends MapSegment
 	
 	@Override
 	public void update(long ellapsedTime) {
-		this.boundingBox.set((int)this.getM_position().getX(), (int)this.getM_position().getY() + this.m_image.getHeight()/6, (int)this.getM_position().getX() + this.getWidth(), (int)this.getM_position().getY() + this.getHeight());
+		calculateBoundingBox(m_position, getWidth(), getHeight());
+		//this.boundingBox.set((int)this.getM_position().getX(), (int)this.getM_position().getY() + this.m_image.getHeight()/6, (int)this.getM_position().getX() + this.getWidth(), (int)this.getM_position().getY() + this.getHeight());
 	}
 	
 }

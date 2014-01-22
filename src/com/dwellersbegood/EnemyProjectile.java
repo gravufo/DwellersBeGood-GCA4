@@ -28,7 +28,12 @@ public class EnemyProjectile extends GObject
 		
 		this.m_shootAnim = new GAnimation(BitmapManager.getInstance().getBitmap(BitmapManager.Laser2), 8, 5, true);
 
-		boundingBox.set((int) m_position.getX() + leftWidthOffset, (int) m_position.getY() + topHeightOffset, (int) m_position.getX() + m_shootAnim.getWidth() - rightWidthOffset, (int) m_position.getY() + m_shootAnim.getHeight() - botHeightOffset);
+		botHeightOffset = (int)(m_shootAnim.getHeight()/2.5);
+		rightWidthOffset = (int)(m_shootAnim.getWidth()/3.7);
+		leftWidthOffset = (int)(m_shootAnim.getWidth()/3.7);
+		
+		calculateBoundingBox(m_position, m_shootAnim.getWidth(), m_shootAnim.getHeight());
+		//boundingBox.set((int) m_position.getX() + leftWidthOffset, (int) m_position.getY() + topHeightOffset, (int) m_position.getX() + m_shootAnim.getWidth() - rightWidthOffset, (int) m_position.getY() + m_shootAnim.getHeight() - botHeightOffset);
 	}
 	
 	@Override
@@ -47,7 +52,8 @@ public class EnemyProjectile extends GObject
 	{
 		m_position = m_position.add(m_speed.multiply((float) (elapsedTime / GameThread.nano)));
 		
-		boundingBox.set((int) m_position.getX() + leftWidthOffset, (int) m_position.getY() + topHeightOffset, (int) m_position.getX() + m_shootAnim.getWidth() - rightWidthOffset, (int) m_position.getY() + m_shootAnim.getHeight() - botHeightOffset);
+		calculateBoundingBox(m_position, m_shootAnim.getWidth(), m_shootAnim.getHeight());
+		//boundingBox.set((int) m_position.getX() + leftWidthOffset, (int) m_position.getY() + topHeightOffset, (int) m_position.getX() + m_shootAnim.getWidth() - rightWidthOffset, (int) m_position.getY() + m_shootAnim.getHeight() - botHeightOffset);
 		
 		if (!this.m_shootAnim.getDone())
 			this.m_shootAnim.update(elapsedTime);

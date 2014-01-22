@@ -73,6 +73,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	private Bitmap m_BackButtonBitmap;
 	private Rect m_GameOverButtonRect;
 	private Bitmap m_GameOverButtonBitmap;
+	private Bitmap m_playerHealthBitmap;
 	private Paint m_buttonPaint;
 	private int m_gamestate;
 	
@@ -111,6 +112,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		this.m_RestartButtonBitmap = BitmapManager.getInstance().getBitmap(BitmapManager.RestartButton);
 		this.m_BackButtonBitmap = BitmapManager.getInstance().getBitmap(BitmapManager.BackButton);
 		this.m_GameOverButtonBitmap = BitmapManager.getInstance().getBitmap(BitmapManager.GameOver);
+		this.m_playerHealthBitmap = BitmapManager.getInstance().getBitmap(BitmapManager.PlayerHealth);
 		this.m_gamestate = GAME;
 		
 		this.m_jumpHoldTime = 0;
@@ -220,9 +222,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				projectile.draw(canvas);
 			}
 			
-			canvas.drawText(this.m_collectibleScore + "", m_ScreenWidth / 20, m_ScreenHeight / 8, this.m_collectibleScorePaint);
-			for(int i = 0; i < m_playerHealth; i++){
-				canvas.drawCircle(m_ScreenWidth/10 + i*m_ScreenWidth/20,m_ScreenHeight/8,30, m_buttonPaint);
+			canvas.drawText(this.m_collectibleScore + "", m_ScreenWidth / 20, (int)(m_ScreenHeight /7), this.m_collectibleScorePaint);
+			for(int i = 0; i < m_playerHealth; i++)
+			{
+				canvas.drawBitmap(m_playerHealthBitmap, m_ScreenWidth/20 + i*m_ScreenWidth/20, (float) (m_ScreenHeight/6.5), null);
 			}
 			
 			canvas.drawBitmap(m_xButtonBitmap, null, m_xButtonRect, m_buttonPaint);
@@ -252,7 +255,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		// On update la partie si celle-ci n'est pas termin�
 		if (m_gamestate == GAME)
 		{
-			if (m_player.getM_position().getY() > GameView.m_ScreenHeight)
+			if (m_playerHealth < 1)
 				m_gamestate = GAMEOVER;
 			m_player.setIsOnFloor(false);
 			m_player.setIsOnPlatform(false);
@@ -288,6 +291,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 						m_player.setIsOnPlatform(true, segment.getBoundingBox().top);
 					}
 					break;
+					
 				case MapSegmentGenerator.Enemy:
 					synchronized (this.m_projectiles)
 					{
@@ -302,16 +306,40 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 							}
 						}
 					}
-				case MapSegmentGenerator.Fire:
-				case MapSegmentGenerator.Rock:
+					if (segment.getBoundingBox().intersect(m_player.getBoundingBox()))
+					{
+						if(!segment.wasTouchedByPlayer())
+						{
+							segment.touchedByPlayer();
+							m_playerHealth--;
+						}
+					}
+					
 				case MapSegmentGenerator.Coin:
 					if (segment.getBoundingBox().intersect(m_player.getBoundingBox()))
 						segment.touchedByPlayer();
+					break;
+					
+				case MapSegmentGenerator.Fire:
+				case MapSegmentGenerator.Rock:
+					if (segment.getBoundingBox().intersect(m_player.getBoundingBox()))
+					{
+						if(!segment.wasTouchedByPlayer())
+						{
+							segment.touchedByPlayer();
+							m_playerHealth--;
+						}
+					}
 					break;
 				case MapSegmentGenerator.HoleBegining:
 					// GameView.m_player.setIsOnFloor(true);
 					break;
 				case MapSegmentGenerator.HoleMiddle:
+				{
+					//code to start falling death animation
+					segment.touchedByPlayer();
+					m_gamestate = GAMEOVER;
+				}
 					break;
 				case MapSegmentGenerator.HoleEnding:
 					// GameView.m_player.setIsOnFloor(true);

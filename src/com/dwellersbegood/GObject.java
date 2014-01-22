@@ -77,8 +77,25 @@ public abstract class GObject
 		this.m_speed = m_speed;
 	}
 	
+	protected Rect calculateBoundingBox(Vector2D topLeft, float width, float height)
+	{
+		boundingBox.left = (int) (topLeft.getX() + leftWidthOffset);
+		boundingBox.right = (int) (topLeft.getX() + width - rightWidthOffset);
+		boundingBox.top = (int) (topLeft.getY() + topHeightOffset);
+		boundingBox.bottom = (int) (topLeft.getY() + height - botHeightOffset);
+		
+		return new Rect(boundingBox);
+		
+	}
+	
 	public void touchedByPlayer()
 	{
 		m_touchedPlayer = true;
-	};
+	}
+	
+	public boolean wasTouchedByPlayer()
+	{
+		return m_touchedPlayer;
+	}
+	
 }

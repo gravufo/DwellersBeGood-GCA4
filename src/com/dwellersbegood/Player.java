@@ -45,7 +45,12 @@ public class Player extends GObject
 		this.m_runningAnim = new GAnimation(BitmapManager.getInstance().getBitmap(BitmapManager.PlayerRun), 45, 10);
 		this.m_jumpingAnim = new GAnimation(BitmapManager.getInstance().getBitmap(BitmapManager.PlayerJump), 24, 5, true);
 		
-		boundingBox.set((int) m_position.getX() + leftWidthOffset, (int) m_position.getY() + topHeightOffset, (int) m_position.getX() + m_runningAnim.getWidth() - rightWidthOffset, (int) m_position.getY() + m_runningAnim.getHeight() - botHeightOffset);
+		botHeightOffset = m_runningAnim.getHeight() / 13;
+		leftWidthOffset = (int) (m_runningAnim.getWidth() / 2.5);
+		rightWidthOffset = (int) (m_runningAnim.getWidth()/6);
+		
+		calculateBoundingBox(m_position, m_runningAnim.getWidth(), m_runningAnim.getHeight());
+		//boundingBox.set((int) m_position.getX() + leftWidthOffset, (int) m_position.getY() + topHeightOffset, (int) m_position.getX() + m_runningAnim.getWidth() - rightWidthOffset, (int) m_position.getY() + m_runningAnim.getHeight() - botHeightOffset);
 	}
 	
 	@Override
@@ -71,7 +76,9 @@ public class Player extends GObject
 		m_position = m_position.add(m_speed.multiply((float) (elapsedTime / GameThread.nano)));
 		if (!m_isOnFloor && !m_isOnPlatform)
 			m_speed.setY(m_speed.getY() + GameView.GRAVITY * ((float) (elapsedTime / GameThread.nano)));
-		boundingBox.set((int) m_position.getX() + leftWidthOffset, (int) m_position.getY() + topHeightOffset, (int) m_position.getX() + m_runningAnim.getWidth() - rightWidthOffset, (int) m_position.getY() + m_runningAnim.getHeight() - botHeightOffset);
+		
+		calculateBoundingBox(m_position, m_runningAnim.getWidth(), m_runningAnim.getHeight());
+		//boundingBox.set((int) m_position.getX() + leftWidthOffset, (int) m_position.getY() + topHeightOffset, (int) m_position.getX() + m_runningAnim.getWidth() - rightWidthOffset, (int) m_position.getY() + m_runningAnim.getHeight() - botHeightOffset);
 		
 		if (m_jumping && !m_jumpingAnim.getDone())
 			this.m_jumpingAnim.update(elapsedTime);

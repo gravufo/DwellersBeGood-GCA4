@@ -30,7 +30,13 @@ public class Projectile extends GObject
 		this.m_shootAnim = new GAnimation(BitmapFactory.decodeResource(this.m_res, R.drawable.laser_shoot), 6, 3, true);
 		this.m_floatAnim = new GAnimation(BitmapFactory.decodeResource(this.m_res, R.drawable.laser_float), 30, 4);
 		
-		boundingBox.set((int) m_position.getX() + leftWidthOffset, (int) m_position.getY() + topHeightOffset, (int) m_position.getX() + m_shootAnim.getWidth() - rightWidthOffset, (int) m_position.getY() + m_shootAnim.getHeight() - botHeightOffset);
+		botHeightOffset = (int)(m_floatAnim.getHeight()/3);
+		topHeightOffset = (int)(m_floatAnim.getHeight()/3);
+		rightWidthOffset = (int)(m_floatAnim.getWidth()/5.5);
+		leftWidthOffset = (int)(m_floatAnim.getWidth()/3.7);
+		
+		calculateBoundingBox(m_position, m_floatAnim.getWidth(), m_floatAnim.getHeight());
+		//boundingBox.set((int) m_position.getX() + leftWidthOffset, (int) m_position.getY() + topHeightOffset, (int) m_position.getX() + m_shootAnim.getWidth() - rightWidthOffset, (int) m_position.getY() + m_shootAnim.getHeight() - botHeightOffset);
 	}
 	
 	@Override
@@ -55,7 +61,8 @@ public class Projectile extends GObject
 	{
 		m_position = m_position.add(m_speed.multiply((float) (elapsedTime / GameThread.nano)));
 		
-		boundingBox.set((int) m_position.getX() + leftWidthOffset, (int) m_position.getY() + topHeightOffset, (int) m_position.getX() + m_shootAnim.getWidth() - rightWidthOffset, (int) m_position.getY() + m_shootAnim.getHeight() - botHeightOffset);
+		calculateBoundingBox(m_position, m_floatAnim.getWidth(), m_floatAnim.getHeight());
+		//boundingBox.set((int) m_position.getX() + leftWidthOffset, (int) m_position.getY() + topHeightOffset, (int) m_position.getX() + m_shootAnim.getWidth() - rightWidthOffset, (int) m_position.getY() + m_shootAnim.getHeight() - botHeightOffset);
 		
 		if (!this.m_shootAnim.getDone())
 			this.m_shootAnim.update(elapsedTime);

@@ -38,6 +38,8 @@ public class BitmapManager
 	public static final float FireAnimeHeight = (float) 0.15;
 	public static final float Laser2AnimWidth = (float) 0.10 * 5;
 	public static final float PlayerHeight = (float) 0.3;
+	public static final float PlayerHealthWidth = (float) 0.05;
+	
 	
 	public static final float XButtonWidth = (float) 0.05;
 	public static final float ButtonWidth = (float) 0.5;
@@ -73,12 +75,12 @@ public class BitmapManager
 	public static final int FireAnim = 27;
 	public static final int PlayerRun = 28;
 	public static final int PlayerJump = 29;
-	
 	public static final int XButton = 30;
 	public static final int ResumeButton = 32;
 	public static final int RestartButton = 31;
 	public static final int GameOver = 33;
 	public static final int BackButton = 34;
+	public static final int PlayerHealth = 35;
 	
 	public void loadBitmaps(Resources res, int width, int height)
 	{
@@ -126,11 +128,13 @@ public class BitmapManager
 		m_bitmapCollection.add(scaleToSizeByHeight(BitmapFactory.decodeResource(res, R.drawable.player_run), PlayerHeight, height));
 		m_bitmapCollection.add(scaleToSizeByHeight(BitmapFactory.decodeResource(res, R.drawable.player_jump), PlayerHeight, height));
 		
-		m_bitmapCollection.add(scaleToSizeByWidth(BitmapFactory.decodeResource(res, R.drawable.xbutton), XButtonWidth, width));
+		m_bitmapCollection.add(scaleToSizeByWidth(BitmapFactory.decodeResource(res, R.drawable.pause), XButtonWidth, width));
 		m_bitmapCollection.add(scaleToSizeByWidth(BitmapFactory.decodeResource(res, R.drawable.restart), ButtonWidth, width));
 		m_bitmapCollection.add(scaleToSizeByWidth(BitmapFactory.decodeResource(res, R.drawable.resume), ButtonWidth, width));
 		m_bitmapCollection.add(scaleToSizeByWidth(BitmapFactory.decodeResource(res, R.drawable.gameover), GameOverWidth, width));
 		m_bitmapCollection.add(scaleToSizeByWidth(BitmapFactory.decodeResource(res, R.drawable.back), ButtonWidth, width));
+		
+		m_bitmapCollection.add(scaleToSizeByWidth(BitmapFactory.decodeResource(res, R.drawable.icone_aztekdolla), PlayerHealthWidth, width));
 		
 		Log.d("BitmapManager", "Loaded all bitmap");
 	}
