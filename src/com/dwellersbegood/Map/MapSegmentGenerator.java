@@ -14,7 +14,7 @@ public class MapSegmentGenerator {
 	private MapSegment newSegment;
 	private static MapSegmentGenerator m_instance = null;
 	private Random randomSeed;
-	private boolean m_generatedFloating;
+	private int m_generatedFloating = 0;
 		
 	public static MapSegmentGenerator Instance()
 	{
@@ -28,14 +28,14 @@ public class MapSegmentGenerator {
 		lastSegmentType = Floor;
 		lastSegment = new FloorSegment();
 		randomSeed = new Random();
-		m_generatedFloating = false;
+		m_generatedFloating = 0;
 	};
 	
 	public MapSegment generate(int difficulty)
 	{
-		difficulty = 30;
+		difficulty = 1;
 		//Coin Creation
-		if(!m_generatedFloating && randomSeed.nextInt(99) + 1 < (10 + difficulty))
+		if(m_generatedFloating < 1 && randomSeed.nextInt(99) + 1 < (10 + difficulty))
 		{
 			generateFloatingSegment(Coin);
 		}
@@ -47,8 +47,9 @@ public class MapSegmentGenerator {
 		// A hole middle implies a platform to jump on
 		else if(lastSegmentType == HoleMiddle)
 		{
-			if(!m_generatedFloating){
+			if(m_generatedFloating > 0){
 				generateFloatingSegment(Platform);
+				m_generatedFloating--;
 			}
 			else{
 				generatePathSegment(HoleEnding);
@@ -67,7 +68,7 @@ public class MapSegmentGenerator {
 		{
 			int danger = randomSeed.nextInt(100) + difficulty;
 			
-			if(danger > 80 && lastSegmentType == Floor)
+			if(danger > 70 && lastSegmentType == Floor && m_generatedFloating == 0)
 			{
 				switch(randomSeed.nextInt(4))
 				{
@@ -85,7 +86,6 @@ public class MapSegmentGenerator {
 				}
 			}else{
 				generatePathSegment(Floor);
-				m_generatedFloating = false;
 			}
 		}
 		
@@ -104,7 +104,8 @@ public class MapSegmentGenerator {
 		newSegment.moveTopLeftTo(lastTopRight);
 		lastSegment = newSegment;
 		lastSegmentType = type;
-		m_generatedFloating = false;
+		if(m_generatedFloating > 0)
+			m_generatedFloating--;
 	}
 	
 	private void generateFloatingSegment(int type)
@@ -115,10 +116,10 @@ public class MapSegmentGenerator {
 		float height = 0;
 		if(type == Platform)
 			height = GameView.getScreenSize().getY()/(float)7;
-		newPosition = newPosition.add(new Vector2D(0,-1*newSegment.getHeight() - height));
+		newPosition = newPosition.add(new Vector2D(0,-1*newSegment.getHeight() - height + lastSegment.getImage().getHeight()/6));
 		
 		newSegment.moveTopLeftTo(newPosition);
-		m_generatedFloating = true;
+		m_generatedFloating = 2;
 	}
 	
 	private MapSegment makeSegment(int type)

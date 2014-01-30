@@ -38,6 +38,7 @@ public class PlatformSegment extends MapSegment
 	@Override
 	public void update(long elapsedTime)
 	{
-		this.boundingBox.set((int)this.getM_position().getX(), (int)this.getM_position().getY(), (int)this.getM_position().getX() + this.getWidth(), (int)this.getM_position().getY() + this.getHeight());
+		calculateBoundingBox(m_position, getWidth(), getHeight());
+		//this.boundingBox.set((int)this.getM_position().getX(), (int)this.getM_position().getY(), (int)this.getM_position().getX() + this.getWidth(), (int)this.getM_position().getY() + this.getHeight());
 	}
 }

@@ -86,8 +86,8 @@ public class CoinSegment extends MapSegment
 				
 				m_position.setY((float) (Math.sin(angle) / 20 * screenSize + screenSize / 2));
 			}
-			
-			this.boundingBox.set((int) this.getM_position().getX(), (int) this.getM_position().getY(), (int) this.getM_position().getX() + this.getWidth(), (int) this.getM_position().getY() + this.getHeight());
+			calculateBoundingBox(m_position, getWidth(), getHeight());
+			//this.boundingBox.set((int) this.getM_position().getX(), (int) this.getM_position().getY(), (int) this.getM_position().getX() + this.getWidth(), (int) this.getM_position().getY() + this.getHeight());
 		}
 		else
 		{

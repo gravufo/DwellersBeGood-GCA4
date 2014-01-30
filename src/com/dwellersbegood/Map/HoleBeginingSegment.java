@@ -10,7 +10,7 @@ public class HoleBeginingSegment extends MapSegment {
 	{
 		m_Type = MapSegmentGenerator.HoleBegining;
 		m_image = BitmapManager.getInstance().getBitmap(BitmapManager.HoleBeginning);
-		
+		topHeightOffset = getHeight()/7;
 	}
 	
 	@Override
@@ -22,6 +22,7 @@ public class HoleBeginingSegment extends MapSegment {
 	@Override
 	public void update(long ellapsedTime) {
 		// TODO Auto-generated method stub
+		calculateBoundingBox(m_position, getWidth(), getHeight());
 		
 	}
 
