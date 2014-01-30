@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -26,11 +27,12 @@ import com.dwellersbegood.Map.MapSegmentGenerator;
 public class GameView extends SurfaceView implements SurfaceHolder.Callback
 {
 	
-	public static final float GRAVITY = 600;
+	public static final float GRAVITY = 1000;
 	public static float LEVEL_FLOOR = 0;
 	public static float LEVEL_PLATFORM = 0;
 	public static final boolean ENABLED_DEBUG = false;
 	private final int MAX_TOUCH_COUNT = 10;
+	private final float RELOADINGTIME = 1;
 	
 	private final int MENU = 0;
 	private final int GAME = 1;
@@ -57,8 +59,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	private int[] multiTouchY;
 	private Rect m_screenBoundingBox;
 	
-	private long m_jumpHoldTime;
-	private boolean m_jumpStarted;
+	//private long m_jumpHoldTime;
+	//private boolean m_jumpStarted;
 	
 	private long m_rechargeTime;
 	private boolean m_canShoot;
@@ -72,6 +74,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	private Rect m_BackButtonRect;
 	private Bitmap m_BackButtonBitmap;
 	private Rect m_GameOverButtonRect;
+	private Bitmap m_SoundOnButtonBitmap;
+	private Bitmap m_SoundOffButtonBitmap;
+	private Rect m_SoundButtonRect;
 	private Bitmap m_GameOverButtonBitmap;
 	private Bitmap m_playerHealthBitmap;
 	private Paint m_buttonPaint;
@@ -79,9 +84,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	
 	private int m_playerHealth;
 	
-	private boolean m_leaveGame;
+	private boolean m_musicPlaying;
 	
-	private Paint m_floorPaint;
+	private Paint m_floorDebugPaint;
 	
 	public GameView(GameActivity activity, Context context)
 	{
@@ -112,15 +117,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		this.m_RestartButtonBitmap = BitmapManager.getInstance().getBitmap(BitmapManager.RestartButton);
 		this.m_BackButtonBitmap = BitmapManager.getInstance().getBitmap(BitmapManager.BackButton);
 		this.m_GameOverButtonBitmap = BitmapManager.getInstance().getBitmap(BitmapManager.GameOver);
+		this.m_SoundOnButtonBitmap = BitmapFactory.decodeResource(m_res, R.drawable.soundon);
+		this.m_SoundOffButtonBitmap = BitmapFactory.decodeResource(m_res, R.drawable.soundoff);
 		this.m_playerHealthBitmap = BitmapManager.getInstance().getBitmap(BitmapManager.PlayerHealth);
 		this.m_gamestate = GAME;
 		
-		this.m_jumpHoldTime = 0;
-		this.m_jumpStarted = true;
+		//this.m_jumpHoldTime = 0;
+		//this.m_jumpStarted = true;
 		
 		m_playerHealth = 3;
 		
-		m_leaveGame = false;
+		m_musicPlaying = true;
 		
 		mediaShooting.setLooping(false);
 		mediaShooting.setVolume((float) 0.1, (float) 0.1);
@@ -132,9 +139,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		multiTouchX = new int[MAX_TOUCH_COUNT];
 		multiTouchY = new int[MAX_TOUCH_COUNT];
 		
-		this.m_floorPaint = new Paint();
-		this.m_floorPaint.setColor(Color.BLUE);
-		this.m_floorPaint.setStrokeWidth(5);
+		this.m_floorDebugPaint = new Paint();
+		this.m_floorDebugPaint.setColor(Color.BLUE);
+		this.m_floorDebugPaint.setStrokeWidth(5);
 	}
 	
 	@Override
@@ -162,6 +169,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		this.m_ResumeButtonRect = new Rect(m_ScreenWidth / 2 - m_ResumeButtonBitmap.getWidth() / 2, newGameHeight, m_ScreenWidth / 2 + m_ResumeButtonBitmap.getWidth() / 2, newGameHeight + m_ResumeButtonBitmap.getHeight());
 		this.m_RestartButtonRect = new Rect(m_ScreenWidth / 2 - m_RestartButtonBitmap.getWidth() / 2, newGameHeight, m_ScreenWidth / 2 + m_RestartButtonBitmap.getWidth() / 2, newGameHeight + m_RestartButtonBitmap.getHeight());
 		this.m_BackButtonRect = new Rect(m_ScreenWidth / 2 - m_BackButtonBitmap.getWidth() / 2, exitHeight, m_ScreenWidth / 2 + m_BackButtonBitmap.getWidth() / 2, exitHeight + m_BackButtonBitmap.getHeight());
+		
+		this.m_SoundButtonRect = new Rect(10, m_ScreenHeight - this.m_SoundOnButtonBitmap.getHeight() - 10, 10 + this.m_SoundOnButtonBitmap.getWidth(), m_ScreenHeight - 10);
 		
 		this.m_xButtonRect = new Rect(m_ScreenWidth - m_xButtonBitmap.getWidth() - 10, 10, m_ScreenWidth - 10, 10 + m_xButtonBitmap.getHeight());
 		
@@ -231,7 +240,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			canvas.drawBitmap(m_xButtonBitmap, null, m_xButtonRect, m_buttonPaint);
 			
 			if(ENABLED_DEBUG)
-				canvas.drawLine(0,LEVEL_FLOOR, m_ScreenWidth,LEVEL_FLOOR,m_floorPaint);
+				canvas.drawLine(0,LEVEL_FLOOR, m_ScreenWidth,LEVEL_FLOOR,m_floorDebugPaint);
 			
 			if (m_gamestate == MENU)
 			{
@@ -239,6 +248,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				
 				canvas.drawBitmap(m_ResumeButtonBitmap, null, this.m_ResumeButtonRect, this.m_buttonPaint);
 				canvas.drawBitmap(m_BackButtonBitmap, null, this.m_BackButtonRect, this.m_buttonPaint);
+				if(m_musicPlaying)
+					canvas.drawBitmap(m_SoundOnButtonBitmap, null, this.m_SoundButtonRect, this.m_buttonPaint);
+				else
+					canvas.drawBitmap(m_SoundOffButtonBitmap, null, this.m_SoundButtonRect, this.m_buttonPaint);
 			}
 			if (m_gamestate == GAMEOVER)
 			{
@@ -246,6 +259,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				canvas.drawBitmap(m_GameOverButtonBitmap, null, this.m_GameOverButtonRect, this.m_buttonPaint);
 				canvas.drawBitmap(m_RestartButtonBitmap, null, this.m_RestartButtonRect, this.m_buttonPaint);
 				canvas.drawBitmap(m_BackButtonBitmap, null, this.m_BackButtonRect, this.m_buttonPaint);
+				if(m_musicPlaying)
+					canvas.drawBitmap(m_SoundOnButtonBitmap, null, this.m_SoundButtonRect, this.m_buttonPaint);
+				else
+					canvas.drawBitmap(m_SoundOffButtonBitmap, null, this.m_SoundButtonRect, this.m_buttonPaint);
 			}
 		}
 	}
@@ -260,7 +277,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 			m_player.setIsOnFloor(false);
 			m_player.setIsOnPlatform(false);
 			m_map.update(elapsedTime);
-			Vector2D playerPos = new Vector2D(m_player.getM_position().getX() + m_player.getBoundingBox().width() / 2, m_player.getM_position().getY() + m_player.getBoundingBox().height());
+			Vector2D playerPos = new Vector2D(m_player.getM_position().getX() + m_player.getImageWidth() / 2, m_player.getM_position().getY() + m_player.getImageHeight());
 			for (MapSegment segment : m_map.getMapSegments())
 			{
 				if (segment.getM_Type() == MapSegmentGenerator.Enemy)
@@ -299,14 +316,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 						{
 							synchronized (this.m_projectiles)
 							{
-								if(segment.getBoundingBox().intersect(projectile.getBoundingBox())){
+								if(segment.getBoundingBox().intersect(projectile.getBoundingBox()) && !((EnemySegment)segment).isDead()){
 									((EnemySegment)segment).setDead(true);
 									this.m_projectilesToRemove.add(projectile);
 								}
 							}
 						}
 					}
-					if (segment.getBoundingBox().intersect(m_player.getBoundingBox()))
+					if (segment.getBoundingBox().intersect(m_player.getBoundingBox()) && !((EnemySegment)segment).isDead())
 					{
 						if(!segment.wasTouchedByPlayer())
 						{
@@ -404,7 +421,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				this.m_enemyProjectilesToRemove.clear();
 			}
 			
-			if (this.m_jumpStarted)
+			/*if (this.m_jumpStarted)
 			{
 				this.m_jumpHoldTime += elapsedTime;
 				if (this.m_jumpHoldTime >= 2 * GameThread.nano)
@@ -415,12 +432,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 					this.m_jumpHoldTime = 0;
 					this.m_jumpStarted = false;
 				}
-			}
+			}*/
 			
 			if (!m_canShoot)
 			{
 				this.m_rechargeTime += elapsedTime;
-				if (this.m_rechargeTime >= 1 * GameThread.nano)
+				if (this.m_rechargeTime >= RELOADINGTIME * GameThread.nano)
 				{
 					m_canShoot = true;
 					this.m_rechargeTime = 0;
@@ -454,7 +471,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 					}
 					else if (multiTouchX[a] < m_ScreenWidth / 2)
 					{
-						this.m_jumpHoldTime = System.currentTimeMillis();
+						//this.m_jumpHoldTime = System.currentTimeMillis();
 						GameView.m_player.jumpStarted();
 					}
 					else
@@ -483,6 +500,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 						
 						m_Activity.finish();
 					}
+					else if(m_SoundButtonRect.contains(multiTouchX[a], multiTouchY[a])){
+						if(m_musicPlaying){
+							this.m_Activity.pauseMusic();
+							m_musicPlaying = false;
+						}
+						else{
+							this.m_Activity.startMusic();
+							m_musicPlaying = true;
+						}
+					}
 				}
 				else if (m_gamestate == GAMEOVER)
 				{
@@ -498,6 +525,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 						m_Activity.startActivity(i);
 						
 						m_Activity.finish();
+					}
+					else if(m_SoundButtonRect.contains(multiTouchX[a], multiTouchY[a])){
+						if(m_musicPlaying){
+							this.m_Activity.pauseMusic();
+							m_musicPlaying = false;
+						}
+						else{
+							this.m_Activity.startMusic();
+							m_musicPlaying = true;
+						}
 					}
 				}
 			}
@@ -515,13 +552,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 				multiTouchY[a] = (int) event.getY(a);
 				
 				// If the touch is on first half of screen, jump
-				if (multiTouchX[a] < m_ScreenWidth / 2 && this.m_jumpHoldTime > 0 && m_gamestate == GAME)
+				/*if (multiTouchX[a] < m_ScreenWidth / 2 && this.m_jumpHoldTime > 0 && m_gamestate == GAME)
 				{
 					float ratio = (float) (this.m_jumpHoldTime / (2 * GameThread.nano));
 					GameView.m_player.jumpReleased(ratio);
 					this.m_jumpHoldTime = 0;
 					this.m_jumpStarted = false;
-				}
+				}*/
 			}
 			
 		default:

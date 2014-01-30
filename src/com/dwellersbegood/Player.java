@@ -32,7 +32,7 @@ public class Player extends GObject
 		
 		m_jumping = false;
 		m_jumpStarted = false;
-		m_jumpSpeed = -500;
+		m_jumpSpeed = -800;
 		
 		m_isOnFloor = false;
 		m_isOnPlatform = false;
@@ -45,6 +45,7 @@ public class Player extends GObject
 		this.m_runningAnim = new GAnimation(BitmapManager.getInstance().getBitmap(BitmapManager.PlayerRun), 45, 10);
 		this.m_jumpingAnim = new GAnimation(BitmapManager.getInstance().getBitmap(BitmapManager.PlayerJump), 24, 5, true);
 		
+		topHeightOffset = m_runningAnim.getHeight() / 8;
 		botHeightOffset = m_runningAnim.getHeight() / 13;
 		leftWidthOffset = (int) (m_runningAnim.getWidth() / 2.5);
 		rightWidthOffset = (int) (m_runningAnim.getWidth()/6);
@@ -96,9 +97,11 @@ public class Player extends GObject
 		{
 			if (m_speed.getY() > 0)
 			{
-				m_position.setY(GameView.LEVEL_FLOOR - boundingBox.height());
+				m_position.setY(GameView.LEVEL_FLOOR - m_runningAnim.getHeight() + botHeightOffset);
 				m_speed.setY(0);
 				m_jumping = false;
+				if (m_jumpStarted)
+					SoundManager.getInstance().getPlayer(SoundManager.JUMP_FALL).start();
 				m_jumpStarted = false;
 			}
 		}
@@ -107,7 +110,7 @@ public class Player extends GObject
 		{
 			if (m_speed.getY() > 0)
 			{
-				m_position.setY(m_platformLevel - boundingBox.height());
+				m_position.setY(m_platformLevel - m_runningAnim.getHeight() + botHeightOffset);
 				m_speed.setY(0);
 				m_jumping = false;
 				m_jumpStarted = false;
@@ -131,9 +134,6 @@ public class Player extends GObject
 	
 	public void setIsOnFloor(boolean isOnFloor)
 	{
-		if (!this.IsOnFloor() && isOnFloor)
-			SoundManager.getInstance().getPlayer(SoundManager.JUMP_FALL).start();
-		
 		this.m_isOnFloor = isOnFloor;
 	}
 	
@@ -156,6 +156,14 @@ public class Player extends GObject
 	public boolean IsOnPlatform()
 	{
 		return this.m_isOnPlatform;
+	}
+	
+	public float getImageWidth(){
+		return m_runningAnim.getWidth();
+	}
+	
+	public float getImageHeight(){
+		return m_runningAnim.getHeight();
 	}
 	
 	public void hitEnemy()

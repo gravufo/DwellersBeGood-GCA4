@@ -13,6 +13,8 @@ import com.dwellersbegood.GameView;
 import com.dwellersbegood.Vector2D;
 
 public class Map extends GObject {
+	
+	public static float MAPSPEED = 800;
 
 	private LinkedList<MapSegment> m_mapSegments;
 	private Bitmap m_background;
@@ -56,7 +58,7 @@ public class Map extends GObject {
 		
 		for(MapSegment segment:m_mapSegments)
 		{
-			segment.setM_position(segment.getM_position().substract(new Vector2D((float)(elapsedTime/GameThread.nano)*500,0)));
+			segment.setM_position(segment.getM_position().substract(new Vector2D((float)(elapsedTime/GameThread.nano)*MAPSPEED,0)));
 			segment.update(elapsedTime);
 		}
 	}

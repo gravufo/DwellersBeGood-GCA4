@@ -13,7 +13,7 @@ import com.dwellersbegood.Vector2D;
 public class EnemySegment extends MapSegment
 {
 	
-	public static final long TIMETOSHOT = 2500;
+	public static final long TIMETOSHOT = 1500;
 	private Random seed;
 	private int EnemyType;
 	private boolean m_dead;
@@ -107,5 +107,9 @@ public class EnemySegment extends MapSegment
 	
 	public void setDead(boolean dead){
 		m_dead = dead;
+	}
+	
+	public boolean isDead(){
+		return m_dead;
 	}
 }
