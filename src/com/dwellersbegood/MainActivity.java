@@ -10,8 +10,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
 
@@ -69,6 +67,7 @@ public class MainActivity extends Activity
 				this.m_Player.start();
 			
 			this.m_HomeMenuView = new HomeMenuView(this, this, this.m_Res);
+			setContentView(this.m_HomeMenuView);
 		}
 		
 		// Previous activity was the GameActivity

@@ -18,7 +18,6 @@ import android.view.WindowManager;
 
 public class GameActivity extends Activity
 {
-	private GameActivity me = this;
 	private GameView m_gameView;
 	private GData m_Data;
 	private MediaPlayer m_BackgroundMusic;
@@ -55,7 +54,7 @@ public class GameActivity extends Activity
 	@Override
 	protected Dialog onCreateDialog(int id)
 	{
-		this.m_gameView.setPause(true);
+		this.m_gameView.getGame().setPause(true);
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage("Go To The Homemenu ?").setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener()
 		{

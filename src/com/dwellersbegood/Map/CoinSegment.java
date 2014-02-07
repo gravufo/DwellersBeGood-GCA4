@@ -5,6 +5,7 @@ import java.util.Random;
 import android.graphics.Canvas;
 
 import com.dwellersbegood.BitmapManager;
+import com.dwellersbegood.Game;
 import com.dwellersbegood.GameThread;
 import com.dwellersbegood.GameView;
 import com.dwellersbegood.SoundManager;
@@ -75,7 +76,7 @@ public class CoinSegment extends MapSegment
 		{
 			if (m_coinType == Bag)
 			{
-				m_position.setY(GameView.LEVEL_FLOOR - getHeight());
+				m_position.setY(Game.LEVEL_FLOOR - getHeight());
 			}
 			else
 			{

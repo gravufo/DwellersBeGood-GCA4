@@ -8,7 +8,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -30,8 +29,6 @@ public class HomeMenuView extends SurfaceView implements SurfaceHolder.Callback{
 	private Rect m_NewGameRect;
 	private Rect m_btnSoundRect;
 	private Rect m_TitleRect;
-	private float m_ScaleWidth;
-	private float m_ScaleHeight;
 	private Paint m_Paint;
 	private boolean m_SoundOff;
 	private Paint m_TestPaint;
@@ -43,7 +40,6 @@ public class HomeMenuView extends SurfaceView implements SurfaceHolder.Callback{
 		getHolder().addCallback(this);
 	    setFocusable(true);
 		this.m_Activity = _Activity;
-		this.m_Activity.setContentView(this);
 		this.m_Paint = new Paint();
 		this.m_Paint.setColor(Color.BLACK);
 		this.m_SoundOff = false;

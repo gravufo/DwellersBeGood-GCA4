@@ -1,14 +1,11 @@
 package com.dwellersbegood;
 
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
 public class Player extends GObject
 {
-	
-	private Resources m_res;
 	private Paint m_paint;
 	private GAnimation m_runningAnim;
 	private GAnimation m_jumpingAnim;
@@ -18,17 +15,22 @@ public class Player extends GObject
 	private boolean m_isOnPlatform;
 	private float m_platformLevel;
 	
+	public final int INITIALHEALTH = 3;
+	private int m_health;
+	
 	public Player()
 	{
 		super();
 		m_paint = new Paint();
 		m_paint.setColor(Color.BLACK);
+		m_health = INITIALHEALTH;
 	}
 	
-	public Player(float posX, float posY, float speedX, float speedY, int screenWidth, int screenHeight, Resources res)
+	public Player(float posX, float posY, float speedX, float speedY, int screenWidth, int screenHeight)
 	{
 		super(posX, posY, speedX, speedY, screenWidth, screenHeight);
-		m_res = res;
+		
+		m_health = INITIALHEALTH;
 		
 		m_jumping = false;
 		m_jumpStarted = false;
@@ -51,7 +53,6 @@ public class Player extends GObject
 		rightWidthOffset = (int) (m_runningAnim.getWidth()/6);
 		
 		calculateBoundingBox(m_position, m_runningAnim.getWidth(), m_runningAnim.getHeight());
-		//boundingBox.set((int) m_position.getX() + leftWidthOffset, (int) m_position.getY() + topHeightOffset, (int) m_position.getX() + m_runningAnim.getWidth() - rightWidthOffset, (int) m_position.getY() + m_runningAnim.getHeight() - botHeightOffset);
 	}
 	
 	@Override
@@ -76,10 +77,9 @@ public class Player extends GObject
 		
 		m_position = m_position.add(m_speed.multiply((float) (elapsedTime / GameThread.nano)));
 		if (!m_isOnFloor && !m_isOnPlatform)
-			m_speed.setY(m_speed.getY() + GameView.GRAVITY * ((float) (elapsedTime / GameThread.nano)));
+			m_speed.setY(m_speed.getY() + Game.GRAVITY * ((float) (elapsedTime / GameThread.nano)));
 		
 		calculateBoundingBox(m_position, m_runningAnim.getWidth(), m_runningAnim.getHeight());
-		//boundingBox.set((int) m_position.getX() + leftWidthOffset, (int) m_position.getY() + topHeightOffset, (int) m_position.getX() + m_runningAnim.getWidth() - rightWidthOffset, (int) m_position.getY() + m_runningAnim.getHeight() - botHeightOffset);
 		
 		if (m_jumping && !m_jumpingAnim.getDone())
 			this.m_jumpingAnim.update(elapsedTime);
@@ -97,7 +97,7 @@ public class Player extends GObject
 		{
 			if (m_speed.getY() > 0)
 			{
-				m_position.setY(GameView.LEVEL_FLOOR - m_runningAnim.getHeight() + botHeightOffset);
+				m_position.setY(Game.LEVEL_FLOOR - m_runningAnim.getHeight() + botHeightOffset);
 				m_speed.setY(0);
 				m_jumping = false;
 				if (m_jumpStarted)
@@ -164,6 +164,14 @@ public class Player extends GObject
 	
 	public float getImageHeight(){
 		return m_runningAnim.getHeight();
+	}
+	
+	public int getHealth(){
+		return m_health;
+	}
+	
+	public void damage(){
+		m_health--;
 	}
 	
 	public void hitEnemy()

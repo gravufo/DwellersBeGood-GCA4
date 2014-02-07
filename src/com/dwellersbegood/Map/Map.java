@@ -4,7 +4,6 @@ import java.util.LinkedList;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.util.Log;
 
 import com.dwellersbegood.BitmapManager;
 import com.dwellersbegood.GObject;
@@ -84,13 +83,13 @@ public class Map extends GObject {
 	
 	private void addMappSegments()
 	{
-		float bla = m_mapSegments.get(m_mapSegments.size() - 1).getTopRightCorner().getX();
+		float lastTopRight = m_mapSegments.get(m_mapSegments.size() - 1).getTopRightCorner().getX();
 		float screenSize = (float) (GameView.getScreenSize().getX() * 1.5);
-		while( bla < screenSize)
+		while( lastTopRight < screenSize)
 		{
 			MapSegment segment = MapSegmentGenerator.Instance().generate(m_difficulty);
 			m_mapSegments.add(segment);
-			bla = m_mapSegments.get(m_mapSegments.size() - 1).getTopRightCorner().getX();
+			lastTopRight = m_mapSegments.get(m_mapSegments.size() - 1).getTopRightCorner().getX();
 		}
 		System.out.println("");
 	}

@@ -3,9 +3,9 @@ package com.dwellersbegood.Map;
 import android.graphics.Canvas;
 
 import com.dwellersbegood.BitmapManager;
+import com.dwellersbegood.Game;
 import com.dwellersbegood.GameView;
 import com.dwellersbegood.Vector2D;
-import android.graphics.*;
 
 public class FloorSegment extends MapSegment
 {
@@ -43,7 +43,7 @@ public class FloorSegment extends MapSegment
 			break;
 		}
 		
-		m_position = new Vector2D(0, GameView.LEVEL_FLOOR - this.m_image.getHeight()/6);
+		m_position = new Vector2D(0, Game.LEVEL_FLOOR - this.m_image.getHeight()/6);
 		
 		topHeightOffset = (int)(getHeight()/7);
 		calculateBoundingBox(m_position,getWidth(), getHeight());
