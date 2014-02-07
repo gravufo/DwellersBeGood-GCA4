@@ -4,12 +4,14 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 import com.dwellersbegood.GObject;
+import com.dwellersbegood.Game;
 import com.dwellersbegood.Vector2D;
 
 public abstract class MapSegment extends GObject
 {
 	
 	protected int m_Type;
+	protected Game m_game;
 	
 	public int getM_Type()
 	{
@@ -47,6 +49,10 @@ public abstract class MapSegment extends GObject
 	public Vector2D getTopLeftCorner()
 	{
 		return this.m_position;
+	}
+	
+	public void setGame(Game game){
+		m_game = game;
 	}
 	
 	@Override

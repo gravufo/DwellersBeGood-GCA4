@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 
 import com.dwellersbegood.BitmapManager;
 import com.dwellersbegood.GObject;
+import com.dwellersbegood.Game;
 import com.dwellersbegood.GameThread;
 import com.dwellersbegood.GameView;
 import com.dwellersbegood.Vector2D;
@@ -20,8 +21,10 @@ public class Map extends GObject {
 	private float bgPos;
 	private float bgSpeed;
 	private int m_difficulty = 0;
+	private Game m_game;
 	
-	public Map(int screenWidth, int screenHeight){
+	public Map(Game game){
+		this.m_game = game;
 		bgPos = 0;
 		bgSpeed = -50;
 		m_background = BitmapManager.getInstance().getBitmap(BitmapManager.Background);
@@ -68,6 +71,7 @@ public class Map extends GObject {
 		{
 			if(isOutofScreen(i))
 			{
+				m_game.addDistanceTraveled(1);
 				m_mapSegments.remove(i);
 				i--;
 			}
@@ -88,6 +92,7 @@ public class Map extends GObject {
 		while( lastTopRight < screenSize)
 		{
 			MapSegment segment = MapSegmentGenerator.Instance().generate(m_difficulty);
+			segment.setGame(m_game);
 			m_mapSegments.add(segment);
 			lastTopRight = m_mapSegments.get(m_mapSegments.size() - 1).getTopRightCorner().getX();
 		}

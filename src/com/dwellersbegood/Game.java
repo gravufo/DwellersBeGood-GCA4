@@ -44,8 +44,18 @@ public class Game
 	
 	private GameView m_gameView;
 	
+	private int m_coinsCollected;
+	public int getCoinsCollected(){return m_coinsCollected;}
+	
+	private int m_distanceTraveled;
+	public int getDistanceTraveled(){return m_distanceTraveled;}
+	public void addDistanceTraveled(int distanceTraveled){m_distanceTraveled += distanceTraveled;}
+	
 	public Game(GameView view){
 		this.m_gameView = view;
+		
+		m_coinsCollected = 0;
+		m_distanceTraveled = 0;
 		
 		this.m_projectiles = new ArrayList<Projectile>();
 		this.m_projectilesToRemove = new ArrayList<Projectile>();
@@ -70,7 +80,7 @@ public class Game
 		LEVEL_PLATFORM = (float) (GameView.g_ScreenHeight * 0.60);
 		
 		// Create map
-		m_map = new Map(GameView.g_ScreenWidth, GameView.g_ScreenHeight);
+		m_map = new Map(this);
 		m_player = new Player(GameView.g_ScreenWidth / 7, (float) (GameView.g_ScreenHeight * 0.10), 0, 50, GameView.g_ScreenWidth, GameView.g_ScreenHeight);
 		
 		Log.d("GameView", "Starting thread");
@@ -313,6 +323,10 @@ public class Game
 			mediaShooting.start();
 			m_canShoot = false;
 		}
+	}
+	
+	public void CollectedCoins(int value){
+		this.m_coinsCollected += value;
 	}
 	
 	public boolean IsMusicPlaying(){

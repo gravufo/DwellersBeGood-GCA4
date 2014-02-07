@@ -28,12 +28,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 	public static int g_ScreenWidth;
 	public static int g_ScreenHeight;
 	
-	private Paint m_collectibleScorePaint;
-	public static int m_collectibleScore;
-	public Rect m_collectibleScoreBounds;
-	
-	private Bitmap m_playerHealthBitmap;
-	private Bitmap m_coinIconBitmap;
+	private HUD m_hud;
 	
 	private Resources m_res;
 	public Resources getResources(){return m_res;}
@@ -75,16 +70,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		
 		m_game = new Game(this);
 		
-		this.m_collectibleScorePaint = new Paint();
-		this.m_collectibleScorePaint.setColor(Color.YELLOW);
-		this.m_collectibleScorePaint.setTextSize(84);
-		this.m_collectibleScorePaint.setTextAlign(Align.CENTER);
-		Typeface font = Typeface.createFromAsset(m_res.getAssets(), "fonts/woodbadge.ttf");
-		this.m_collectibleScorePaint.setTypeface(font);
-		this.m_collectibleScoreBounds = new Rect();
-		this.m_collectibleScorePaint.getTextBounds("0", 0, 1, this.m_collectibleScoreBounds);
-		
-		m_collectibleScore = 0;
+		this.m_hud = new HUD(this);
 		
 		this.m_buttonPaint = new Paint();
 		this.m_buttonPaint.setColor(Color.BLACK);
@@ -96,15 +82,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		this.m_SoundOnButtonBitmap = BitmapFactory.decodeResource(m_res, R.drawable.soundon);
 		this.m_SoundOffButtonBitmap = BitmapFactory.decodeResource(m_res, R.drawable.soundoff);
 		
-		this.m_playerHealthBitmap = BitmapManager.getInstance().getBitmap(BitmapManager.PlayerHealth);
-		this.m_coinIconBitmap = BitmapManager.getInstance().getBitmap(BitmapManager.CoinIcon);
-		
 		this.m_gamestate = GAME;
-		
-		
-		m_Data = m_Activity.getData();
-		if (m_Data != null)
-			m_collectibleScore = m_Data.getDolla();
 		
 		multiTouchX = new int[MAX_TOUCH_COUNT];
 		multiTouchY = new int[MAX_TOUCH_COUNT];
@@ -154,22 +132,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 
 			m_game.DrawGame(canvas);
 			
-			/*canvas.drawText(m_collectibleScore + "", g_ScreenWidth / 20, (int)(g_ScreenHeight /7), this.m_collectibleScorePaint);
-			for(int i = 0; i < m_game.getPlayer().getHealth(); i++)
-			{
-				canvas.drawBitmap(m_playerHealthBitmap, g_ScreenWidth/20 + i*g_ScreenWidth/20, (float) (g_ScreenHeight/6.5), null);
-			}*/
-			int newWidth = g_ScreenWidth / 20;
-			float height = (float) (g_ScreenHeight/12);
-			canvas.drawBitmap(m_playerHealthBitmap, newWidth, height, null);
-			newWidth += m_playerHealthBitmap.getWidth()*2;
-			canvas.drawText(m_collectibleScore/100+"", newWidth, height+m_collectibleScoreBounds.height(), this.m_collectibleScorePaint);
-			newWidth += m_collectibleScoreBounds.width() + 5;
-			canvas.drawText((m_collectibleScore%100)/10+"", newWidth, height+m_collectibleScoreBounds.height(), this.m_collectibleScorePaint);
-			newWidth += m_collectibleScoreBounds.width() + 5;
-			canvas.drawText(m_collectibleScore%10+"", newWidth, height+m_collectibleScoreBounds.height(), this.m_collectibleScorePaint);
-			newWidth += m_collectibleScoreBounds.width() + 5;
-			canvas.drawBitmap(m_coinIconBitmap, newWidth, height, null);
+			m_hud.DrawHUD(canvas);
 			
 			canvas.drawBitmap(m_xButtonBitmap, null, m_xButtonRect, m_buttonPaint);
 			

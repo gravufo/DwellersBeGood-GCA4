@@ -35,19 +35,19 @@ public class CoinSegment extends MapSegment
 		if (ratio > 10)
 		{
 			m_image = BitmapManager.getInstance().getBitmap(BitmapManager.Coin0);
-			value = 10;
+			value = 1;
 			m_coinType = Coin;
 		}
 		else if (ratio > 1)
 		{
 			m_image = BitmapManager.getInstance().getBitmap(BitmapManager.Coin1);
-			value = 100;
+			value = 10;
 			m_coinType = Bag;
 		}
 		else
 		{
 			m_image = BitmapManager.getInstance().getBitmap(BitmapManager.Coin2);
-			value = 500;
+			value = 100;
 			m_coinType = Gem;
 		}
 		
@@ -120,7 +120,7 @@ public class CoinSegment extends MapSegment
 				index = 0;
 			}
 			
-			GameView.m_collectibleScore += value;
+			m_game.CollectedCoins(value);
 			
 			SoundManager.getInstance().getPlayer(index).start();
 			m_soundPlayed = true;
