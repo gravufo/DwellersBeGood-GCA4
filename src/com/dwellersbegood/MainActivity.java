@@ -33,8 +33,6 @@ public class MainActivity extends Activity
 		super.onCreate(savedInstanceState);
 		this.m_Res = getResources();
 		
-		// setContentView(R.layout.activity_main);
-		
 		context = getApplicationContext();
 
 		try
@@ -89,6 +87,7 @@ public class MainActivity extends Activity
 	/** Called when the user clicks the Singleplayer button */
 	public void SingleplayerMode()
 	{
+		this.m_Player.pause();
 		Intent intent = new Intent(this, GameActivity.class);
 		intent.putExtra("Dolla", this.m_Data);
 		startActivityForResult(intent, 2);

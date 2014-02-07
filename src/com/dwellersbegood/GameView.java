@@ -493,11 +493,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 					{
 						// Return to main application
 						
-						Intent i = new Intent(m_Activity, MainActivity.class);
-						
-						i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-						m_Activity.startActivity(i);
-						
 						m_Activity.finish();
 					}
 					else if(m_SoundButtonRect.contains(multiTouchX[a], multiTouchY[a])){
@@ -519,10 +514,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 					}
 					else if (m_BackButtonRect.contains(multiTouchX[a], multiTouchY[a]))
 					{
-						Intent i = new Intent(m_Activity, MainActivity.class);
-						
-						i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-						m_Activity.startActivity(i);
 						
 						m_Activity.finish();
 					}

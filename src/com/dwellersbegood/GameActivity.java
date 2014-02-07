@@ -35,6 +35,7 @@ public class GameActivity extends Activity
 		}
 		m_BackgroundMusic = SoundManager.getInstance().getPlayer(SoundManager.BACKGROUND_MUSIC);
 		m_BackgroundMusic.setLooping(true);
+		m_BackgroundMusic.seekTo(0);
 		m_BackgroundMusic.start();
 		m_gameView = new GameView(this, this);
 		setContentView(m_gameView);
@@ -61,11 +62,6 @@ public class GameActivity extends Activity
 			@Override
 			public void onClick(DialogInterface dialog, int id)
 			{
-				Intent i = new Intent(me, MainActivity.class);
-				
-				i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-				startActivity(i);
-				
 				finish();
 			}
 		}).setNegativeButton("No", new DialogInterface.OnClickListener()
@@ -107,7 +103,7 @@ public class GameActivity extends Activity
 		{
 			Log.e("serializeObject", "error", ioe);
 		}
-		m_BackgroundMusic.stop();
+		m_BackgroundMusic.pause();
 		super.onStop();
 	}
 	
@@ -169,10 +165,10 @@ public class GameActivity extends Activity
 			Log.e("serializeObject", "error", ioe);
 		}
 		m_BackgroundMusic.stop();*/
+		m_BackgroundMusic.pause();
 		Intent data = new Intent();
 		this.setResult(RESULT_OK, data);
-		System.gc();
-		super.finishActivity(2);
+		super.finish();
 	}
 	
 	public void reset(){
