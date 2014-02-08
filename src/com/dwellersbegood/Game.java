@@ -10,6 +10,7 @@ import android.media.MediaPlayer;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
+import com.dwellersbegood.Achievements.Achievement;
 import com.dwellersbegood.Map.EnemySegment;
 import com.dwellersbegood.Map.Map;
 import com.dwellersbegood.Map.MapSegment;
@@ -51,6 +52,8 @@ public class Game
 	public int getDistanceTraveled(){return m_distanceTraveled;}
 	public void addDistanceTraveled(int distanceTraveled){m_distanceTraveled += distanceTraveled;}
 	
+	private Achievement testAchievement;
+	
 	public Game(GameView view){
 		this.m_gameView = view;
 		
@@ -82,6 +85,8 @@ public class Game
 		// Create map
 		m_map = new Map(this);
 		m_player = new Player(GameView.g_ScreenWidth / 7, (float) (GameView.g_ScreenHeight * 0.10), 0, 50, GameView.g_ScreenWidth, GameView.g_ScreenHeight);
+		
+		testAchievement = new Achievement(m_gameView, "You have reached 20M");
 		
 		Log.d("GameView", "Starting thread");
 		this.m_Thread = new GameThread(m_gameView, holder);
@@ -124,6 +129,8 @@ public class Game
 		{
 			projectile.draw(canvas);
 		}
+		
+		testAchievement.Draw(canvas);
 		
 		if(GameView.ENABLED_DEBUG)
 			canvas.drawLine(0,LEVEL_FLOOR, GameView.g_ScreenWidth,LEVEL_FLOOR,m_floorDebugPaint);
@@ -278,18 +285,9 @@ public class Game
 			this.m_enemyProjectilesToRemove.clear();
 		}
 		
-		/*if (this.m_jumpStarted)
-		{
-			this.m_jumpHoldTime += elapsedTime;
-			if (this.m_jumpHoldTime >= 2 * GameThread.nano)
-			{
-				this.m_jumpHoldTime = (long) Math.min(2 * GameThread.nano, this.m_jumpHoldTime);
-				float ratio = (float) (this.m_jumpHoldTime / (2 * GameThread.nano));
-				GameView.m_player.jumpReleased(ratio);
-				this.m_jumpHoldTime = 0;
-				this.m_jumpStarted = false;
-			}
-		}*/
+		testAchievement.Update(elapsedTime);
+		if(m_distanceTraveled >= 20)
+			testAchievement.setEarned(true);
 		
 		if (!m_canShoot)
 		{

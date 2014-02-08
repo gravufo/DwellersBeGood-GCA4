@@ -6,8 +6,8 @@ import android.graphics.Paint;
 
 public class GData implements Serializable{
 	private static final long serialVersionUID = 1L;
-	private int m_Coins;
-	private int m_DistanceTraveled;
+	private int m_Coins = 0;
+	private int m_DistanceTraveled = 0;
 	
 	public GData()
 	{
