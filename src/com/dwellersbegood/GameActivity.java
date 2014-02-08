@@ -86,26 +86,7 @@ public class GameActivity extends Activity
 		}
 		return false;
 	}
-	
-	@Override
-	// Save data in the device
-	protected void onStop()
-	{
-		try
-		{
-			FileOutputStream fos = this.openFileOutput("Data", Context.MODE_PRIVATE);
-			ObjectOutputStream os = new ObjectOutputStream(fos);
-			os.writeObject(this.m_Data);
-			os.close();
-		}
-		catch (IOException ioe)
-		{
-			Log.e("serializeObject", "error", ioe);
-		}
-		m_BackgroundMusic.pause();
-		super.onStop();
-	}
-	
+
 	@Override
 	protected void onRestart()
 	{
@@ -130,42 +111,12 @@ public class GameActivity extends Activity
 	}
 	
 	@Override
-	// Save data in the device
-	protected void onPause()
-	{
-		//m_BackgroundMusic.pause();
-		
-		try
-		{
-			FileOutputStream fos = this.openFileOutput("Data", Context.MODE_PRIVATE);
-			ObjectOutputStream os = new ObjectOutputStream(fos);
-			os.writeObject(this.m_Data);
-			os.close();
-		}
-		catch (IOException ioe)
-		{
-			Log.e("serializeObject", "error", ioe);
-		}
-		super.onPause();
-	}
-	
-	@Override
 	public void finish()
 	{
-		/*try
-		{
-			FileOutputStream fos = this.openFileOutput("Data", Context.MODE_PRIVATE);
-			ObjectOutputStream os = new ObjectOutputStream(fos);
-			os.writeObject(this.m_Data);
-			os.close();
-		}
-		catch (IOException ioe)
-		{
-			Log.e("serializeObject", "error", ioe);
-		}
-		m_BackgroundMusic.stop();*/
 		m_BackgroundMusic.pause();
 		Intent data = new Intent();
+		data.putExtra("CoinsCollected", m_gameView.getGame().getCoinsCollected());
+		data.putExtra("DistanceTraveled", m_gameView.getGame().getDistanceTraveled());
 		this.setResult(RESULT_OK, data);
 		super.finish();
 	}

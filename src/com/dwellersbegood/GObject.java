@@ -21,6 +21,7 @@ public abstract class GObject
 	protected int botHeightOffset = 0;
 	
 	protected Paint m_debugPaint;
+	protected Paint m_alternateDebugPaint;
 	
 	public GObject()
 	{

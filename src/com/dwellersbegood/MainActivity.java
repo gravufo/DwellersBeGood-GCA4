@@ -1,8 +1,10 @@
 package com.dwellersbegood;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import android.app.Activity;
 import android.content.Context;
@@ -38,6 +40,8 @@ public class MainActivity extends Activity
 			FileInputStream fis = this.openFileInput("Data");
 			ObjectInputStream is = new ObjectInputStream(fis);
 			this.m_Data = (GData) is.readObject();
+			if(m_Data == null)
+				m_Data = new GData();
 			is.close();
 		}
 		catch (ClassNotFoundException cnfe)
@@ -67,6 +71,7 @@ public class MainActivity extends Activity
 				this.m_Player.start();
 			
 			this.m_HomeMenuView = new HomeMenuView(this, this, this.m_Res);
+			this.m_HomeMenuView.setData(m_Data);
 			setContentView(this.m_HomeMenuView);
 		}
 		
@@ -75,6 +80,11 @@ public class MainActivity extends Activity
 		{
 			if (!muteMedia && !m_Player.isPlaying())
 				this.m_Player.start();
+			int coinsCollected = data.getIntExtra("CoinsCollected", 0);
+			this.m_Data.addCoins(coinsCollected);
+			int distanceTraveled = data.getIntExtra("DistanceTraveled", 0);
+			this.m_Data.addDistanceTraveled(distanceTraveled);
+			this.m_HomeMenuView.setData(m_Data);
 		}
 	}
 	
@@ -88,7 +98,7 @@ public class MainActivity extends Activity
 	{
 		this.m_Player.pause();
 		Intent intent = new Intent(this, GameActivity.class);
-		intent.putExtra("Dolla", this.m_Data);
+		intent.putExtra("Data", this.m_Data);
 		startActivityForResult(intent, 2);
 	}
 	
@@ -117,6 +127,22 @@ public class MainActivity extends Activity
 	{
 		m_Player.stop();
 		this.finish();
+	}
+	
+	@Override
+	protected void onStop()
+	{
+		try{
+			FileOutputStream fos = this.openFileOutput("Data", Context.MODE_PRIVATE);
+			ObjectOutputStream os = new ObjectOutputStream(fos);
+			os.writeObject(this.m_Data);
+			os.close();
+		}
+		catch(IOException ioe) 
+		{ 
+		      Log.e("serializeObject", "error", ioe); 
+		}
+		super.onStop();
 	}
 	
 	@Override

@@ -239,11 +239,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback
 		case MotionEvent.ACTION_POINTER_UP:
 			for (int a = 0; a < event.getPointerCount(); a++)
 			{
-				
-				Log.d("GameView", "OnTouchEvent at " + (int) event.getX() + ", " + (int) event.getY());
-				
-				Log.d("GameView", "Number of pointers " + event.getPointerCount());
-				
 				multiTouchX[a] = (int) event.getX(a);
 				multiTouchY[a] = (int) event.getY(a);
 			}

@@ -32,6 +32,10 @@ public class HomeMenuView extends SurfaceView implements SurfaceHolder.Callback{
 	private Paint m_Paint;
 	private boolean m_SoundOff;
 	private Paint m_TestPaint;
+	private Paint m_DataPaint;
+	
+	private GData m_Data;
+	public void setData(GData data){m_Data = data;}
 	
 	public HomeMenuView(Context context,MainActivity _Activity, Resources _Res)
 	{
@@ -48,6 +52,11 @@ public class HomeMenuView extends SurfaceView implements SurfaceHolder.Callback{
 		this.m_TestPaint.setColor(Color.BLACK);
 		this.m_TestPaint.setAlpha(150);
 		
+		this.m_DataPaint = new Paint();
+		this.m_DataPaint.setTextSize(32);
+		this.m_DataPaint.setColor(Color.WHITE);
+		
+		this.m_Data = new GData();
 	}
 
 	@Override
@@ -64,6 +73,10 @@ public class HomeMenuView extends SurfaceView implements SurfaceHolder.Callback{
 			canvas.drawBitmap(m_TitleBitmap, null, m_TitleRect, m_Paint);
 			canvas.drawBitmap(m_NewGameBitmap, null, m_NewGameRect, m_Paint);
 			canvas.drawBitmap(m_ExitBitmap, null, m_ExitRect, m_Paint);
+			
+			canvas.drawText(m_Data.getCoins()+" Coins", 3*m_ScreenWidth/4, 2*m_ScreenHeight/3, m_DataPaint);
+			canvas.drawText(m_Data.getDistanceTraveled()+"M Traveled", 3*m_ScreenWidth/4, 2*m_ScreenHeight/3+m_DataPaint.getTextSize(), m_DataPaint);
+			
 			this.postInvalidate();
 		}
 	}

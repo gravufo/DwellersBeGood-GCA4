@@ -6,19 +6,37 @@ import android.graphics.Paint;
 
 public class GData implements Serializable{
 	private static final long serialVersionUID = 1L;
-	private int m_Dolla;
+	private int m_Coins;
+	private int m_DistanceTraveled;
 	
 	public GData()
 	{
-		this.m_Dolla = 0;
+		this.m_Coins = 0;
+		this.m_DistanceTraveled = 0;
 	}
 	
-	public void setDolla(int newDolla){
-		m_Dolla = newDolla;
+	public void addCoins(int coins){
+		m_Coins += coins;
 	}
 	
-	public int getDolla(){
-		return m_Dolla;
+	public void addDistanceTraveled(int distanceTraveled){
+		m_DistanceTraveled += distanceTraveled;
+	}
+	
+	public void setCoins(int coins){
+		m_Coins = coins;
+	}
+	
+	public int getCoins(){
+		return m_Coins;
+	}
+	
+	public void setDistanceTraveled(int distanceTraveled){
+		m_DistanceTraveled = distanceTraveled;
+	}
+	
+	public int getDistanceTraveled(){
+		return m_DistanceTraveled;
 	}
 
 }
